@@ -1,0 +1,45 @@
+//
+//  RootCoordinatorView.swift
+//  Coordinator
+//
+//  Created by Joseph Grabinger on 22.02.25.
+//
+
+
+
+import SwiftUI
+
+/// A SwiftUI view that serves as the root coordinator, managing navigation within the app.
+/// - Note: This view integrates with a `Routing`-conforming coordinator to handle navigation.
+struct RootCoordinatorView<C: Coordinator>: View {
+    
+    // MARK: - Private Properties
+    
+    /// The coordinator responsible for handling navigation events.
+    @ObservedObject private var coordinator: C
+    
+    /// Creates an instance of `RootCoordinatorView`.
+    /// - Parameters:
+    ///   - coordinator: The coordinator responsible for managing navigation.
+    init(for coordinator: C) {
+        self.coordinator = coordinator
+    }
+    
+    // MARK: - Body
+
+    var body: some View {
+        NavigationStack(path: $coordinator.path.value) {
+            AnyView(coordinator.initialRoute.buildView())
+                .navigationDestination(for: AnyRoutable.self) { route in
+                    route.buildView()
+                }
+        }
+        .environmentObject(coordinator)
+    }
+}
+
+// MARK: - Preview
+
+#Preview {
+    CoordinatorPlayground()
+}
