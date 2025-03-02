@@ -8,18 +8,27 @@
 import Foundation
 
 /// A protocol defining navigation behaviors for managing a SwiftUI `NavigationStack`.
+/// - This protocol enables hierarchical navigation using coordinators and routes.
 @MainActor
 public protocol Navigating: ObservableObject {
     
+    // MARK: - Properties
+    
+    /// The initial route that this navigator starts with.
     var initialRoute: any Routable { get }
+    
+    /// A weak reference to the parent navigator, if available.
+    /// - This enables hierarchical navigation where child navigators can communicate with their parent.
     var parent: (any Navigating)? { get }
     
     /// The navigation path representing the current state of navigation.
+    /// - Modifying this property updates the navigation stack in SwiftUI.
     var path: NavPath { get set }
     
     // MARK: - Methods
-    
+
     /// Pushes a new `Coordinator` onto the navigation stack.
+    /// - Parameter coordinator: The `Coordinator` instance to be added.
     func pushCoordinator(_ coordinator: Coordinator)
     
     /// Pushes a new route onto the navigation stack.
@@ -33,8 +42,14 @@ public protocol Navigating: ObservableObject {
     func popToRoot()
 }
 
+// MARK: - Default Implementations
+
 public extension Navigating {
     
+    /// Pushes a new `Coordinator` onto the navigation stack.
+    /// - Ensures the coordinator has its initial route set and assigns it a parent if needed.
+    /// - Calls `pushCoordinator(_:)` on the parent to maintain hierarchy.
+    /// - Parameter coordinator: The `Coordinator` to push.
     func pushCoordinator(_ coordinator: Coordinator) {
         print("pushing coordinator: \(coordinator)")
         
