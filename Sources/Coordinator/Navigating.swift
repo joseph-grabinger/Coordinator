@@ -6,18 +6,18 @@
 //
 
 import Foundation
-import Combine
 
 /// A protocol defining navigation behaviors for managing a SwiftUI `NavigationStack`.
 @MainActor
 public protocol Navigating: ObservableObject {
     
     var initialRoute: any Routable { get }
+    var parent: (any Navigating)? { get }
     
     /// The navigation path representing the current state of navigation.
     var path: NavPath { get set }
     
-    var cancelBag: Set<AnyCancellable> { get set }
+    // MARK: - Methods
     
     /// Pushes a new `Coordinator` onto the navigation stack.
     func pushCoordinator(_ coordinator: Coordinator)
@@ -37,51 +37,40 @@ public extension Navigating {
     
     func pushCoordinator(_ coordinator: Coordinator) {
         print("pushing coordinator: \(coordinator)")
+        
+        if coordinator.parent == nil {
+            coordinator.parent = self
+            print("setting parent of \(coordinator) to \(self)")
+        }
 
-        // Ensure the cordinator has its initial rout in its path.
+        // Ensure the cordinator has its initial route in its path.
         if AnyRoutable(coordinator.initialRoute) != coordinator.path.value.first {
             coordinator.path.value = [AnyRoutable(coordinator.initialRoute)]
+            print("Adding initial route to \(coordinator)")
         }
-        
-        let startIndex = coordinator.path.count
-        
-        coordinator.$path
-            .dropFirst()
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] newValue in
-                guard let self else { return }
-                print("start Index: \(startIndex), path count: \(self.path.count)")
-                print("LISTENER: \(self.path.value), newValue: \(newValue)")
-                    let appendixRange = (startIndex)...(self.path.count-1)
-                    print("range: \(appendixRange)")
-                    self.path.value.replaceSubrange(appendixRange, with: newValue.value)
-                
-                if newValue.value.isEmpty {
-                    print("canceled subs")
-                    cancelBag.forEach { $0.cancel() }
-                    cancelBag = []
-                }
-            }
-            .store(in: &cancelBag)
         
         path.append(coordinator.path)
         print("appending \(coordinator.path) to \(path)")
+        parent?.pushCoordinator(coordinator)
     }
     
     /// Default implementation of `push(_:)`, adding a route to the navigation path.
     /// - Parameter route: The `Routable` instance to be pushed onto the stack.
     func push<Route: Routable>(_ route: Route) {
         path.append(AnyRoutable(route))
+        parent?.push(route)
     }
     
     /// Default implementation of `pop()`, removing the last item from the navigation path.
     func pop() {
         path.removeLast()
-        print("Path post pop: \(path)")
+        print("Path of \(self) post pop: \(path)")
+        parent?.pop()
     }
     
     /// Default implementation of `popToRoot()`, removing all items from the navigation path.
     func popToRoot() {
         path.removeLast(path.count)
+        // TODO: handle poping to root of a coordinator
     }
 }

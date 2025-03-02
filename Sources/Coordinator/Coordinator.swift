@@ -15,9 +15,9 @@ open class Coordinator: ObservableObject, Navigating {
     
     @Published public var path: NavPath
     
-    public var cancelBag = Set<AnyCancellable>()
+    /// A weak reference to the parent coordinator, if available.
     
-    weak var parent: Coordinator?
+    public weak var parent: (any Navigating)?
     
     init(initialRoute: any Routable, pushInitialRoute: Bool = true) {
         self.initialRoute = initialRoute
