@@ -14,10 +14,6 @@ public struct NavPath {
     /// The list of routable items representing the navigation stack.
     var value: [AnyRoutable]
     
-    /// The number of items that were initially part of the navigation path.
-    /// - This helps track the original number of routes before modifications.
-    var prefixCount: Int
-    
     /// The current number of items in the navigation path.
     var count: Int {
         value.count
@@ -29,7 +25,6 @@ public struct NavPath {
     /// - Parameter value: An array of `AnyRoutable` items representing the initial navigation state.
     init(_ value: [AnyRoutable] = []) {
         self.value = value
-        self.prefixCount = value.count
     }
     
     // MARK: - Public Methods
@@ -38,7 +33,6 @@ public struct NavPath {
     /// - Parameter value: The `AnyRoutable` instance to add.
     mutating func append(_ value: AnyRoutable) {
         self.value.append(value)
-        self.prefixCount += 1
     }
     
     /// Appends an entire `NavPath` to the current path.
@@ -48,17 +42,10 @@ public struct NavPath {
         self.value.append(contentsOf: path.value)
     }
     
-    /// Removes a specific navigation path from the end of the current path.
-    /// - Parameter path: The `NavPath` to remove.
-    mutating func remove(_ path: NavPath) {
-        self.value.removeLast(path.count)
-        self.prefixCount -= 1
-    }
-    
     /// Removes the last `k` items from the navigation path.
     /// - Parameter k: The number of items to remove (default is 1).
     mutating func removeLast(_ k: Int = 1) {
+        guard count >= k else { return }
         self.value.removeLast(k)
-        self.prefixCount -= k
     }
 }

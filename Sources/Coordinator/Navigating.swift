@@ -38,7 +38,8 @@ public protocol Navigating: ObservableObject {
     /// Pops the top-most view from the navigation stack.
     func pop()
 
-    /// Pops all views, returning to the root of the navigation stack.
+    /// Pops all views of the current coordinator except the root view.
+    /// - This effecitely only leaves the root of the current coordinator's navigation path.
     func popToRoot()
 }
 
@@ -84,8 +85,23 @@ public extension Navigating {
     }
     
     /// Default implementation of `popToRoot()`, removing all items from the navigation path.
+    ///
+    /// Only for the root (whose `parent` is `nil`) the entire path can poped
+    /// since its `initialRoute` is used as a root of the `RootCoordinatorView`.
     func popToRoot() {
-        path.removeLast(path.count)
-        // TODO: handle poping to root of a coordinator
+        guard path.count > 0 else { return }
+        popLast(parent != nil ? path.count - 1 : path.count)
+    }
+}
+
+// MARK: - Private Helper
+
+private extension Navigating {
+    
+    /// Pops the last `k` items from the navigation path.
+    /// - Parameter k: The number of items to remove (default is 1).
+    func popLast(_ k: Int = 1) {
+        path.removeLast(k)
+        parent?.popLast(k)
     }
 }
