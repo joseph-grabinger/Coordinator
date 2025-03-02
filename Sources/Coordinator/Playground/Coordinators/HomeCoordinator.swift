@@ -10,11 +10,6 @@ import SwiftUI
 class HomeCoordinator: Coordinator {
     lazy var flowCoordinator = NewFlowCoordinator()
     
-//    var initialRoute: any Routable = Screen.view1
-    
-    
-//    @Published var path = NavPath()
-    
     init() {
         super.init(initialRoute: Screen.view1, pushInitialRoute: false)
     }
