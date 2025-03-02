@@ -8,11 +8,6 @@
 import SwiftUI
 
 class NewFlowCoordinator: Coordinator {
-//    var initialRoute: any Routable = NewFlowScreen.newFlowRoot
-    
-//    @MainActor func buildRootView() -> some View {
-//        return
-//    }
     
     init() {
         print("init newflowCoord")
@@ -36,7 +31,6 @@ enum NewFlowScreen: Routable {
             NewFlowView1()
         case .view2:
             Text("NewFlow2")
-            /*NewFlowView2()*/
         case .newFlowRoot:
             NewFlowRootView()
         }
