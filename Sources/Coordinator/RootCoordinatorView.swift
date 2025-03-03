@@ -11,7 +11,7 @@ import SwiftUI
 
 /// A SwiftUI view that serves as the root coordinator, managing navigation within the app.
 /// - Note: This view integrates with a `Navigating`-conforming coordinator to handle navigation.
-struct RootCoordinatorView<C: Coordinator>: View {
+public struct RootCoordinatorView<C: Coordinator>: View {
     
     // MARK: - Private Properties
     
@@ -21,13 +21,13 @@ struct RootCoordinatorView<C: Coordinator>: View {
     /// Creates an instance of `RootCoordinatorView`.
     /// - Parameters:
     ///   - coordinator: The coordinator responsible for managing navigation.
-    init(for coordinator: C) {
+    public init(for coordinator: C) {
         self.coordinator = coordinator
     }
     
     // MARK: - Body
 
-    var body: some View {
+    public var body: some View {
         NavigationStack(path: $coordinator.path.value) {
             AnyView(coordinator.initialRoute.buildView())
                 .navigationDestination(for: AnyRoutable.self) { route in

@@ -31,7 +31,7 @@ open class Coordinator: ObservableObject, Navigating {
     ///   - pushInitialRoute: A Boolean value that determines whether to push the initial route onto the navigation stack.
     ///     - `true`: The `initialRoute` is added to `path` automatically.
     ///     - `false`: The navigation stack starts empty.
-    init(initialRoute: any Routable, pushInitialRoute: Bool = true) {
+    public init(initialRoute: any Routable, pushInitialRoute: Bool = true) {
         self.initialRoute = initialRoute
         self.path = NavPath(pushInitialRoute ? [AnyRoutable(initialRoute)] : [])
     }
