@@ -18,12 +18,10 @@ public protocol Navigating: ObservableObject {
     /// The initial route that this navigator starts with.
     var initialRoute: Route { get }
     
-    /// A weak reference to the parent navigator, if available.
-    /// - This enables hierarchical navigation where child navigators can communicate with their parent.
-    var parent: (any Navigating)? { get }
-    
+    /// A weak reference to the root navigator, if available.
+	var root: (any Navigating)? { get }
+
     /// The navigation path representing the current state of navigation.
-    /// - Modifying this property updates the navigation stack in SwiftUI.
     var path: NavigationPath { get set }
     
     // MARK: - Methods
@@ -40,7 +38,7 @@ public protocol Navigating: ObservableObject {
     func pop()
 
     /// Pops all views of the current coordinator except the root view.
-    /// - This effecitely only leaves the root of the current coordinator's navigation path.
+    /// - This effectively only leaves the root of the current coordinator's navigation path.
     func popToRoot()
 }
 
@@ -52,46 +50,44 @@ public extension Navigating {
     /// - Ensures the coordinator has its initial route set and assigns it a parent if needed.
     /// - Calls `pushCoordinator(_:)` on the parent to maintain hierarchy.
     /// - Parameter coordinator: The `Coordinator` to push.
-    func pushCoordinator<R: Routable>(_ coordinator: Coordinator<R>) {
+    func pushCoordinator<Route: Routable>(_ coordinator: Coordinator<Route>) {
         print("pushing coordinator: \(coordinator)")
-        
-        if coordinator.parent == nil {
-            coordinator.parent = self
-            print("setting parent of \(coordinator) to \(self)")
-        }
-
-//        // Ensure the cordinator has its initial route in its path.
-//        if coordinator.initialRoute != coordinator.path.value.first {
-//            coordinator.path.value = [coordinator.initialRoute]
-//            print("Adding initial route to \(coordinator)")
-//        }
-        
-        path.append(coordinator.initialRoute) // path TODO: fix
-        print("appending \(coordinator.path) to \(path)")
-        parent?.pushCoordinator(coordinator)
+		guard let root else {
+			print("Root is nil, cannot push coordinator")
+			return
+		}
+		coordinator.root = root
+		root.pushCoordinator(coordinator)
     }
     
     /// Default implementation of `push(_:)`, adding a route to the navigation path.
     /// - Parameter route: The `Routable` instance to be pushed onto the stack.
     func push<Route: Routable>(_ route: Route) {
-        path.append(route)
-        parent?.push(route)
+		guard let root else {
+			print("Root is nil, cannot push route")
+			return
+		}
+        root.push(route)
+		path.append(route)
     }
     
     /// Default implementation of `pop()`, removing the last item from the navigation path.
     func pop() {
-        path.removeLast()
-        print("Path of \(self) post pop: \(path)")
-        parent?.pop()
+		guard let root else {
+			print("Root is nil, cannot pop route")
+			return
+		}
+        root.pop()
+		path.removeLast()
     }
     
     /// Default implementation of `popToRoot()`, removing all items from the navigation path.
-    ///
-    /// Only for the root (whose `parent` is `nil`) the entire path can poped
-    /// since its `initialRoute` is used as a root of the `RootCoordinatorView`.
     func popToRoot() {
-        guard path.count > 0 else { return }
-        popLast(parent != nil ? path.count - 1 : path.count)
+		guard let root else {
+			print("Root is nil, cannot pop to root")
+			return
+		}
+		root.popLast(path.count)
     }
 }
 
@@ -103,6 +99,6 @@ private extension Navigating {
     /// - Parameter k: The number of items to remove (default is 1).
     func popLast(_ k: Int = 1) {
         path.removeLast(k)
-        parent?.popLast(k)
+        root?.popLast(k)
     }
 }

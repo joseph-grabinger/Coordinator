@@ -21,10 +21,9 @@ open class Coordinator<Route: Routable>: ObservableObject, Navigating {
     /// - Updates to this property modify the navigation state in the `NavigationStack` of the `RootCoordinatorView`.
     @Published public var path: NavigationPath
     
-    /// A weak reference to the parent coordinator, if available.
-    /// - This allows for hierarchical navigation where child coordinators can communicate with their parent.
-    public weak var parent: (any Navigating)?
-    
+    /// A weak reference to the root coordinator, if available.
+	public weak var root: (any Navigating)?
+
     /// Initializes a new coordinator with an initial route.
     /// - Parameters:
     ///   - initialRoute: The first route that should be displayed when this coordinator is activated.
