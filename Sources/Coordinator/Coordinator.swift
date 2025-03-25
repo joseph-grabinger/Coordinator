@@ -22,16 +22,13 @@ open class Coordinator<Route: Routable>: ObservableObject, Navigating {
     @Published public var path: NavigationPath
     
     /// A weak reference to the root coordinator, if available.
-	public weak var root: (any Navigating)?
+    public weak var root: (any Navigating)?
 
     /// Initializes a new coordinator with an initial route.
     /// - Parameters:
     ///   - initialRoute: The first route that should be displayed when this coordinator is activated.
-    ///   - pushInitialRoute: A Boolean value that determines whether to push the initial route onto the navigation stack.
-    ///     - `true`: The `initialRoute` is added to `path` automatically.
-    ///     - `false`: The navigation stack starts empty.
-    public init(initialRoute: Route, pushInitialRoute: Bool = true) {
+    public init(initialRoute: Route) {
         self.initialRoute = initialRoute
-        self.path = NavigationPath(pushInitialRoute ? [initialRoute] : [])
+        self.path = NavigationPath()
     }
 }

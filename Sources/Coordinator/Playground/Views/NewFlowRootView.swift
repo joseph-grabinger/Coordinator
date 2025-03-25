@@ -22,6 +22,9 @@ struct NewFlowRootView: View {
             Button("Pop") {
 				rootCoordinator.children[1].pop()
             }
+            Button("Po to Root") {
+                rootCoordinator.children[1].popToRoot()
+            }
         }
         .navigationTitle("NewFlow Root")
     }

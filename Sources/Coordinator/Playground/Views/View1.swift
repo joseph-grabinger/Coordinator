@@ -39,7 +39,7 @@ struct NewFlowView1: View {
             }
             Button("Pop to Root") {
 				rootCoordinator.children[1].popToRoot()
-			}.disabled(true)
+			}
         }
         .navigationTitle("View 1")
     }

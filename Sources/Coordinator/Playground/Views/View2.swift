@@ -12,8 +12,6 @@ struct View2: View {
     
 	@EnvironmentObject private var rootCoordinator: RootCoordinator<Screen>
 
-	@StateObject private var newFlowCoordinator = NewFlowCoordinator()
-
     var body: some View {
         List {
             Button("Push") {}
@@ -23,10 +21,10 @@ struct View2: View {
             }
             Button("Pop to Root") {
 				rootCoordinator.children[0].popToRoot()
-            }.disabled(true)
+            }
 
             Button("New Flow") {
-				rootCoordinator.children[0].pushCoordinator(newFlowCoordinator)
+				rootCoordinator.children[0].pushCoordinator(NewFlowCoordinator())
 //                coordinator.pushCoordinator(coordinator.flowCoordinator)
             }
         }

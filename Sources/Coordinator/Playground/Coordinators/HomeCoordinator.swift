@@ -12,10 +12,8 @@ class HomeCoordinator: Coordinator<Screen> {
 //    lazy var flowCoordinator = NewFlowCoordinator()
     
     init() {
-		super.init(initialRoute: Screen.view1, pushInitialRoute: false)
+		super.init(initialRoute: Screen.view1)
     }
-
-
 }
 
 enum Screen: Routable {
@@ -33,4 +31,3 @@ enum Screen: Routable {
 		}
 	}
 }
-

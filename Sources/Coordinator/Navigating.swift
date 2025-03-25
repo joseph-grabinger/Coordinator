@@ -26,19 +26,19 @@ public protocol Navigating: ObservableObject {
     
     // MARK: - Methods
 
-    /// Pushes a new `Coordinator` onto the navigation stack.
+    /// Pushes a new `Coordinator` onto the `NavigationStack`.
     /// - Parameter coordinator: The `Coordinator` instance to be added.
     func pushCoordinator<R: Routable>(_ coordinator: Coordinator<R>)
     
-    /// Pushes a new route onto the navigation stack.
-    /// - Parameter route: The `Routable` instance representing the destination.
+    /// Pushes a new `Route` onto the `NavigationStack`.
+    /// - Parameter route: The `Route` to push.
     func push<Route: Routable>(_ route: Route)
 
     /// Pops the top-most view from the navigation stack.
     func pop()
 
-    /// Pops all views of the current coordinator except the root view.
-    /// - This effectively only leaves the root of the current coordinator's navigation path.
+    /// Pops all views of the current `Coordinator`.
+    /// - This effectively displays the current coordinator's `initialRoute`.
     func popToRoot()
 }
 
@@ -46,12 +46,9 @@ public protocol Navigating: ObservableObject {
 
 public extension Navigating {
     
-    /// Pushes a new `Coordinator` onto the navigation stack.
-    /// - Ensures the coordinator has its initial route set and assigns it a parent if needed.
-    /// - Calls `pushCoordinator(_:)` on the parent to maintain hierarchy.
+    /// Default implementation of `pushCoordinator(_:)`, adding a coordinator to the `NavigationPath`.
     /// - Parameter coordinator: The `Coordinator` to push.
     func pushCoordinator<Route: Routable>(_ coordinator: Coordinator<Route>) {
-        print("pushing coordinator: \(coordinator)")
 		guard let root else {
 			print("Root is nil, cannot push coordinator")
 			return
@@ -71,23 +68,25 @@ public extension Navigating {
 		path.append(route)
     }
     
-    /// Default implementation of `pop()`, removing the last item from the navigation path.
+    /// Default implementation of `pop()`, removing the last item from the `NavigationPath`.
     func pop() {
 		guard let root else {
 			print("Root is nil, cannot pop route")
 			return
 		}
         root.pop()
+        guard path.count >= 1 else { return }
 		path.removeLast()
     }
     
-    /// Default implementation of `popToRoot()`, removing all items from the navigation path.
+    /// Default implementation of `popToRoot()`, removing all items from the `NavigationPath`.
     func popToRoot() {
 		guard let root else {
 			print("Root is nil, cannot pop to root")
 			return
 		}
 		root.popLast(path.count)
+        path = NavigationPath()
     }
 }
 
@@ -99,6 +98,5 @@ private extension Navigating {
     /// - Parameter k: The number of items to remove (default is 1).
     func popLast(_ k: Int = 1) {
         path.removeLast(k)
-        root?.popLast(k)
     }
 }
