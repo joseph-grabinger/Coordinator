@@ -11,7 +11,7 @@ import SwiftUI
 
 /// A SwiftUI view that serves as the root coordinator, managing navigation within the app.
 /// - Note: This view integrates with a `Navigating`-conforming coordinator to handle navigation.
-public struct RootCoordinatorView<C, Route>: View where C: Coordinator<Route>, Route: Routable {
+public struct RootCoordinatorView<C, Route>: View where C: Coordinating, Route: Routable, C.Route == Route {
 
     // MARK: - Private Properties
     

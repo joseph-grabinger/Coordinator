@@ -8,17 +8,12 @@
 import SwiftUI
 
 struct View1: View {
-    
-	@EnvironmentObject private var rootCoordinator: RootCoordinator<Screen>
+    @ObservedObject var coordinator: HomeCoordinator
 
     var body: some View {
         List {
             Button("Push") {
-				rootCoordinator.children[0].push(Screen.view2)
-//				coordinator.push(HomeCoordinator.Screen.view2)
-            }
-            Button("Pop") {
-                rootCoordinator.children[0].pop()
+                coordinator.push(Screen.view2(coordintor: coordinator))
             }
         }
         .navigationTitle("View 1")
@@ -26,25 +21,20 @@ struct View1: View {
 }
 
 struct NewFlowView1: View {
-    
-	@EnvironmentObject private var rootCoordinator: RootCoordinator<Screen>
+    @ObservedObject var coordinator: NewFlowCoordinator
 
     var body: some View {
         List {
             Button("Push") {
-				rootCoordinator.children[1].push(NewScreen.view2)
+                coordinator.push(NewScreen.view2)
             }.disabled(true)
             Button("Pop") {
-				rootCoordinator.children[1].pop()
+                coordinator.pop()
             }
             Button("Pop to Root") {
-				rootCoordinator.children[1].popToRoot()
+                coordinator.popToRoot()
 			}
         }
         .navigationTitle("View 1")
     }
 }
-
-//#Preview {
-//    View1()
-//}

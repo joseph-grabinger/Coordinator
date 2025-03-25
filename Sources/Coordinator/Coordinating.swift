@@ -1,5 +1,5 @@
 //
-//  Navigating.swift
+//  Coordinating.swift
 //  Coordinator
 //
 //  Created by Joseph Grabinger on 22.02.25.
@@ -10,7 +10,7 @@ import SwiftUI
 /// A protocol defining navigation behaviors for managing a SwiftUI `NavigationStack`.
 /// - This protocol enables hierarchical navigation using coordinators and routes.
 @MainActor
-public protocol Navigating: ObservableObject {
+public protocol Coordinating: ObservableObject, Identifiable, Hashable {
     associatedtype Route: Routable
     
     // MARK: - Properties
@@ -19,7 +19,7 @@ public protocol Navigating: ObservableObject {
     var initialRoute: Route { get }
     
     /// A weak reference to the root navigator, if available.
-	var root: (any Navigating)? { get }
+	var root: (any Coordinating)? { get set }
 
     /// The navigation path representing the current state of navigation.
     var path: NavigationPath { get set }
@@ -28,7 +28,7 @@ public protocol Navigating: ObservableObject {
 
     /// Pushes a new `Coordinator` onto the `NavigationStack`.
     /// - Parameter coordinator: The `Coordinator` instance to be added.
-    func pushCoordinator<R: Routable>(_ coordinator: Coordinator<R>)
+    func pushCoordinator(_ coordinator: any Coordinating)
     
     /// Pushes a new `Route` onto the `NavigationStack`.
     /// - Parameter route: The `Route` to push.
@@ -42,13 +42,21 @@ public protocol Navigating: ObservableObject {
     func popToRoot()
 }
 
+// MARK: - Hashable Conformance
+
+public extension Coordinating {
+    nonisolated func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
+
 // MARK: - Default Implementations
 
-public extension Navigating {
+public extension Coordinating {
     
     /// Default implementation of `pushCoordinator(_:)`, adding a coordinator to the `NavigationPath`.
     /// - Parameter coordinator: The `Coordinator` to push.
-    func pushCoordinator<Route: Routable>(_ coordinator: Coordinator<Route>) {
+    func pushCoordinator(_ coordinator: any Coordinating) {
 		guard let root else {
 			print("Root is nil, cannot push coordinator")
 			return
@@ -92,7 +100,7 @@ public extension Navigating {
 
 // MARK: - Private Helper
 
-private extension Navigating {
+private extension Coordinating {
     
     /// Pops the last `k` items from the navigation path.
     /// - Parameter k: The number of items to remove (default is 1).
