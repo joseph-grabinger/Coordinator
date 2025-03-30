@@ -30,9 +30,10 @@ public struct RootCoordinatorView<C, Route>: View where C: Coordinating, Route: 
     public var body: some View {
         NavigationStack(path: $rootCoordinator.path) {
 			rootCoordinator.initialRoute
-                .navigationDestination(for: AnyRoutable.self) { route in
-					AnyView(route.route)
+                .navigationDestination(for: Route.self) { route in
+					route
                 }
+                .modifier(ChildDestinationsViewModifier(children: rootCoordinator.children))
         }
         .environmentObject(rootCoordinator)
     }
