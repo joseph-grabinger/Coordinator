@@ -25,7 +25,7 @@ public final class RootCoordinator<Route: Routable>: Coordinating {
 	// MARK: - Internal Properties
 
 	/// A collection of child coordinators managed by this coordinator.
-    var children: [any Coordinating]
+    @Published var children: [any Coordinating]
 
 	// MARK: - Initialization
 
@@ -43,13 +43,13 @@ public final class RootCoordinator<Route: Routable>: Coordinating {
 	/// - Parameter coordinator: The `Coordinator` instance to be added.
 	public func pushCoordinator(_ coordinator: any Coordinating) {
 		children.append(coordinator)
-		push(coordinator.initialRoute)
+        push(coordinator.initialRoute)
 	}
 
 	/// Pushes a new route onto the navigation stack.
 	/// - Parameter route: The `Routable` instance representing the destination.
 	public func push<R: Routable>(_ route: R) {
-		path.append(AnyRoutable(route: route))
+		path.append(route)
 	}
 
 	/// Pops the top-most view from the navigation stack.
