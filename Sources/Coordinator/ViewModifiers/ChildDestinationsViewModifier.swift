@@ -29,7 +29,7 @@ struct ChildDestinationsViewModifier: ViewModifier {
     private func applyNavigationDestinations(to content: some View, from children: [any Coordinating]) -> some View {
         if let firstChild = children.first {
             AnyView(applyNavigationDestination(for: firstChild, to: content))
-                .modifier(ChildDestinationsViewModifier(children: Array(children.dropFirst())))
+                .navigationDestinations(for: Array(children.dropFirst()))
         } else {
             content
         }
@@ -47,3 +47,15 @@ struct ChildDestinationsViewModifier: ViewModifier {
         }
     }
 }
+
+// MARK: - View+Extensions
+
+extension View {
+    /// Sets the navigation destinations for the given child coordinators.
+    /// - Parameter children: A list of child coordinators for which to set the navigation destinations.
+    /// - Returns: A view with applied navigation destinations from the provided child coordinators.
+    func navigationDestinations(for children: [any Coordinating]) -> some View {
+        modifier(ChildDestinationsViewModifier(children: children))
+    }
+}
+

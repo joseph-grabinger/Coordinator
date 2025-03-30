@@ -33,7 +33,7 @@ public struct RootCoordinatorView<C, Route>: View where C: Coordinating, Route: 
                 .navigationDestination(for: Route.self) { route in
 					route
                 }
-                .modifier(ChildDestinationsViewModifier(children: rootCoordinator.children))
+                .navigationDestinations(for: rootCoordinator.children)
         }
         .environmentObject(rootCoordinator)
     }
