@@ -8,22 +8,20 @@
 import SwiftUI
 
 struct NewFlowRootView: View {
-//    @EnvironmentObject private var coordinator: HomeCoordinator
-
-	@EnvironmentObject private var rootCoordinator: RootCoordinator<Screen>
-
+    @ObservedObject var coordinator: NewFlowCoordinator
+    
     var body: some View {
         List {
             Text("Hello from new flow root")
             
             Button("Push") {
-				rootCoordinator.children[1].push(NewScreen.view1)
+                coordinator.push(NewScreen.view1(coordintor: coordinator))
             }
             Button("Pop") {
-				rootCoordinator.children[1].pop()
+                coordinator.pop()
             }
             Button("Po to Root") {
-                rootCoordinator.children[1].popToRoot()
+                coordinator.popToRoot()
             }
         }
         .navigationTitle("NewFlow Root")
