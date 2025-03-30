@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-class NewFlowCoordinator: Coordinator {
-    
+class NewFlowCoordinator: Coordinator<NewScreen> {
+
     init() {
         print("init newflowCoord")
-        super.init(initialRoute: NewFlowScreen.newFlowRoot)
+		super.init(initialRoute: NewScreen.newFlowRoot)
     }
     
     deinit {
@@ -19,20 +19,22 @@ class NewFlowCoordinator: Coordinator {
     }
 }
 
-enum NewFlowScreen: Routable {
-    case view1
-    case view2
-    case newFlowRoot
+enum NewScreen: Routable {
+	nonisolated var id: UUID { UUID() }
 
-    @ViewBuilder
-    func buildView() -> some View {
-        switch self {
-        case .view1:
-            NewFlowView1()
-        case .view2:
-            Text("NewFlow2")
-        case .newFlowRoot:
-            NewFlowRootView()
-        }
-    }
+	case view1
+	case view2
+	case newFlowRoot
+
+	var body: some View {
+		switch self {
+		case .view1:
+			NewFlowView1()
+		case .view2:
+			Text("NewFlow2")
+		case .newFlowRoot:
+			NewFlowRootView()
+		}
+	}
 }
+

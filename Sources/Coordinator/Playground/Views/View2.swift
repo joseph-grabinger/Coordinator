@@ -10,21 +10,22 @@ import SwiftUI
 
 struct View2: View {
     
-    @EnvironmentObject private var coordinator: HomeCoordinator
-        
+	@EnvironmentObject private var rootCoordinator: RootCoordinator<Screen>
+
     var body: some View {
         List {
             Button("Push") {}
                 .disabled(true)
             Button("Pop") {
-                coordinator.pop()
+				rootCoordinator.children[0].pop()
             }
             Button("Pop to Root") {
-                coordinator.popToRoot()
+				rootCoordinator.children[0].popToRoot()
             }
-            
+
             Button("New Flow") {
-                coordinator.pushCoordinator(coordinator.flowCoordinator)
+				rootCoordinator.children[0].pushCoordinator(NewFlowCoordinator())
+//                coordinator.pushCoordinator(coordinator.flowCoordinator)
             }
         }
         .navigationTitle("View 2")
