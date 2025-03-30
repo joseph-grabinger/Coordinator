@@ -21,7 +21,6 @@ struct View2: View {
             Button("Pop to Root") {
                 coordinator.popToRoot()
             }
-
             Button("New Flow") {
                 coordinator.pushCoordinator(NewFlowCoordinator())
             }
