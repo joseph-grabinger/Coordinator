@@ -26,5 +26,8 @@ struct View2: View {
             }
         }
         .navigationTitle("View 2")
+        .navigationDestination(for: NewScreen.self) { route in
+            route
+        }
     }
 }

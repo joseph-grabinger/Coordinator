@@ -5,8 +5,6 @@
 //  Created by Joseph Grabinger on 22.02.25.
 //
 
-
-
 import SwiftUI
 
 /// A SwiftUI view that serves as the root coordinator, managing navigation within the app.
@@ -33,9 +31,7 @@ public struct RootCoordinatorView<C, Route>: View where C: Coordinating, Route: 
                 .navigationDestination(for: Route.self) { route in
 					route
                 }
-                .navigationDestinations(for: rootCoordinator.children)
         }
-        .environmentObject(rootCoordinator)
     }
 }
 
