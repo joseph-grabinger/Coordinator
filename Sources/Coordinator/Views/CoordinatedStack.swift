@@ -1,5 +1,5 @@
 //
-//  RootCoordinatorView.swift
+//  CoordinatedStack.swift
 //  Coordinator
 //
 //  Created by Joseph Grabinger on 22.02.25.
@@ -8,13 +8,13 @@
 import SwiftUI
 
 /// A SwiftUI view that serves as the root coordinator, managing navigation within the app.
-/// - Note: This view integrates with a `Navigating`-conforming coordinator to handle navigation.
-public struct RootCoordinatorView<Coordinator: Coordinating>: View {
+/// - Note: This view integrates with a `Coordinating`-conforming coordinator to handle navigation.
+public struct CoordinatedStack<Coordinator: StackCoordinating>: View {
 
     // MARK: - Private Properties
     
     /// The root coordinator responsible for managing the `NavigationPath` that's bound to the `NavigationStack`.
-    @StateObject private var rootCoordinator: RootCoordinator<Coordinator.Route>
+    @StateObject private var rootCoordinator: RootStackCoordinator<Coordinator.Route>
     
     /// The initial coordinator on the stack.
     @ObservedObject private var coordinator: Coordinator
@@ -25,7 +25,7 @@ public struct RootCoordinatorView<Coordinator: Coordinating>: View {
     /// - Parameters:
     ///   - coordinator: The coordinator responsible for managing navigation.
     public init(for coordinator: Coordinator) {
-		_rootCoordinator = StateObject(wrappedValue: RootCoordinator(coordinator: coordinator))
+		_rootCoordinator = StateObject(wrappedValue: RootStackCoordinator(coordinator: coordinator))
         _coordinator = ObservedObject(wrappedValue: coordinator)
     }
     

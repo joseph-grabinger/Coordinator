@@ -16,7 +16,7 @@ struct CoordinatorPlayground: View {
     // MARK: - Body
     
     var body: some View {
-        RootCoordinatorView(for: coordinator)
+        CoordinatedStack(for: coordinator)
     }
 }
 
