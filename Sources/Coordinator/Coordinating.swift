@@ -24,7 +24,7 @@ public protocol Coordinating: ObservableObject, Identifiable, Hashable {
     /// The navigation path representing the current state of navigation.
     var path: NavigationPath { get set }
     
-    /// The route which is currently presented as a modal, if any.
+    /// The route which is currently presented as a sheet, if any.
     var sheet: Route? { get set }
     
     /// The route which is currently presented as a full screen cover, if any.
@@ -36,11 +36,11 @@ public protocol Coordinating: ObservableObject, Identifiable, Hashable {
     /// - Parameter route: The `Route` to present modally.
     func present<Route>(
         _ route: Route,
-        as presentationStyle: PresentationStyle
+        as presentationStyle: ModalPresentationStyle
     )  where Route == Self.Route
     
-    /// Dismisses the currently presented view using the given `PresentationStyle`.
-    func dismiss(_ presentationStyle: PresentationStyle)
+    /// Dismisses the `View` currently presented using the given `PresentationStyle`.
+    func dismiss(_ presentationStyle: ModalPresentationStyle)
 
     /// Pushes a new `Coordinator` onto the `NavigationStack`.
     /// - Parameter coordinator: The `Coordinator` instance to be added.
@@ -70,25 +70,27 @@ public extension Coordinating {
 
 public extension Coordinating {
     
-    /// Default implementation of `present(_:)` presenting a route with the given `PresentationStyle`.
-    /// - Parameter route: The `Routable` instance to present.
+    /// Default implementation of `present(_:)`, presenting a route modally with the given `ModalPresentationStyle`.
+    /// - Parameters:
+    ///   - route: The `Routable` instance to present.
+    ///   - presentationStyle: The `ModalPresentationStyle` to present the route with.
     func present<Route>(
         _ route: Route,
-        as presentationStyle: PresentationStyle
+        as presentationStyle: ModalPresentationStyle
     ) where Route == Self.Route {
         switch presentationStyle {
-        case .modal:
+        case .sheet:
             sheet = route
         case .fullScreenCover:
             fullScreenCover = route
         }
     }
     
-    /// Default implementation of `dismiss(_:)`, dismissing the current route with the given `PresentationStyle`.
-    /// - Parameter presentationStyle: The last with the `PresentationStyle` to dismiss.
-    func dismiss(_ presentationStyle: PresentationStyle) {
+    /// Default implementation of `dismiss(_:)`, dismissing the current route with the given `ModalPresentationStyle`.
+    /// - Parameter presentationStyle: The `View` with the `ModalPresentationStyle` to dismiss.
+    func dismiss(_ presentationStyle: ModalPresentationStyle) {
         switch presentationStyle {
-        case .modal:
+        case .sheet:
             sheet = nil
         case .fullScreenCover:
             fullScreenCover = nil

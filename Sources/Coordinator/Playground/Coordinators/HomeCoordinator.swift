@@ -26,6 +26,7 @@ enum Screen: Routable {
 	case view2(coordinator: HomeCoordinator)
     case sheet
     case cover
+    case sheetFlow
 
 	var body: some View {
 		switch self {
@@ -37,6 +38,8 @@ enum Screen: Routable {
             Text("Sheet")
         case .cover:
             FullScreenView()
+        case .sheetFlow:
+            RootCoordinatorView(for: NewFlowCoordinator())
 		}
 	}
 }

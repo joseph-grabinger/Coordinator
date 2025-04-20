@@ -16,7 +16,10 @@ struct View1: View {
                 coordinator.push(Screen.view2(coordinator: coordinator))
             }
             Button("Sheet") {
-                coordinator.present(Screen.sheet, as: .modal)
+                coordinator.present(Screen.sheet, as: .sheet)
+            }
+            Button("SheetFlow") {
+                coordinator.present(Screen.sheetFlow, as: .sheet)
             }
         }
         .navigationTitle("View 1")
