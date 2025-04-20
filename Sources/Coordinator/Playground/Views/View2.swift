@@ -24,6 +24,9 @@ struct View2: View {
             Button("New Flow") {
                 coordinator.pushCoordinator(NewFlowCoordinator())
             }
+            Button("Full Screen Cover") {
+                coordinator.present(Screen.cover, as: .fullScreenCover)
+            }
         }
         .navigationTitle("View 2")
         .navigationDestination(for: NewScreen.self) { route in

@@ -13,7 +13,10 @@ struct View1: View {
     var body: some View {
         List {
             Button("Push") {
-                coordinator.push(Screen.view2(coordintor: coordinator))
+                coordinator.push(Screen.view2(coordinator: coordinator))
+            }
+            Button("Sheet") {
+                coordinator.present(Screen.sheet, as: .modal)
             }
         }
         .navigationTitle("View 1")

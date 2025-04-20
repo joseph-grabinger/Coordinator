@@ -15,12 +15,18 @@ public struct RootCoordinatorView<C, Route>: View where C: Coordinating, Route: 
     
     /// The root coordinator responsible for managing the `NavigationPath` that's bound to the `NavigationStack`.
 	@StateObject private var rootCoordinator: RootCoordinator<Route>
+    
+    /// The initial coordinator on the stack.
+    @ObservedObject private var coordinator: C
+    
+    // MARK: - Initialization
 
     /// Creates an instance of `RootCoordinatorView`.
     /// - Parameters:
     ///   - coordinator: The coordinator responsible for managing navigation.
     public init(for coordinator: C) {
 		_rootCoordinator = StateObject(wrappedValue: RootCoordinator(coordinator: coordinator))
+        _coordinator = ObservedObject(wrappedValue: coordinator)
     }
     
     // MARK: - Body
@@ -31,6 +37,9 @@ public struct RootCoordinatorView<C, Route>: View where C: Coordinating, Route: 
                 .navigationDestination(for: Route.self) { route in
 					route
                 }
+                .sheet(item: $coordinator.sheet, onDismiss: { coordinator.dismiss(.modal) }) { $0 }
+                .fullScreenCover(item: $coordinator.fullScreenCover, onDismiss: { coordinator.dismiss(.fullScreenCover) }) { $0 }
+
         }
     }
 }

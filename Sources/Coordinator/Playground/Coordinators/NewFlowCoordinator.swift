@@ -11,6 +11,8 @@ class NewFlowCoordinator: Coordinating {
     lazy var initialRoute = NewScreen.newFlowRoot(coordintor: self)
     var path = NavigationPath()
     var root: (any Coordinating)?
+    var sheet: NewScreen?
+    var fullScreenCover: NewScreen?
     
     static nonisolated func == (lhs: NewFlowCoordinator, rhs: NewFlowCoordinator) -> Bool {
         lhs.id == rhs.id
