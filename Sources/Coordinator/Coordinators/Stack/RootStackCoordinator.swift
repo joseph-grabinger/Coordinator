@@ -39,6 +39,7 @@ public final class RootStackCoordinator<Route: Routable>: StackCoordinating {
 	public init<C: StackCoordinating>(coordinator: C) where C.Route == Route {
 		self.initialRoute = coordinator.initialRoute
 		self.children = [coordinator]
+        self.path = coordinator.path
 		coordinator.root = self
 	}
 
