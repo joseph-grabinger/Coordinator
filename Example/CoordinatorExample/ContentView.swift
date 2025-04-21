@@ -1,14 +1,14 @@
 //
-//  CoordinatorPlayground.swift
-//  NavigationCoordinator
+//  ContentView.swift
+//  CoordinatorExample
 //
-//  Created by Joseph Grabinger on 20.02.25.
+//  Created by Joseph Grabinger on 21.04.25.
 //
 
 import SwiftUI
+import Coordinator
 
-/// A demo `View` showcasing the usage of the `NavigationCoordinator` package.
-struct CoordinatorPlayground: View {
+struct ContentView: View {
     
     /// The custom coordinator instance.
     @StateObject private var coordinator = HomeCoordinator()
@@ -23,5 +23,5 @@ struct CoordinatorPlayground: View {
 // MARK: - Preview
 
 #Preview {
-    CoordinatorPlayground()
+    ContentView()
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Coordinator
 
 class NewFlowCoordinator: Coordinating {
     lazy var initialRoute = NewScreen.newFlowRoot(coordintor: self)

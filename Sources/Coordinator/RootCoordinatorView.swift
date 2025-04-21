@@ -46,9 +46,3 @@ public struct RootCoordinatorView<Coordinator: Coordinating>: View {
         }
     }
 }
-
-// MARK: - Preview
-
-#Preview {
-    CoordinatorPlayground()
-}
