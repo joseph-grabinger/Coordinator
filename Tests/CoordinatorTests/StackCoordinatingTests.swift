@@ -16,7 +16,7 @@ import SwiftUI
 
     // - MARK: Initialization Tests
     
-    @Test func testInit() async {
+    @Test func testInit() {
         // GIVEN: An initialized coordinator (SUT).
         let sut = MockStackCoordinator()
         
@@ -29,7 +29,7 @@ import SwiftUI
         #expect(sut.root?.initialRoute.hashValue == root.initialRoute.hashValue, "Initial routes are expected to match")
     }
     
-    @Test func testInitPath() async {
+    @Test func testInitPath() {
         // GIVEN: An initialized coordinator (SUT) with an initial path.
         let path = NavigationPath([MockRoute.route1, MockRoute.route2])
         let sut = MockStackCoordinator(path: path)
@@ -42,10 +42,40 @@ import SwiftUI
         #expect(sut.root?.initialRoute.hashValue == root.initialRoute.hashValue, "Initial routes are expected to match")
     }
     
+    // - MARK: Push Coordinator Tests
+
+    @Test func testPushCoordinatorSuccess() {
+        // GIVEN: An initialized coordinator (SUT) & root coordinator.
+        let sut = MockStackCoordinator()
+        let root = RootStackCoordinator(coordinator: sut)
+
+        // WHEN: A child coordinator is pushed.
+        let child = MockStackCoordinator(initialRoute: .route5)
+        sut.pushCoordinator(child)
+        
+        // THEN: The child's initial route is added to the root's path.
+        #expect(root.path.count == 1, "Root's path is expected to contain one element")
+        
+        // AND: The child's root is non-nil.
+        #expect(child.root != nil, "Child's root is expected to be non-nil")
+    }
+    
+    @Test func testPushCoordinatorEror() {
+        // GIVEN: An initialized coordinator (SUT) whose root is nil.
+        let sut = MockStackCoordinator()
+
+        // WHEN: A child coordinator is pushed.
+        let child = MockStackCoordinator(initialRoute: .route5)
+        sut.pushCoordinator(child)
+        
+        // THEN: The child's root is still nil.
+        #expect(child.root == nil, "Child's root is expected to be nil")
+    }
+    
     // - MARK: Push Route Tests
     
-    @Test func testPushRouteSuccess() async {
-        // GIVEN: An initialized coordinator (sut) & root coordinator.
+    @Test func testPushRouteSuccess() {
+        // GIVEN: An initialized coordinator (SUT) & root coordinator.
         let sut = MockStackCoordinator()
         let root = RootStackCoordinator(coordinator: sut)
         
@@ -60,10 +90,9 @@ import SwiftUI
         #expect(root.path.count == 1, "Root path is expected to have one element")
     }
     
-    @Test func testPushRouteError() async {
-        // GIVEN: An initialized coordinator (sut) whose root is nil.
+    @Test func testPushRouteError() {
+        // GIVEN: An initialized coordinator (SUT) whose root is nil.
         let sut = MockStackCoordinator()
-        #expect(sut.root == nil)
         let oldPath = sut.path
         
         // WHEN: A route is pushed.
@@ -75,8 +104,8 @@ import SwiftUI
     
     // - MARK: Pop Route Tests
     
-    @Test func testPopRouteSuccess() async {
-        // GIVEN: An initialized coordinator (sut) & root coordinator.
+    @Test func testPopRouteSuccess() {
+        // GIVEN: An initialized coordinator (SUT) & root coordinator.
         let path = NavigationPath([MockRoute.route1, MockRoute.route2])
         let sut = MockStackCoordinator(path: path)
         let root = RootStackCoordinator(coordinator: sut)
@@ -94,8 +123,8 @@ import SwiftUI
         #expect(root.path == sut.path, "Root path is expected to match the SUT's path")
     }
     
-    @Test func testPopRouteErrorEmptyPath() async {
-        // GIVEN: An initialized coordinator (sut) & root coordinator without an initial path.
+    @Test func testPopRouteErrorEmptyPath() {
+        // GIVEN: An initialized coordinator (SUT) & root coordinator without an initial path.
         let sut = MockStackCoordinator()
         let root = RootStackCoordinator(coordinator: sut)
         
@@ -107,8 +136,8 @@ import SwiftUI
         #expect(root.path.isEmpty, "Root path is expected to be empty")
     }
     
-    @Test func testPopRouteErrorNilRoot() async {
-        // GIVEN: An initialized coordinator (sut) with an initial path.
+    @Test func testPopRouteErrorNilRoot() {
+        // GIVEN: An initialized coordinator (SUT) with an initial path.
         let path = NavigationPath([MockRoute.route1, MockRoute.route2])
         let sut = MockStackCoordinator(path: path)
         
@@ -121,8 +150,8 @@ import SwiftUI
     
     // - MARK: PopToRoot Tests
     
-    @Test func testPopToRootSuccessNonEmptyPath() async {
-        // GIVEN: An initialized coordinator (sut) & root coordinator with an initial path.
+    @Test func testPopToRootSuccessNonEmptyPath() {
+        // GIVEN: An initialized coordinator (SUT) & root coordinator with an initial path.
         let path = NavigationPath([MockRoute.route1, MockRoute.route2])
         let sut = MockStackCoordinator(path: path)
         let root = RootStackCoordinator(coordinator: sut)
@@ -137,8 +166,8 @@ import SwiftUI
         #expect(sut.path == root.path, "The SUT path and root path are expected to be equal")
     }
     
-    @Test func testPopToRootSuccessEmptyPath() async {
-        // GIVEN: An initialized coordinator (sut) & root coordinator without an initial path.
+    @Test func testPopToRootSuccessEmptyPath() {
+        // GIVEN: An initialized coordinator (SUT) & root coordinator without an initial path.
         let sut = MockStackCoordinator()
         let root = RootStackCoordinator(coordinator: sut)
         
@@ -152,8 +181,8 @@ import SwiftUI
         #expect(sut.path == root.path, "The SUT path and root path are expected to be equal")
     }
     
-    @Test func testPopToRootError() async {
-        // GIVEN: An initialized coordinator with an initial path.
+    @Test func testPopToRootError() {
+        // GIVEN: An initialized coordinator (SUT) with an initial path.
         let path = NavigationPath([MockRoute.route1, MockRoute.route2])
         let sut = MockStackCoordinator(path: path)
         
@@ -168,18 +197,24 @@ import SwiftUI
 // - MARK: MockStackCoordinator
 
 final class MockStackCoordinator: StackCoordinating {
-    lazy var initialRoute = MockRoute.route1
+        
+    let initialRoute: MockRoute
     
     var path: NavigationPath
     var root: (any StackCoordinating)?
     
-    @Published var sheet: MockRoute?
-    @Published var fullScreenCover: MockRoute?
+    var sheet: MockRoute?
+    var fullScreenCover: MockRoute?
     
-    init(path: NavigationPath = NavigationPath()) {
+    /// Initializes a `MockStackCoordinator`.
+    /// - Parameters:
+    ///   - initialRoute: The cooridnator's initial route.
+    ///   - path: The cooridnator's initial path.
+    init(initialRoute: MockRoute = .route1, path: NavigationPath = NavigationPath()) {
+        self.initialRoute = initialRoute
         self.path = path
     }
-    
+        
     static nonisolated func == (lhs: MockStackCoordinator, rhs: MockStackCoordinator) -> Bool {
         lhs.id == rhs.id
     }
