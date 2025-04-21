@@ -207,8 +207,8 @@ final class MockStackCoordinator: StackCoordinating {
     
     /// Initializes a `MockStackCoordinator`.
     /// - Parameters:
-    ///   - initialRoute: The cooridnator's initial route.
-    ///   - path: The cooridnator's initial path.
+    ///   - initialRoute: The coordinator's initial route.
+    ///   - path: The coordinator's initial path.
     init(initialRoute: MockRoute = .route1, path: NavigationPath = NavigationPath()) {
         self.initialRoute = initialRoute
         self.path = path
