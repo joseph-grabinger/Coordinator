@@ -59,7 +59,7 @@ import SwiftUI
         #expect(child.root != nil, "Child's root is expected to be non-nil")
     }
     
-    @Test func testPushCoordinatorEror() {
+    @Test func testPushCoordinatorError() {
         // GIVEN: An initialized coordinator (SUT) whose root is nil.
         let sut = MockStackCoordinator()
 
