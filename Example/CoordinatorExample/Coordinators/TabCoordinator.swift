@@ -31,7 +31,7 @@ enum Tab: TabRoutable {
         case .tab2(let coordinator):
             NavigationStack {
                 Button("Change Tab") {
-                    coordinator.selectedTab = .tab1
+                    coordinator.select(.tab1)
                 }
                 .navigationTitle("Test Tab")
             }

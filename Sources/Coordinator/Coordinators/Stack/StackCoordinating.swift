@@ -8,9 +8,11 @@
 import SwiftUI
 
 /// A protocol defining the requrements for coordiantors that manage a `NavigationStack`.
-/// - This protocol enables hierarchical navigation using coordinators and routes.
+///
+/// This protocol enables hierarchical navigation using coordinators and routes.
 @MainActor
 public protocol StackCoordinating: ObservableObject, Identifiable, Hashable {
+    /// The type representing a route.
     associatedtype Route: Routable
     
     // MARK: - Properties
