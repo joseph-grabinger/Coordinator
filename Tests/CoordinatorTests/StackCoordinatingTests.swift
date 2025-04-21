@@ -6,7 +6,6 @@
 //
 
 import Testing
-import Foundation
 import SwiftUI
 
 @testable import Coordinator
