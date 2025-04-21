@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// A SwiftUI view that serves as the root coordinator, managing navigation within the app.
-/// - Note: This view integrates with a `Coordinating`-conforming coordinator to handle navigation.
+/// - Note: This view integrates with a `StackCoordinating`-conforming coordinator to handle navigation.
 public struct CoordinatedStack<Coordinator: StackCoordinating>: View {
 
     // MARK: - Private Properties
