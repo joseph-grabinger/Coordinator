@@ -8,7 +8,7 @@
 import SwiftUI
 import Coordinator
 
-class HomeCoordinator: StackCoordinating {
+class HomeCoordinator: StackCoordinating, ModalCoordinating {
     lazy var initialRoute = Screen.view1(coordinator: self)
     var path = NavigationPath()
     var root: (any StackCoordinating)?
@@ -18,6 +18,10 @@ class HomeCoordinator: StackCoordinating {
     static nonisolated func == (lhs: HomeCoordinator, rhs: HomeCoordinator) -> Bool {
         lhs.id == rhs.id
     }
+    
+//    nonisolated func hash(into hasher: inout Hasher) {
+//        hasher.combine(id)
+//    }
 }
 
 enum Screen: Routable {
