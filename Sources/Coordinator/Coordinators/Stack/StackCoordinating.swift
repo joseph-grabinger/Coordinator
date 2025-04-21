@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// A protocol defining the requrements for coordiantors that manage a `NavigationStack`.
+/// A protocol defining the requirements for coordinators that manage a `NavigationStack`.
 ///
 /// This protocol enables hierarchical navigation using coordinators and routes.
 @MainActor
