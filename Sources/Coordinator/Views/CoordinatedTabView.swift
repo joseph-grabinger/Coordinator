@@ -7,8 +7,12 @@
 
 import SwiftUI
 
+/// A view that displays a tab-based interface coordinated by a `TabViewCoordinating` instance.
+/// - Note: This `View` integrates with a `TabViewCoordinating`-conforming coordinator to handle navigation.
 public struct CoordinatedTabView<Coordinator: TabViewCoordinating>: View {
     
+    // MARK: - Private Properties
+
     /// The coordinator of the tab view.
     @ObservedObject private var coordinator: Coordinator
     
