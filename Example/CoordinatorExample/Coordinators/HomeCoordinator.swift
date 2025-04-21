@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Coordinator
 
 class HomeCoordinator: StackCoordinating {
     lazy var initialRoute = Screen.view1(coordinator: self)

@@ -46,9 +46,3 @@ public struct CoordinatedStack<Coordinator: StackCoordinating>: View {
         }
     }
 }
-
-// MARK: - Preview
-
-#Preview {
-    CoordinatorPlayground()
-}
