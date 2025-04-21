@@ -11,23 +11,29 @@ import Coordinator
 class TabCoordinator: TabViewCoordinating {
     @Published var selectedTab = Tab.tab1
     
-    let tabs: [Tab] = [ .tab1, .tab2 ]
+    lazy var tabs: [Tab] = [ .tab1, .tab2(coordinator: self) ]
+    
+    static nonisolated func == (lhs: TabCoordinator, rhs: TabCoordinator) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
 enum Tab: TabRoutable {
     nonisolated var id: UUID { UUID() }
 
     case tab1
-    case tab2
+    case tab2(coordinator: TabCoordinator)
     
     var body: some View {
         switch self {
         case .tab1:
             CoordinatedStack(for: HomeCoordinator())
-        case .tab2:
+        case .tab2(let coordinator):
             NavigationStack {
-                Text("TestView")
-                    .navigationTitle("Test Tab")
+                Button("Change Tab") {
+                    coordinator.selectedTab = .tab1
+                }
+                .navigationTitle("Test Tab")
             }
         }
     }

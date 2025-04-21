@@ -8,10 +8,18 @@
 import SwiftUI
 
 @MainActor
-public protocol TabViewCoordinating: ObservableObject {
+public protocol TabViewCoordinating: ObservableObject, Identifiable, Hashable {
     associatedtype Route: TabRoutable
     
     var selectedTab: Route { get set }
     
     var tabs: [Route] { get }
+}
+
+// MARK: - Hashable Conformance
+
+public extension TabViewCoordinating {
+    nonisolated func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
