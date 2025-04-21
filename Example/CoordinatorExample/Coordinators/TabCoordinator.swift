@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Coordinator
 
 class TabCoordinator: TabViewCoordinating {
     @Published var selectedTab = Tab.tab1
@@ -22,12 +23,11 @@ enum Tab: TabRoutable {
     var body: some View {
         switch self {
         case .tab1:
-            HomeTab()
-//            CoordinatedStack(for: HomeCoordinator())
-//                .navigationTitle("HomeView")
+            CoordinatedStack(for: HomeCoordinator())
         case .tab2:
             NavigationStack {
                 Text("TestView")
+                    .navigationTitle("Test Tab")
             }
         }
     }

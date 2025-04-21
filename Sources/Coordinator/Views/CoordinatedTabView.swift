@@ -25,12 +25,11 @@ public struct CoordinatedTabView<Coordinator: TabViewCoordinating>: View {
 
     public var body: some View {
         TabView(selection: $coordinator.selectedTab) {
-            ForEach(coordinator.tabs, id: \.id) { tab in
+            ForEach(coordinator.tabs, id: \.self) { tab in
                 tab
                     .tabItem { tab.label }
                     .tag(tab)
             }
         }
-//        .id(coordinator.tabs.count)
     }
 }
