@@ -61,6 +61,10 @@ public final class RootStackCoordinator<Route: Routable>: StackCoordinating {
 	/// Pops the top-most view from the navigation stack.
 	/// - This removes the last added route from the navigation path.
 	public func pop() {
+        guard !path.isEmpty else {
+            print("Root path is empty, cannot pop route")
+            return
+        }
 		path.removeLast()
 	}
 
@@ -73,6 +77,10 @@ public final class RootStackCoordinator<Route: Routable>: StackCoordinating {
 	/// Pops the last `k` views from the navigation stack.
 	/// - Parameter k: The number of views to pop, defaulting to `1`.
 	func popLast(_ k: Int = 1) {
+        guard path.count >= k else {
+            print("Root path contains \(path.count) elements, cannot pop \(k) routes")
+            return
+        }
 		path.removeLast(k)
 	}
 }
