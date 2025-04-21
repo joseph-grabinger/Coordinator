@@ -7,10 +7,12 @@
 
 import SwiftUI
 
-/// A protocol defining navigation behaviors for managing a SwiftUI `NavigationStack`.
-/// - This protocol enables hierarchical navigation using coordinators and routes.
+/// A protocol defining the requirements for coordinators that manage a `NavigationStack`.
+///
+/// This protocol enables hierarchical navigation using coordinators and routes.
 @MainActor
-public protocol Coordinating: ObservableObject, Identifiable, Hashable {
+public protocol StackCoordinating: ObservableObject, Identifiable, Hashable {
+    /// The type representing a route.
     associatedtype Route: Routable
     
     // MARK: - Properties
@@ -19,7 +21,7 @@ public protocol Coordinating: ObservableObject, Identifiable, Hashable {
     var initialRoute: Route { get }
     
     /// A weak reference to the root coordinator, if available.
-	var root: (any Coordinating)? { get set }
+	var root: (any StackCoordinating)? { get set }
 
     /// The navigation path representing the current state of navigation.
     var path: NavigationPath { get set }
@@ -44,7 +46,7 @@ public protocol Coordinating: ObservableObject, Identifiable, Hashable {
 
     /// Pushes a new `Coordinator` onto the `NavigationStack`.
     /// - Parameter coordinator: The `Coordinator` instance to be added.
-    func pushCoordinator(_ coordinator: any Coordinating)
+    func pushCoordinator(_ coordinator: any StackCoordinating)
     
     /// Pushes a new `Route` onto the `NavigationStack`.
     /// - Parameter route: The `Route` to push.
@@ -60,7 +62,7 @@ public protocol Coordinating: ObservableObject, Identifiable, Hashable {
 
 // MARK: - Hashable Conformance
 
-public extension Coordinating {
+public extension StackCoordinating {
     nonisolated func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
@@ -68,7 +70,7 @@ public extension Coordinating {
 
 // MARK: - Default Implementations
 
-public extension Coordinating {
+public extension StackCoordinating {
     
     /// Default implementation of `present(_:)`, presenting a route modally with the given `ModalPresentationStyle`.
     /// - Parameters:
@@ -99,7 +101,7 @@ public extension Coordinating {
     
     /// Default implementation of `pushCoordinator(_:)`, adding a coordinator to the `NavigationPath`.
     /// - Parameter coordinator: The `Coordinator` to push.
-    func pushCoordinator(_ coordinator: any Coordinating) {
+    func pushCoordinator(_ coordinator: any StackCoordinating) {
 		guard let root else {
 			print("Root is nil, cannot push coordinator")
 			return
@@ -143,7 +145,7 @@ public extension Coordinating {
 
 // MARK: - Private Helper
 
-private extension Coordinating {
+private extension StackCoordinating {
     
     /// Pops the last `k` items from the navigation path.
     /// - Parameter k: The number of items to remove (default is 1).

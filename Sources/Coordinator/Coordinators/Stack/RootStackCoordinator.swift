@@ -8,15 +8,14 @@
 import SwiftUI
 
 @MainActor
-public final class RootCoordinator<Route: Routable>: Coordinating {
+public final class RootStackCoordinator<Route: Routable>: StackCoordinating {
 
 	// MARK: - Public Properties
 
 	/// The root coordinator's root is always `nil`.
-	public var root: (any Coordinating)? = nil
+	public var root: (any StackCoordinating)? = nil
 
 	/// The navigation path representing the current state of navigation.
-	/// - Modifying this property updates the navigation stack in SwiftUI.
 	@Published public var path = NavigationPath()
 
 	/// The initial route that this coordinator starts with.
@@ -31,13 +30,13 @@ public final class RootCoordinator<Route: Routable>: Coordinating {
 	// MARK: - Internal Properties
 
 	/// A collection of child coordinators managed by this coordinator.
-    @Published var children: [any Coordinating]
+    @Published var children: [any StackCoordinating]
 
 	// MARK: - Initialization
 
 	/// Initializes a new `RootCoordinator` with a given `Coordinator`.
 	/// - Parameter coordinator: The initial `Coordinator` that this root coordinator manages.
-	public init<C: Coordinating>(coordinator: C) where C.Route == Route {
+	public init<C: StackCoordinating>(coordinator: C) where C.Route == Route {
 		self.initialRoute = coordinator.initialRoute
 		self.children = [coordinator]
 		coordinator.root = self
@@ -47,7 +46,7 @@ public final class RootCoordinator<Route: Routable>: Coordinating {
 
 	/// Pushes a new `Coordinator` onto the navigation stack.
 	/// - Parameter coordinator: The `Coordinator` instance to be added.
-	public func pushCoordinator(_ coordinator: any Coordinating) {
+	public func pushCoordinator(_ coordinator: any StackCoordinating) {
 		children.append(coordinator)
         push(coordinator.initialRoute)
 	}
@@ -79,8 +78,8 @@ public final class RootCoordinator<Route: Routable>: Coordinating {
 
 // - MARK: Equatable Conformance
 
-public extension RootCoordinator {
-    nonisolated static func == (lhs: RootCoordinator<Route>, rhs: RootCoordinator<Route>) -> Bool {
+public extension RootStackCoordinator {
+    nonisolated static func == (lhs: RootStackCoordinator<Route>, rhs: RootStackCoordinator<Route>) -> Bool {
         lhs.id == rhs.id
     }
 }

@@ -8,10 +8,10 @@
 import SwiftUI
 import Coordinator
 
-class HomeCoordinator: Coordinating {
+class HomeCoordinator: StackCoordinating {
     lazy var initialRoute = Screen.view1(coordinator: self)
     var path = NavigationPath()
-    var root: (any Coordinating)?
+    var root: (any StackCoordinating)?
     @Published var sheet: Screen?
     @Published var fullScreenCover: Screen?
     
@@ -40,7 +40,7 @@ enum Screen: Routable {
         case .cover:
             FullScreenView()
         case .sheetFlow:
-            RootCoordinatorView(for: NewFlowCoordinator())
+            CoordinatedStack(for: NewFlowCoordinator())
 		}
 	}
 }
