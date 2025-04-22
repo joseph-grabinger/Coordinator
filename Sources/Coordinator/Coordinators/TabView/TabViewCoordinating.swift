@@ -26,7 +26,7 @@ public protocol TabViewCoordinating: ObservableObject, Identifiable, Hashable {
     // MARK: - Methods
     
     /// Selects the specified tab.
-   /// - Parameter tab: The tab to be selected.
+    /// - Parameter tab: The tab to be selected.
     func select(_ tab: Route)
 }
 
