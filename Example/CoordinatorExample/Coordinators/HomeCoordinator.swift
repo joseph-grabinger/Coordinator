@@ -18,10 +18,6 @@ class HomeCoordinator: StackCoordinating, ModalCoordinating {
     static nonisolated func == (lhs: HomeCoordinator, rhs: HomeCoordinator) -> Bool {
         lhs.id == rhs.id
     }
-    
-//    nonisolated func hash(into hasher: inout Hasher) {
-//        hasher.combine(id)
-//    }
 }
 
 enum Screen: Routable {

@@ -35,14 +35,6 @@ public struct CoordinatedStack<Coordinator: StackCoordinating>: View {
         NavigationStack(path: $rootCoordinator.path) {
 			rootCoordinator.initialRoute
                 .navigationDestination(for: Coordinator.Route.self) { $0 }
-//                .sheet(
-//                    item: $coordinator.sheet,
-//                    onDismiss: { coordinator.dismiss(.sheet) }
-//                ) { $0 }
-//                .fullScreenCover(
-//                    item: $coordinator.fullScreenCover,
-//                    onDismiss: { coordinator.dismiss(.fullScreenCover) }
-//                ) { $0 }
         }
     }
 }

@@ -26,23 +26,7 @@ public protocol StackCoordinating: ObservableObject, Identifiable, Hashable {
     /// The navigation path representing the current state of navigation.
     var path: NavigationPath { get set }
     
-//    /// The route which is currently presented as a sheet, if any.
-//    var sheet: Route? { get set }
-//    
-//    /// The route which is currently presented as a full screen cover, if any.
-//    var fullScreenCover: Route? { get set }
-    
     // MARK: - Methods
-    
-//    /// Presents a new `Route` with the given `PresentationMode`.
-//    /// - Parameter route: The `Route` to present modally.
-//    func present<Route>(
-//        _ route: Route,
-//        as presentationStyle: ModalPresentationStyle
-//    )  where Route == Self.Route
-//    
-//    /// Dismisses the `View` currently presented using the given `PresentationStyle`.
-//    func dismiss(_ presentationStyle: ModalPresentationStyle)
 
     /// Pushes a new `Coordinator` onto the `NavigationStack`.
     /// - Parameter coordinator: The `Coordinator` instance to be added.
@@ -71,33 +55,6 @@ public extension StackCoordinating {
 // MARK: - Default Implementations
 
 public extension StackCoordinating {
-    
-//    /// Default implementation of `present(_:)`, presenting a route modally with the given `ModalPresentationStyle`.
-//    /// - Parameters:
-//    ///   - route: The `Routable` instance to present.
-//    ///   - presentationStyle: The `ModalPresentationStyle` to present the route with.
-//    func present<Route>(
-//        _ route: Route,
-//        as presentationStyle: ModalPresentationStyle
-//    ) where Route == Self.Route {
-//        switch presentationStyle {
-//        case .sheet:
-//            sheet = route
-//        case .fullScreenCover:
-//            fullScreenCover = route
-//        }
-//    }
-//    
-//    /// Default implementation of `dismiss(_:)`, dismissing the current route with the given `ModalPresentationStyle`.
-//    /// - Parameter presentationStyle: The `View` with the `ModalPresentationStyle` to dismiss.
-//    func dismiss(_ presentationStyle: ModalPresentationStyle) {
-//        switch presentationStyle {
-//        case .sheet:
-//            sheet = nil
-//        case .fullScreenCover:
-//            fullScreenCover = nil
-//        }
-//    }
     
     /// Default implementation of `pushCoordinator(_:)`, adding a coordinator to the `NavigationPath`.
     /// - Parameter coordinator: The `Coordinator` to push.

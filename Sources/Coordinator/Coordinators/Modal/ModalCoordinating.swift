@@ -11,7 +11,7 @@ import SwiftUI
 ///
 /// This protocol enables the presentation of modals like `.fullScreenCover`s & `.sheet`s.
 @MainActor
-public protocol ModalCoordinating: ObservableObject, Identifiable/*, Hashable*/ {
+public protocol ModalCoordinating: ObservableObject, Identifiable {
     /// The type representing a modal route.
     associatedtype Route: Routable
     
@@ -35,14 +35,6 @@ public protocol ModalCoordinating: ObservableObject, Identifiable/*, Hashable*/ 
     /// Dismisses the `View` currently presented using the given `PresentationStyle`.
     func dismiss(_ presentationStyle: ModalPresentationStyle)
 }
-
-// MARK: - Hashable Conformance
-
-//public extension ModalCoordinating {
-//    nonisolated func hash(into hasher: inout Hasher) {
-//        hasher.combine(id)
-//    }
-//}
 
 // MARK: - Default Implementations
 
