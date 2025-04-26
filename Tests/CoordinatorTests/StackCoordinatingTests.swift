@@ -202,9 +202,6 @@ final class MockStackCoordinator: StackCoordinating {
     var path: NavigationPath
     var root: (any StackCoordinating)?
     
-    var sheet: MockRoute?
-    var fullScreenCover: MockRoute?
-    
     /// Initializes a `MockStackCoordinator`.
     /// - Parameters:
     ///   - initialRoute: The coordinator's initial route.
@@ -221,15 +218,15 @@ final class MockStackCoordinator: StackCoordinating {
 
 // - MARK: MockRoute
 
-enum MockRoute: Routable {
-    nonisolated var id: UUID { UUID() }
-    
+enum MockRoute: Int, Routable {
     case route1
     case route2
     case route3
     case route4
     case route5
     
+    nonisolated var id: Int { self.rawValue }
+
     var body: some View {
         EmptyView()
     }

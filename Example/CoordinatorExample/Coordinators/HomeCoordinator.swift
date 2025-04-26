@@ -8,7 +8,7 @@
 import SwiftUI
 import Coordinator
 
-class HomeCoordinator: StackCoordinating {
+class HomeCoordinator: StackCoordinating, ModalCoordinating {
     lazy var initialRoute = Screen.view1(coordinator: self)
     var path = NavigationPath()
     var root: (any StackCoordinating)?

@@ -35,7 +35,7 @@ enum Tab: TabRoutable {
     var body: some View {
         switch self {
         case .tab1:
-            CoordinatedStack(for: HomeCoordinator())
+            TabView1()
         case .tab2(let coordinator):
             NavigationStack {
                 Button("Change Tab") {
