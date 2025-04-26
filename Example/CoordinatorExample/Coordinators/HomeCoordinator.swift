@@ -21,13 +21,26 @@ class HomeCoordinator: StackCoordinating, ModalCoordinating {
 }
 
 enum Screen: Routable {
-	nonisolated var id: UUID { UUID() }
-
     case view1(coordinator: HomeCoordinator)
 	case view2(coordinator: HomeCoordinator)
     case sheet
     case cover
     case sheetFlow
+    
+    var id: String {
+        switch self {
+        case .view1(let coordinator):
+            "view1_\(coordinator.id)"
+        case .view2(let coordinator):
+            "view2_\(coordinator.id)"
+        case .sheet:
+            "sheet"
+        case .cover:
+            "cover"
+        case .sheetFlow:
+            "sheetFlow"
+        }
+    }
 
 	var body: some View {
 		switch self {

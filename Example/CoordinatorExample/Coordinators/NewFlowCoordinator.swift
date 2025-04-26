@@ -15,10 +15,6 @@ class NewFlowCoordinator: StackCoordinating {
     var sheet: NewScreen?
     var fullScreenCover: NewScreen?
     
-    static nonisolated func == (lhs: NewFlowCoordinator, rhs: NewFlowCoordinator) -> Bool {
-        lhs.id == rhs.id
-    }
-    
     init() {
         print("init newflowCoord")
     }
@@ -26,15 +22,28 @@ class NewFlowCoordinator: StackCoordinating {
     deinit {
         print("deinit NewFlow Coord")
     }
+    
+    static nonisolated func == (lhs: NewFlowCoordinator, rhs: NewFlowCoordinator) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
 enum NewScreen: Routable {
-	nonisolated var id: UUID { UUID() }
-
 	case view1(coordintor: NewFlowCoordinator)
 	case view2
 	case newFlowRoot(coordintor: NewFlowCoordinator)
 
+    var id: String {
+        switch self {
+        case .view1(let coordinator):
+            "view1_\(coordinator.id)"
+        case .view2:
+            "view2"
+        case .newFlowRoot(let coordinator):
+            "view1_\(coordinator.id)"
+        }
+    }
+    
 	var body: some View {
 		switch self {
         case .view1(let coordinator):
