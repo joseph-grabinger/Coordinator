@@ -36,20 +36,20 @@ This package exposes two basic protocols for coordinators - `TabViewCoordinating
 To create a `NavigationStack` coordinator, first a route type is needed. This route type must be `Routable`-conforming and defines the routes the `NavigationStack` and its coordinator should handle.
 
 ```swift
-enum MyScreen: Routable {
-    case view1
-	case view2
+enum MyScreen: String, Routable {
+    case view1 = "view1"
+    case view2 = "view2"
 
-    nonisolated var id: UUID { UUID() }
+    var id: String { self.rawValue }
 
 	var body: some View {
-		switch self {
-		case .view1:
+        switch self {
+        case .view1:
             MyScreen1()
         case .view2:
             MyScreen2()
-		}
-	}
+        }
+    }
 }
 ```
 
@@ -96,11 +96,11 @@ To programmatically navigate to a new route, the coordinator offers several meth
 To create a `TabView` coordinator, first a route type is needed. This route type must be `TabRoutable`-conforming and defines the tabs the `TabView` and its coordinator should handle.
 
 ```swift
-enum MyTab: TabRoutable {
+enum MyTab: String, TabRoutable, CaseIterable {
     case tab1
     case tab2
 
-    nonisolated var id: UUID { UUID() }
+    var id: String { self.rawValue }
     
     var body: some View {
         switch self {
@@ -136,6 +136,8 @@ class MyTabCoordinator: TabViewCoordinating {
 }
 ```
 
+**Note:** The `tabs` can only be defined as a constant (`let`) if the `TabRoutable`-conforming enum is `CaseIterable`. If not a `lazy var` can be used.
+
 Finally, the newly created `MyTabCoordinator` can be used in a `View`.
 
 ```swift
@@ -149,6 +151,38 @@ struct ContentView: View {
 ```
 
 To programmatically change the selected tab, the coordinator's `select(_:)` method can be used.
+
+## Parametrized Routes
+
+To pass data to routes (`Routable` or `TabRoutable`) enums with associated values can be used. 
+
+This is especially useful to for example pass the corresponding coordinator to the route.
+
+However, when using associated values, `String` or any other `RawRepresentable` can't be used. Thus a custom `id` must be constructed based on the associated value.   
+
+```swift
+enum MyScreen: Routable {
+    case view1(coordinator: MyStackCoordinator)
+    case view2(coordinator: MyStackCoordinator)
+
+    var id: String { 
+        switch self {
+        case .view1(let coordinator):
+            "view1_\(coordinator.id)"
+        case .view2(let coordinator):
+            "view2_\(coordinator.id)"
+    }
+
+    var body: some View {
+        switch self {
+        case .view1:
+            MyScreen1()
+        case .view2:
+            MyScreen2()
+        }
+    }
+}
+```
 
 ## What is a Coordinator?
 
