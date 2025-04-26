@@ -42,7 +42,7 @@ enum MyScreen: String, Routable {
 
     var id: String { self.rawValue }
 
-	var body: some View {
+    var body: some View {
         switch self {
         case .view1:
             MyScreen1()
