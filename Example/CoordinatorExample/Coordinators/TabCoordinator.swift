@@ -19,10 +19,18 @@ class TabCoordinator: TabViewCoordinating {
 }
 
 enum Tab: TabRoutable {
-    nonisolated var id: UUID { UUID() }
-
+    
     case tab1
     case tab2(coordinator: TabCoordinator)
+    
+    var id: String {
+        switch self {
+        case .tab1:
+            "tab1"
+        case .tab2(let coordinator):
+            "tab2\(coordinator.id)"
+        }
+    }
     
     var body: some View {
         switch self {
