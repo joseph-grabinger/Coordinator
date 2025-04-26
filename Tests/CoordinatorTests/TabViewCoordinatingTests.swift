@@ -67,14 +67,14 @@ final class MockTabViewCoordinator: TabViewCoordinating {
 
 // - MARK: MockTabRoute
 
-enum MockTabRoute: TabRoutable, CaseIterable {
-    nonisolated var id: UUID { UUID() }
-    
+enum MockTabRoute: Int, TabRoutable, CaseIterable {
     case route1
     case route2
     case route3
     case route4
     case route5
+    
+    nonisolated var id: Int { self.rawValue }
     
     var body: some View {
         EmptyView()
