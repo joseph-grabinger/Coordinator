@@ -15,10 +15,9 @@ import SwiftUI
     
     // - MARK: Present Modal Tests
     
-    @Test func testPresentSheet() {
+    @Test func testPresentSheetSuccess() {
         // GIVEN: An initialized coordinator (SUT).
         let sut = MockModalCoordinator()
-        #expect(sut.sheet == nil)
 
         // WHEN: A new sheet is presented.
         let newSheet = MockModalRoute.route1
@@ -28,10 +27,21 @@ import SwiftUI
         #expect(sut.sheet == newSheet)
     }
     
-    @Test func testPresentFullScreenCover() {
+    @Test func testPresentSheetError() {
+        // GIVEN: An initialized coordinator (SUT) with a presented sheet.
+        let oldSheet = MockModalRoute.route1
+        let sut = MockModalCoordinator(sheet: oldSheet)
+
+        // WHEN: A new sheet is presented.
+        sut.present(.route2, as: .sheet)
+        
+        // THEN: The old sheet is expected to still be set in the SUT.
+        #expect(sut.sheet == oldSheet)
+    }
+    
+    @Test func testPresentFullScreenCoverSuccess() {
         // GIVEN: An initialized coordinator (SUT).
         let sut = MockModalCoordinator()
-        #expect(sut.fullScreenCover == nil)
         
         // WHEN: A new fullScreenCover is presented.
         let newFullScreenCover = MockModalRoute.route1
@@ -39,6 +49,18 @@ import SwiftUI
         
         // THEN: The new fullScreenCover is expected to be set in the SUT.
         #expect(sut.fullScreenCover == newFullScreenCover)
+    }
+    
+    @Test func testPresentFullScreenCoverError() {
+        // GIVEN: An initialized coordinator (SUT) with a presented fullScreenCover.
+        let oldFullScreenCover = MockModalRoute.route1
+        let sut = MockModalCoordinator(fullScreenCover: oldFullScreenCover)
+
+        // WHEN: A new fullScreenCover is presented.
+        sut.present(.route2, as: .fullScreenCover)
+        
+        // THEN: The old fullScreenCover is expected to still be set in the SUT.
+        #expect(sut.fullScreenCover == oldFullScreenCover)
     }
     
     // - MARK: Dismiss Modal Tests

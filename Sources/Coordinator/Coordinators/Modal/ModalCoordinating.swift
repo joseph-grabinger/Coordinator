@@ -50,8 +50,16 @@ public extension ModalCoordinating {
     ) {
         switch presentationStyle {
         case .sheet:
+            guard sheet == nil else {
+                print("A sheet is already presented on \(self), cannot present route as sheet")
+                return
+            }
             sheet = route
         case .fullScreenCover:
+            guard fullScreenCover == nil else {
+                print("A fullScreenCover is already presented on \(self), cannot present route as fullScreenCover")
+                return
+            }
             fullScreenCover = route
         }
     }

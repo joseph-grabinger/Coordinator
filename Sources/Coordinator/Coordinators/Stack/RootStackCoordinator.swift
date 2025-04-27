@@ -20,12 +20,6 @@ public final class RootStackCoordinator<Route: Routable>: StackCoordinating {
 
 	/// The initial route that this coordinator starts with.
 	public let initialRoute: Route
-    
-    /// The root coordinator's sheet is always `nil`.
-    public var sheet: Route? = nil
-    
-    /// The root coordinator's full screen cover is always `nil`.
-    public var fullScreenCover: Route? = nil
 
 	// MARK: - Internal Properties
 
