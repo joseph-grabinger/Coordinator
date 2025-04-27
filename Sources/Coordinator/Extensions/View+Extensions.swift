@@ -30,4 +30,10 @@ public extension View {
     func coordinatorRoutes<C: StackCoordinating & ModalCoordinating>(for coordinator: C) -> some View {
         self.modifier(CoordinatorRoutesModifier(coordinator: coordinator))
     }
+    
+    func onOpenDeepLink(perform action: @escaping (DeepLink) -> ()) -> some View {
+        self.onOpenURL { url in
+            action(DeepLink(from: url))
+        }
+    }
 }
