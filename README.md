@@ -23,12 +23,12 @@ Or you can add the following dependency to your `Package.swift`:
 ## Features
 
  - Coordination of `TabView`s
- - Coordination of `NavigationStacks`s
+ - Coordination of `NavigationStack`s
  - Coordination of modal `View`s like `.sheet`s & `.fullScreenCover`s
 
 ## Usage
 
-This package exposes two basic protocols for coordinators - `TabViewCoordinating` & `StackCoordinating` (which also handles the presentation of modals). For each coordinator there is a designated `View` - `CoordinatedTabView` & `CoordinatedStack`.
+This package exposes three basic protocols for coordinators - `TabViewCoordinating`, `StackCoordinating` & `ModalCoordinating`. For the `TabView` & `NavigationStack` coordinators there is a designated `View` - `CoordinatedTabView` & `CoordinatedStack`. However, for the modal coordinator there is a designated `ViewModifier` - `.modalRoutes(_:)`.
 
 
 ## NavigationStack Coordinator
@@ -53,7 +53,7 @@ enum MyScreen: String, Routable {
 }
 ```
 
-Next, a `TabViewCoordinating`-conforming coordinator class is created.
+Next, a `StackCoordinating`-conforming coordinator class is created. 
 
 ```swift
 class MyStackCoordinator: StackCoordinating {
@@ -81,11 +81,59 @@ struct ContentView: View {
 }
 ```
 
-To programmatically navigate to a new route, the coordinator offers several methods for the presentation of route:
+To programmatically navigate to a new route, the coordinator offers several methods for the presentation of routes:
  - `push(_:)` - pushes a new route onto the `NavigationStack`
  - `pop()` - pops a route of the `NavigationStack`
  - `popToRoot()` - pops to the initial route of the coordinator
  - `pushCoordinator(_:)` - pushes a new coordinator onto the `NavigationStack`
+
+ ## Modal Coordinator
+ 
+ To create a coordinator for modals like `.sheet`s & `.fullScreenCover`s, first a modal route type is needed. This route type must be `Routable`-conforming and defines the routes the coordinator should handle.
+ 
+ ```swift
+enum MyModal: String, Routable {
+    case view1 = "view1"
+    case view2 = "view2"
+
+    var id: String { self.rawValue }
+
+    var body: some View {
+        switch self {
+        case .view1:
+            MyModal1()
+        case .view2:
+            MyModal2()
+        }
+    }
+}
+```
+
+Next, a `ModalCoordinating`-conforming coordinator class is created.
+
+```swift
+class MyModalCoordinator: ModalCoordinating {
+    @Published var sheet: MyModal?
+    @Published var fullScreenCover: MyModal?
+}
+```
+
+Finally, the newly created `MyModalCoordinator` can be used in a `View`.
+
+```swift
+struct ContentView: View {
+    @StateObject var coordinator = MyModalCoordinator()
+    
+    var body: some View {
+        SomeView(coordinator: coordinator)
+            .modalRoutes(for: coordinator)
+    }
+}
+```
+
+**Note:** Any `View` that is supposed to present modals for a `ModalCoordinating`-conforming coordinator class needs to first apply the `.modalRoutes(:_)` modifier, such that the modal routes for the coordinator can be resolved. 
+
+To programmatically present a modal route, the coordinator offers two methods for the presentation of routes:
  - `present(_:)` - presents a route modally (can be as `.sheet` or `.fullScreenCover`)
  - `dismiss(_:)` - dismisses a modally presented route
 
@@ -150,7 +198,7 @@ struct ContentView: View {
 
 To programmatically change the selected tab, the coordinator's `select(_:)` method can be used.
 
-## Parametrized Routes
+## Parameterized Routes
 
 To pass data to routes (`Routable` or `TabRoutable`) enums with associated values can be used. 
 
@@ -181,8 +229,3 @@ enum MyScreen: Routable {
     }
 }
 ```
-
-## What is a Coordinator?
-
-A coordinator is a lightweight object that encapsulates navigation logic and coordiantes between sets of views or even other coordinators.
-Instead of embedding navigation logic inside SwiftUI views, a coordinator acts as an intermediary that determines which view should be presented based on user actions. This leads to improved modularity, better testability, and cleaner code.
