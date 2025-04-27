@@ -60,8 +60,6 @@ class MyStackCoordinator: StackCoordinating {
     let initialRoute = MyScreen.view1
 
     @Published var path = NavigationPath()
-    @Published var sheet: MyScreen?
-    @Published var fullScreenCover: MyScreen?
 
     var root: (any StackCoordinating)?
     
