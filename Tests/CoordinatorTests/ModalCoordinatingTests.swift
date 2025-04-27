@@ -60,7 +60,7 @@ import SwiftUI
         sut.present(.route2, as: .fullScreenCover)
         
         // THEN: The old fullScreenCover is expected to still be set in the SUT.
-        #expect(sut.sheet == oldFullScreenCover)
+        #expect(sut.fullScreenCover == oldFullScreenCover)
     }
     
     // - MARK: Dismiss Modal Tests
