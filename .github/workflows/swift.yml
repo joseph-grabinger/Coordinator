@@ -17,10 +17,8 @@ jobs:
     steps:
     - name: Checkout the code
       uses: actions/checkout@v4
-    - uses: sersoft-gmbh/xcodebuild-action@v3
+    - uses: mxcl/xcodebuild@v3
       with:
-        spm-package: './'
-        xcode-version: latest-stable
-        scheme: Coordinator
-        destination: platform=iOS
-        action: test
+        swift: 6.0
+        action: none
+    - run: xcodebuild test -scheme Coordinator -destination 'platform=iOS Simulator,OS=18.0,name=iPhone 16 Pro'
