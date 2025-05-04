@@ -9,9 +9,9 @@ import SwiftUI
 import Coordinator
 
 class NewFlowCoordinator: StackCoordinating, DeepLinkHandling {
-    lazy var initialRoute = NewScreen.newFlowRoot(coordintor: self)
+    var initialRoute: NewScreen { NewScreen.newFlowRoot(coordinator: self) }
     var path = NavigationPath()
-    var root: (any StackCoordinating)?
+    weak var root: (any RootStackCoordinating)?
     
     init() {
         print("init newflowCoord")
@@ -32,7 +32,7 @@ class NewFlowCoordinator: StackCoordinating, DeepLinkHandling {
         
         switch firstRoute {
         case "view1":
-            push(NewScreen.view1(coordintor: self))
+            push(NewScreen.view1(coordinator: self))
         case "view2":
             push(NewScreen.view2)
             return
@@ -49,9 +49,9 @@ class NewFlowCoordinator: StackCoordinating, DeepLinkHandling {
 }
 
 enum NewScreen: Routable {
-	case view1(coordintor: NewFlowCoordinator)
+	case view1(coordinator: NewFlowCoordinator)
 	case view2
-	case newFlowRoot(coordintor: NewFlowCoordinator)
+	case newFlowRoot(coordinator: NewFlowCoordinator)
 
     var id: String {
         switch self {
@@ -75,4 +75,3 @@ enum NewScreen: Routable {
 		}
 	}
 }
-

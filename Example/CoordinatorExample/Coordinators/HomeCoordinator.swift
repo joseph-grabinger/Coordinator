@@ -11,7 +11,7 @@ import Coordinator
 class HomeCoordinator: StackCoordinating, ModalCoordinating, DeepLinkHandling {
     var initialRoute: Screen { Screen.view1(coordinator: self) }
     var path = NavigationPath()
-    weak var root: (any StackCoordinating)?
+    weak var root: (any RootStackCoordinating)?
     @Published var sheet: Screen?
     @Published var fullScreenCover: Screen?
     
