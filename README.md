@@ -155,7 +155,7 @@ enum MyTab: String, TabRoutable, CaseIterable {
         case .tab1:
             MyTab1View()
         case .tab2:
-             MyTab2View()
+            MyTab2View()
         }
     }
     
