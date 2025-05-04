@@ -16,9 +16,6 @@ public struct CoordinatedStack<Coordinator: StackCoordinating>: View {
     /// The root coordinator responsible for managing the `NavigationPath` that's bound to the `NavigationStack`.
     @StateObject private var rootCoordinator: RootStackCoordinator<Coordinator.Route>
     
-    /// The initial coordinator on the stack.
-    @ObservedObject private var coordinator: Coordinator
-    
     // MARK: - Initialization
 
     /// Creates an instance of `RootCoordinatorView`.
@@ -26,7 +23,6 @@ public struct CoordinatedStack<Coordinator: StackCoordinating>: View {
     ///   - coordinator: The coordinator responsible for managing navigation.
     public init(for coordinator: Coordinator) {
 		_rootCoordinator = StateObject(wrappedValue: RootStackCoordinator(coordinator: coordinator))
-        _coordinator = ObservedObject(wrappedValue: coordinator)
     }
     
     // MARK: - Body
