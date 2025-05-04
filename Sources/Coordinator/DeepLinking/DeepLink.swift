@@ -13,7 +13,7 @@ public class DeepLink {
     /// The URL of the deep link.
     public let url: URL
     
-    /// The remainaing routes a deep link, which still have to be handeled.
+    /// The remaining routes of a deep link `URL`, which still have to be handled.
     public var remainingRoutes: [String]
     
     // - MARK: Initialization

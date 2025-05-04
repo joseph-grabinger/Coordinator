@@ -16,7 +16,7 @@ public enum DeepLinkingError: Error {
     /// - Parameter: A `String` value describing the invalid path component.
     case invalidPathComponentError(String)
     
-    /// Indicates that the deep link is invalid and couldn't be handeled.
+    /// Indicates that the deep link is invalid and couldn't be handled.
      /// - Parameter: A `String` value describing the invalid deep link.
     case invalidDeepLink(String)
 }
