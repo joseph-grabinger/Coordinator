@@ -34,11 +34,11 @@ class TabCoordinator: TabViewCoordinating, DeepLinkHandling {
         case "tab1":
             selectedTab = tabs.first!
             deepLink.remainingRoutes.removeFirst()
-            try? homeCoordinator.handleDeepLink(deepLink)
+            try homeCoordinator.handleDeepLink(deepLink)
         case "tab2":
             selectedTab = tabs.last!
         default:
-            print("Unknown tab")
+            throw DeepLinkingError.invalidDeepLink(firstRoute)
         }
     }
 }

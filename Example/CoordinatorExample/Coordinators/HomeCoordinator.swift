@@ -33,7 +33,7 @@ class HomeCoordinator: StackCoordinating, ModalCoordinating, DeepLinkHandling {
             let newFlowCoordinator = NewFlowCoordinator()
             pushCoordinator(newFlowCoordinator)
             deepLink.remainingRoutes.removeFirst()
-            try? newFlowCoordinator.handleDeepLink(deepLink)
+            try newFlowCoordinator.handleDeepLink(deepLink)
             return
         case "sheet":
             present(Screen.sheet, as: .sheet)
@@ -45,12 +45,11 @@ class HomeCoordinator: StackCoordinating, ModalCoordinating, DeepLinkHandling {
             present(Screen.sheetFlow, as: .sheet)
             return
         default:
-            print("Unknown route")
-            return
+            throw DeepLinkingError.invalidDeepLink(firstRoute)
         }
         
         deepLink.remainingRoutes.removeFirst()
-        try? handleDeepLink(deepLink)
+        try handleDeepLink(deepLink)
     }
 }
 

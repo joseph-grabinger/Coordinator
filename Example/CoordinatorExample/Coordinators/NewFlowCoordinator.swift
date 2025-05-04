@@ -39,12 +39,11 @@ class NewFlowCoordinator: StackCoordinating, DeepLinkHandling {
         case "newFlowRoot":
             popToRoot()
         default:
-            print("Unknown route")
-            return
+            throw DeepLinkingError.invalidDeepLink(firstRoute)
         }
         
         deepLink.remainingRoutes.removeFirst()
-        try? handleDeepLink(deepLink)
+        try handleDeepLink(deepLink)
     }
 }
 
