@@ -21,4 +21,4 @@ jobs:
       with:
         swift: 6.0
         action: none
-    - run: xcodebuild test -scheme Coordinator -showdestinations
+    - run: xcodebuild test -scheme Coordinator -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.1'
