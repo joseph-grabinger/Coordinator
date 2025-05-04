@@ -8,38 +8,51 @@
 import SwiftUI
 import Coordinator
 
-class TabCoordinator: TabViewCoordinating {
-    @Published var selectedTab = Tab.tab1
+class TabCoordinator: TabViewCoordinating, StackChildContaining {
     
-    lazy var tabs: [Tab] = [ .tab1, .tab2(coordinator: self) ]
+    @Published var selectedTab: Tab
+    
+    lazy var tabs: [Tab] = [ .tab1(homeCoordinator: homeCoordinator), .tab2(coordinator: self) ]
+    
+    var homeCoordinator: HomeCoordinator
+    
+    init() {
+        self.homeCoordinator = HomeCoordinator()
+        self.selectedTab = .tab1(homeCoordinator: homeCoordinator)
+    }
     
     static nonisolated func == (lhs: TabCoordinator, rhs: TabCoordinator) -> Bool {
         lhs.id == rhs.id
     }
+    
+    func coordinator(for tab: Tab) -> (any StackCoordinating)? {
+        selectedTab == tabs.first ? homeCoordinator : nil
+    }
+    
 }
 
 enum Tab: TabRoutable {
     
-    case tab1
+    case tab1(homeCoordinator: HomeCoordinator)
     case tab2(coordinator: TabCoordinator)
     
     var id: String {
         switch self {
         case .tab1:
             "tab1"
-        case .tab2(let coordinator):
-            "tab2\(coordinator.id)"
+        case .tab2:
+            "tab2"
         }
     }
     
     var body: some View {
         switch self {
-        case .tab1:
-            TabView1()
+        case .tab1(let homeCoordinator):
+            TabView1(homeCoordinator: homeCoordinator)
         case .tab2(let coordinator):
             NavigationStack {
                 Button("Change Tab") {
-                    coordinator.select(.tab1)
+                    coordinator.select(Tab.tab1(homeCoordinator: coordinator.homeCoordinator))
                 }
                 .navigationTitle("Test Tab")
             }
