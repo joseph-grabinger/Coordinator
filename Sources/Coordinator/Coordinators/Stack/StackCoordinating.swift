@@ -21,7 +21,7 @@ public protocol StackCoordinating: ObservableObject, Identifiable, Hashable {
     var initialRoute: Route { get }
     
     /// A weak reference to the root coordinator, if available.
-	var root: (any StackCoordinating)? { get set }
+	var root: (any RootStackCoordinating)? { get set }
 
     /// The navigation path representing the current state of navigation.
     var path: NavigationPath { get set }
@@ -33,8 +33,11 @@ public protocol StackCoordinating: ObservableObject, Identifiable, Hashable {
     func pushCoordinator(_ coordinator: any StackCoordinating)
     
     /// Pushes a new `Route` onto the `NavigationStack`.
+    ///
+    /// > The `Route` type is bound to the coordinator's associated type. Thus, only the coordinator's routes can be pushed.
+    ///
     /// - Parameter route: The `Route` to push.
-    func push<Route: Routable>(_ route: Route)
+    func push(_ route: Route)
 
     /// Pops the top-most view from the navigation stack.
     func pop()
@@ -69,7 +72,7 @@ public extension StackCoordinating {
     
     /// Default implementation of `push(_:)`, adding a route to the navigation path.
     /// - Parameter route: The `Routable` instance to be pushed onto the stack.
-    func push<Route: Routable>(_ route: Route) {
+    func push(_ route: Route) {
 		guard let root else {
 			print("Root is nil, cannot push route")
 			return
