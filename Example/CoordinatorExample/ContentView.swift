@@ -12,13 +12,14 @@ struct ContentView: View {
     
     /// The custom coordinator instance.
     @StateObject private var coordinator = TabCoordinator()
-//    @StateObject private var coordinator = HomeCoordinator()
     
     // MARK: - Body
     
     var body: some View {
         CoordinatedTabView(for: coordinator)
-//        CoordinatedStack(for: coordinator)
+            .onOpenDeepLink { deepLink in
+                try? coordinator.handleDeepLink(deepLink)
+            }
     }
 }
 

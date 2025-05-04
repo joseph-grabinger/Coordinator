@@ -33,9 +33,22 @@
 		DF0E2B162DB665B10075831C /* CoordinatorExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoordinatorExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		DF16ADE52DC795FB00E6EB80 /* Exceptions for "CoordinatorExample" folder in "CoordinatorExample" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = DF0E2AFE2DB665AE0075831C /* CoordinatorExample */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		DF0E2B012DB665AE0075831C /* CoordinatorExample */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				DF16ADE52DC795FB00E6EB80 /* Exceptions for "CoordinatorExample" folder in "CoordinatorExample" target */,
+			);
 			path = CoordinatorExample;
 			sourceTree = "<group>";
 		};
@@ -391,6 +404,7 @@
 				DEVELOPMENT_TEAM = U8DCPLB357;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CoordinatorExample/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -419,6 +433,7 @@
 				DEVELOPMENT_TEAM = U8DCPLB357;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CoordinatorExample/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
