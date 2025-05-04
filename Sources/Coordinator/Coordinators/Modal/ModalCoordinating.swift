@@ -25,8 +25,10 @@ public protocol ModalCoordinating: ObservableObject, Identifiable {
     
     // MARK: - Methods
 
-    /// Presents a new `Route` with the given `PresentationMode`.
-    /// - Parameter route: The `Route` to present modally.
+    /// Presents a new `Route` with the given `ModalPresentationStyle`.
+    /// - Parameters:
+    ///   - route: The `Route` to present modally.
+    ///   - presentationStyle: The `ModalPresentationStyle` to present the route with.
     func present(
         _ route: Route,
         as presentationStyle: ModalPresentationStyle
