@@ -8,19 +8,44 @@
 import SwiftUI
 import Coordinator
 
-class TabCoordinator: TabViewCoordinating {
-    @Published var selectedTab = Tab.tab1
+class TabCoordinator: TabViewCoordinating, DeepLinkHandling {
     
-    lazy var tabs: [Tab] = [ .tab1, .tab2(coordinator: self) ]
+    @Published var selectedTab: Tab
+    
+    lazy var tabs: [Tab] = [ .tab1(homeCoordinator: homeCoordinator), .tab2(coordinator: self) ]
+    
+    let homeCoordinator: HomeCoordinator
     
     static nonisolated func == (lhs: TabCoordinator, rhs: TabCoordinator) -> Bool {
         lhs.id == rhs.id
+    }
+    
+    init() {
+        self.homeCoordinator = HomeCoordinator()
+        self.selectedTab = .tab1(homeCoordinator: homeCoordinator)
+    }
+    
+    func handleDeepLink(_ deepLink: DeepLink) throws {
+        print("TabCoordinator - remaining: \(deepLink.remainingRoutes)")
+        
+        guard let firstRoute = deepLink.remainingRoutes.first else { return }
+        
+        switch firstRoute {
+        case "tab1":
+            selectedTab = tabs.first!
+            deepLink.remainingRoutes.removeFirst()
+            try homeCoordinator.handleDeepLink(deepLink)
+        case "tab2":
+            selectedTab = tabs.last!
+        default:
+            throw DeepLinkingError.invalidDeepLink(firstRoute)
+        }
     }
 }
 
 enum Tab: TabRoutable {
     
-    case tab1
+    case tab1(homeCoordinator: HomeCoordinator)
     case tab2(coordinator: TabCoordinator)
     
     var id: String {
@@ -34,12 +59,12 @@ enum Tab: TabRoutable {
     
     var body: some View {
         switch self {
-        case .tab1:
-            TabView1()
+        case .tab1(let homeCoordinator):
+            TabView1(homeCoordinator: homeCoordinator)
         case .tab2(let coordinator):
             NavigationStack {
                 Button("Change Tab") {
-                    coordinator.select(.tab1)
+                    coordinator.select(coordinator.tabs.first!)
                 }
                 .navigationTitle("Test Tab")
             }

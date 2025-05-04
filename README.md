@@ -25,10 +25,12 @@ Or you can add the following dependency to your `Package.swift`:
  - Coordination of `TabView`s
  - Coordination of `NavigationStack`s
  - Coordination of modal `View`s like `.sheet`s & `.fullScreenCover`s
+ - Deep Linking
 
 ## Usage
 
 This package exposes three basic protocols for coordinators - `TabViewCoordinating`, `StackCoordinating` & `ModalCoordinating`. For the `TabView` & `NavigationStack` coordinators there is a designated `View` - `CoordinatedTabView` & `CoordinatedStack`. However, for the modal coordinator there is a designated `ViewModifier` - `.modalRoutes(_:)`.
+For deep linking an additional `DeepLinkHandling` protocol is exposed.
 
 
 ## NavigationStack Coordinator
@@ -182,7 +184,7 @@ class MyTabCoordinator: TabViewCoordinating {
 }
 ```
 
-**Note:** The `tabs` can only be defined as a constant (`let`) if the `TabRoutable`-conforming enum is `CaseIterable`. If not a `lazy var` can be used.
+**Note:** The `tabs` can only be defined as a constant (`let`) if the `TabRoutable`-conforming enum is `CaseIterable`. If not a `lazy var` or computed properties can be used.
 
 Finally, the newly created `MyTabCoordinator` can be used in a `View`.
 
@@ -202,7 +204,7 @@ To programmatically change the selected tab, the coordinator's `select(_:)` meth
 
 To pass data to routes (`Routable` or `TabRoutable`) enums with associated values can be used. 
 
-This is especially useful to for example pass the corresponding coordinator to the route.
+This is especially useful to for example pass the corresponding coordinator to a route.
 
 However, when using associated values, `String` or any other `RawRepresentable` can't be used. Thus a custom `id` must be constructed based on the associated value.   
 
@@ -229,3 +231,41 @@ enum MyScreen: Routable {
     }
 }
 ```
+
+## Deep Linking
+
+To add deep linking support to an existing coordinator of any kind - only the `DeepLinkHandling`-conformance is needed.
+
+```swift
+extension MyTabCoordinator: DeepLinkHandling {
+    func handleDeepLink(_ deepLink: DeepLink) throws {
+        switch deepLink.remainingRoutes.first {
+        case "tab1":
+            select(MyTab.tab1)
+        case "tab2":
+            select(MyTab.tab2)
+        default: 
+            throw DeepLinkingError.invalidDeepLink(firstRoute)
+        }
+    }
+}
+```
+
+To then handle incoming deep links - the `.onOpenDeepLink` View-extension can be used. 
+
+**Note:** Make sure to **only** use `.onOpenDeepLink` **once** within your app, to ensure all URL parameters are validated and discarded in case of malformed URLs. Thus, `.onOpenDeepLink` should ideally be used withing the `View` owning the initial coordinator of the app. 
+
+```swift
+struct ContentView: View {
+    @StateObject var coordinator = MyTabCoordinator()
+    
+    var body: some View {
+        CoordinatedTabView(for: coordinator)
+            .onOpenDeepLink { deepLink in
+                coordinator.handleDeepLink(deepLink)
+            }
+    }
+}
+```
+
+ **Note:** For your app to be able to open custom `URL`s, a custom URL scheme must be defined first. See more about: [Defining a custom URL scheme for your app](https://developer.apple.com/documentation/xcode/defining-a-custom-url-scheme-for-your-app).

@@ -9,14 +9,14 @@ import SwiftUI
 import Coordinator
 
 struct TabView1: View {
-    @StateObject var c = HomeCoordinator()
+    @ObservedObject var homeCoordinator: HomeCoordinator
     
     var body: some View {
-        CoordinatedStack(for: c)
-            .modalRoutes(for: c)
+        CoordinatedStack(for: homeCoordinator)
+            .modalRoutes(for: homeCoordinator)
     }
 }
 
 #Preview {
-    TabView1()
+    TabView1(homeCoordinator: HomeCoordinator())
 }

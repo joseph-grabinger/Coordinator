@@ -8,7 +8,7 @@
 import SwiftUI
 import Coordinator
 
-class NewFlowCoordinator: StackCoordinating {
+class NewFlowCoordinator: StackCoordinating, DeepLinkHandling {
     var initialRoute: NewScreen { NewScreen.newFlowRoot(coordinator: self) }
     var path = NavigationPath()
     weak var root: (any RootStackCoordinating)?
@@ -23,6 +23,27 @@ class NewFlowCoordinator: StackCoordinating {
     
     static nonisolated func == (lhs: NewFlowCoordinator, rhs: NewFlowCoordinator) -> Bool {
         lhs.id == rhs.id
+    }
+    
+    func handleDeepLink(_ deepLink: Coordinator.DeepLink) throws {
+        print("NewFlowCoordinator - remaining: \(deepLink.remainingRoutes)")
+        
+        guard let firstRoute = deepLink.remainingRoutes.first else { return }
+        
+        switch firstRoute {
+        case "view1":
+            push(NewScreen.view1(coordinator: self))
+        case "view2":
+            push(NewScreen.view2)
+            return
+        case "newFlowRoot":
+            popToRoot()
+        default:
+            throw DeepLinkingError.invalidDeepLink(firstRoute)
+        }
+        
+        deepLink.remainingRoutes.removeFirst()
+        try handleDeepLink(deepLink)
     }
 }
 
