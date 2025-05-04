@@ -23,26 +23,26 @@ public extension RootStackCoordinating {
     
     // MARK: - Properties
     
-    /// The `root` is alyways `nil` for root stack coordinators.
-    public var root: (any RootStackCoordinating)? { get { nil } set { } }
+    /// The `root` is always `nil` for root stack coordinators.
+    var root: (any RootStackCoordinating)? { get { nil } set { } }
     
     // MARK: - Methods
 
     /// Pushes a new `Coordinator` onto the navigation stack.
     /// - Parameter coordinator: The `StackCoordinating`-conforming instance to be added.
-    public func pushCoordinator(_ coordinator: any StackCoordinating) {
+    func pushCoordinator(_ coordinator: any StackCoordinating) {
         push(coordinator.initialRoute)
     }
     
     /// Pushes a new route onto the navigation stack.
     /// - Parameter route: The `Routable` instance representing the destination.
-    public func push<Route: Routable>(_ route: Route) {
+    func push<Route: Routable>(_ route: Route) {
         path.append(route)
     }
     
     /// Pops the top-most view from the navigation stack.
     /// - This removes the last added route from the navigation path.
-    public func pop() {
+    func pop() {
         guard !path.isEmpty else {
             print("Root path is empty, cannot pop route")
             return
@@ -52,7 +52,7 @@ public extension RootStackCoordinating {
     
     /// Pops all views from the navigation stack except the root view.
     /// - This resets the navigation state back to the initial route.
-    public func popToRoot() {
+    func popToRoot() {
         path.removeLast(path.count)
     }
 
@@ -77,7 +77,7 @@ public final class RootStackCoordinator<Route: Routable>: RootStackCoordinating 
 	@Published public var path = NavigationPath()
 
 	/// The initial route that this coordinator starts with.
-	public let initialRoute: Route
+    public let initialRoute: Route
 
 	// MARK: - Initialization
 

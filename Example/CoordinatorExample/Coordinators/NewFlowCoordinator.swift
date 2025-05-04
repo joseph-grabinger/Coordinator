@@ -9,11 +9,9 @@ import SwiftUI
 import Coordinator
 
 class NewFlowCoordinator: StackCoordinating {
-    var initialRoute: NewScreen { NewScreen.newFlowRoot(coordintor: self) }
+    var initialRoute: NewScreen { NewScreen.newFlowRoot(coordinator: self) }
     var path = NavigationPath()
     weak var root: (any RootStackCoordinating)?
-    var sheet: NewScreen?
-    var fullScreenCover: NewScreen?
     
     init() {
         print("init newflowCoord")
@@ -29,9 +27,9 @@ class NewFlowCoordinator: StackCoordinating {
 }
 
 enum NewScreen: Routable {
-	case view1(coordintor: NewFlowCoordinator)
+	case view1(coordinator: NewFlowCoordinator)
 	case view2
-	case newFlowRoot(coordintor: NewFlowCoordinator)
+	case newFlowRoot(coordinator: NewFlowCoordinator)
 
     var id: String {
         switch self {
