@@ -9,9 +9,9 @@ import SwiftUI
 import Coordinator
 
 class NewFlowCoordinator: StackCoordinating {
-    lazy var initialRoute = NewScreen.newFlowRoot(coordintor: self)
+    var initialRoute: NewScreen { NewScreen.newFlowRoot(coordintor: self) }
     var path = NavigationPath()
-    var root: (any StackCoordinating)?
+    weak var root: (any RootStackCoordinating)?
     var sheet: NewScreen?
     var fullScreenCover: NewScreen?
     
@@ -55,4 +55,3 @@ enum NewScreen: Routable {
 		}
 	}
 }
-
