@@ -21,18 +21,12 @@ public final class RootStackCoordinator<Route: Routable>: StackCoordinating {
 	/// The initial route that this coordinator starts with.
 	public let initialRoute: Route
 
-	// MARK: - Internal Properties
-
-	/// A collection of child coordinators managed by this coordinator.
-    @Published var children: [any StackCoordinating]
-
 	// MARK: - Initialization
 
 	/// Initializes a new `RootCoordinator` with a given `Coordinator`.
 	/// - Parameter coordinator: The initial `Coordinator` that this root coordinator manages.
 	public init<C: StackCoordinating>(coordinator: C) where C.Route == Route {
 		self.initialRoute = coordinator.initialRoute
-		self.children = [coordinator]
         self.path = coordinator.path
 		coordinator.root = self
 	}
@@ -42,7 +36,6 @@ public final class RootStackCoordinator<Route: Routable>: StackCoordinating {
 	/// Pushes a new `Coordinator` onto the navigation stack.
 	/// - Parameter coordinator: The `Coordinator` instance to be added.
 	public func pushCoordinator(_ coordinator: any StackCoordinating) {
-		children.append(coordinator)
         push(coordinator.initialRoute)
 	}
 
