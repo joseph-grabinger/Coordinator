@@ -9,9 +9,9 @@ import SwiftUI
 import Coordinator
 
 class HomeCoordinator: StackCoordinating, ModalCoordinating {
-    lazy var initialRoute = Screen.view1(coordinator: self)
+    var initialRoute: Screen { Screen.view1(coordinator: self) }
     var path = NavigationPath()
-    var root: (any StackCoordinating)?
+    weak var root: (any RootStackCoordinating)?
     @Published var sheet: Screen?
     @Published var fullScreenCover: Screen?
     
