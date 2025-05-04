@@ -23,6 +23,6 @@ jobs:
     - name: Get swift version
       run: swift --version
     - name: Build
-      run: swift build -v
+      run: xcodebuild build -scheme Coordinator -destination 'platform=iOS Simulator,OS=18.0,name=iPhone 16 Pro'
     - name: Run tests
-      run: swift test -v
+      run: xcodebuild test -scheme Coordinator -destination 'platform=iOS Simulator,OS=18.0,name=iPhone 16 Pro'
