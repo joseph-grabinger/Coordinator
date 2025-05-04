@@ -197,10 +197,9 @@ import SwiftUI
 
 final class MockStackCoordinator: StackCoordinating {
         
-    let initialRoute: MockRoute
-    
+    let initialRoute: MockRoute    
     var path: NavigationPath
-    var root: (any StackCoordinating)?
+    weak var root: (any RootStackCoordinating)?
     
     /// Initializes a `MockStackCoordinator`.
     /// - Parameters:
