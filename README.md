@@ -253,7 +253,7 @@ extension MyTabCoordinator: DeepLinkHandling {
 
 To then handle incoming deep links - the `.onOpenDeepLink` View-extension can be used. 
 
-**Note:** Make sure to **only** use `.onOpenDeepLink` **once** within your app, to ensure all URL parameters are validated and discarded in case of malformed URLs. Thus, `.onOpenDeepLink` should ideally be used withing the `View` owning the initial coordinator of the app. 
+**Note:** Make sure to **only** use `.onOpenDeepLink` **once** within your app, to ensure all URL parameters are validated and discarded in case of malformed URLs. Thus, `.onOpenDeepLink` should ideally be used within the `View` owning the initial coordinator of the app. 
 
 ```swift
 struct ContentView: View {
@@ -268,4 +268,16 @@ struct ContentView: View {
 }
 ```
 
- **Note:** For your app to be able to open custom `URL`s, a custom URL scheme must be defined first. See more about: [Defining a custom URL scheme for your app](https://developer.apple.com/documentation/xcode/defining-a-custom-url-scheme-for-your-app).
+**Note:** For your app to be able to open custom `URL`s, a custom URL scheme must be defined first. See more about: [Defining a custom URL scheme for your app](https://developer.apple.com/documentation/xcode/defining-a-custom-url-scheme-for-your-app).
+
+
+## Example Project
+
+An example Xcode project showcasing different use-cases of the `Coordinator`-package can be found [here](./Example).
+
+### Features
+
+- nesting of coordinators (including deep linking)
+- pushing one coordinator onto a previous coordinator's stack
+- coordinators managing a stack & modal presentation at once 
+
