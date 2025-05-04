@@ -19,6 +19,7 @@ jobs:
       uses: actions/checkout@v4
     - uses: sersoft-gmbh/xcodebuild-action@v3
       with:
+        spm-package-path: ./
         xcode-version: latest-stable
         scheme: Coordinator
         destination: platform=iOS
