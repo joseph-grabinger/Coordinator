@@ -12,7 +12,7 @@ The second tab within the `TabViewCoordinator` contains a simple `View` showcasi
 
 From the `HomeCoordinator` a variety of different `Screen`s can be pushed (where `Screen` is the `Route` type of the `StackCoordinating`-conforming `HomeCoordinator`).
 
-Furthermore, from the `HomeCoordinator` a subsequent `StackCoordinating`-conforming (namely `NewFlowCoordinator`) can be pushed **onto the same `NavigationStack`**.
+Furthermore, from the `HomeCoordinator` a subsequent `StackCoordinating`-conforming `NewFlowCoordinator` can be pushed **onto the same `NavigationStack`**.
 
 Since the `HomeCoordinator` is also `ModalCoordinating`-conforming, it can also present any of its routes (namely `Screen`s) modally (either as a `.sheet` or a `.fullScreenCover`).
 
