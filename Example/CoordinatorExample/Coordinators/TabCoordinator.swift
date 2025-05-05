@@ -8,7 +8,9 @@
 import SwiftUI
 import Coordinator
 
-class TabCoordinator: TabViewCoordinating, DeepLinkHandling {
+class TabCoordinator: TabViewCoordinating, DeepLinkHandling, DeepLinkValidityChecking {
+    
+    // - MARK: Internal Properties
     
     @Published var selectedTab: Tab
     
@@ -16,14 +18,33 @@ class TabCoordinator: TabViewCoordinating, DeepLinkHandling {
     
     let homeCoordinator: HomeCoordinator
     
-    static nonisolated func == (lhs: TabCoordinator, rhs: TabCoordinator) -> Bool {
-        lhs.id == rhs.id
-    }
-    
+    // - MARK: Initialization
+
     init() {
         self.homeCoordinator = HomeCoordinator()
         self.selectedTab = .tab1(homeCoordinator: homeCoordinator)
     }
+    
+    // - MARK: Static Methods
+
+    static nonisolated func == (lhs: TabCoordinator, rhs: TabCoordinator) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    static func canHandleDeepLink(_ deepLink: DeepLink) -> Bool {
+        guard let firstRoute = deepLink.remainingRoutes.first else {
+            return false
+        }
+        
+        if firstRoute == "tab1" {
+            deepLink.remainingRoutes.removeFirst()
+            return HomeCoordinator.canHandleDeepLink(deepLink)
+        } else {
+            return firstRoute == "tab2" && deepLink.remainingRoutes.count == 1
+        }
+    }
+    
+    // - MARK: Internal Methods
     
     func handleDeepLink(_ deepLink: DeepLink) throws {
         print("TabCoordinator - remaining: \(deepLink.remainingRoutes)")
@@ -41,10 +62,10 @@ class TabCoordinator: TabViewCoordinating, DeepLinkHandling {
             throw DeepLinkingError.invalidDeepLink(firstRoute)
         }
     }
+    
 }
 
 enum Tab: TabRoutable {
-    
     case tab1(homeCoordinator: HomeCoordinator)
     case tab2(coordinator: TabCoordinator)
     

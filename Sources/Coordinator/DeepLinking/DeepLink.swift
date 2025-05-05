@@ -18,10 +18,26 @@ public class DeepLink {
     
     // - MARK: Initialization
     
+    /// Initializes a `DeepLink`.
+    /// - Parameters:
+    ///   - url: The URL of the deep link.
+    ///   - remainingRoutes: The remaining routes of the deep link.
+    public init(url: URL, remainingRoutes: [String]) {
+        self.url = url
+        self.remainingRoutes = remainingRoutes
+    }
+    
     /// Initializes a `DeepLink` from a given `URL`.
     /// - Parameter url: The `URL` from which the `DeepLink` should be created.
-    public init(from url: URL) {
-        self.url = url
-        self.remainingRoutes = url.remainingRoutes()
+    public convenience init(from url: URL) {
+        self.init(url: url, remainingRoutes: url.remainingRoutes())
+    }
+    
+    // - MARK: Public Methods
+    
+    /// Creates a copy of the current `DeepLink` instance.
+    /// - Returns: A new `DeepLink` instance with identical data.
+    public func copy() -> DeepLink {
+        return DeepLink(url: url, remainingRoutes: remainingRoutes)
     }
 }

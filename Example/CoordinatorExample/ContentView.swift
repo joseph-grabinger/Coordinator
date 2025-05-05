@@ -15,7 +15,7 @@ struct ContentView: View {
     /// The custom coordinator instance.
     @StateObject private var coordinator = TabCoordinator()
     
-    /// The error which occured during the handling of a `DeepLink`, if any.
+    /// The error which occurred during the handling of a `DeepLink`, if any.
     @State private var deepLinkingError: Error?
     
     // MARK: - Body
@@ -23,6 +23,10 @@ struct ContentView: View {
     var body: some View {
         CoordinatedTabView(for: coordinator)
             .onOpenDeepLink { deepLink in
+                guard TabCoordinator.canHandleDeepLink(deepLink.copy()) else {
+                    deepLinkingError = DeepLinkingError.invalidDeepLink("Validity-check for deep link failed!")
+                    return
+                }
                 do {
                     try coordinator.handleDeepLink(deepLink)
                 } catch {
