@@ -33,7 +33,7 @@ Or you can add the following dependency to your `Package.swift`:
 This package exposes three basic protocols for coordinators - `TabViewCoordinating`, `StackCoordinating` & `ModalCoordinating`.
 For the `TabView` & `NavigationStack` coordinators there is a designated `View` - `CoordinatedTabView` & `CoordinatedStack`. 
 However, for the modal coordinator there is a designated `ViewModifier` - `.modalRoutes(_:)`.
-For deep linking an additional `DeepLinkHandling` protocol is exposed. Checking the validity of deep link URLs can be done by conforming to the `DeppLinkValidityChecking` protocol.
+For deep linking an additional `DeepLinkHandling` protocol is exposed. Checking the validity of deep link URLs can be done by conforming to the `DeepLinkValidityChecking` protocol.
 
 
 ## NavigationStack Coordinator
