@@ -25,11 +25,13 @@ Or you can add the following dependency to your `Package.swift`:
  - Coordination of `TabView`s
  - Coordination of `NavigationStack`s
  - Coordination of modal `View`s like `.sheet`s & `.fullScreenCover`s
- - Deep Linking
+ - URL-based Deep Linking
 
 ## Usage
 
-This package exposes three basic protocols for coordinators - `TabViewCoordinating`, `StackCoordinating` & `ModalCoordinating`. For the `TabView` & `NavigationStack` coordinators there is a designated `View` - `CoordinatedTabView` & `CoordinatedStack`. However, for the modal coordinator there is a designated `ViewModifier` - `.modalRoutes(_:)`.
+This package exposes three basic protocols for coordinators - `TabViewCoordinating`, `StackCoordinating` & `ModalCoordinating`.
+For the `TabView` & `NavigationStack` coordinators there is a designated `View` - `CoordinatedTabView` & `CoordinatedStack`. 
+However, for the modal coordinator there is a designated `ViewModifier` - `.modalRoutes(_:)`.
 For deep linking an additional `DeepLinkHandling` protocol is exposed.
 
 
@@ -91,7 +93,7 @@ To programmatically navigate to a new route, the coordinator offers several meth
 
  ## Modal Coordinator
  
- To create a coordinator for modals like `.sheet`s & `.fullScreenCover`s, first a modal route type is needed. This route type must be `Routable`-conforming and defines the routes the coordinator should handle.
+ To create a coordinator for modals like `.sheet`s & `.fullScreenCover`s, first a modal route type is needed. Just like the route type for stack coordinators, this route type must be `Routable`-conforming and defines the routes the coordinator should handle.
  
  ```swift
 enum MyModal: String, Routable {
@@ -245,7 +247,7 @@ extension MyTabCoordinator: DeepLinkHandling {
         case "tab2":
             select(MyTab.tab2)
         default: 
-            throw DeepLinkingError.invalidDeepLink(firstRoute)
+            throw DeepLinkingError.invalidDeepLink(deepLink.remainingRoutes.first)
         }
     }
 }
@@ -270,6 +272,39 @@ struct ContentView: View {
 
 **Note:** For your app to be able to open custom `URL`s, a custom URL scheme must be defined first. See more about: [Defining a custom URL scheme for your app](https://developer.apple.com/documentation/xcode/defining-a-custom-url-scheme-for-your-app).
 
+### Handling URLs in an AppDelegate or SceneDelegate
+
+If an app is not using the SwiftUI App life cycle - deep link URLs can also be handled from within an `AppDelegate` using the `URL`. 
+
+```swift
+func application(
+    _ application: UIApplication,
+    open url: URL,
+    options: [UIApplication.OpenURLOptionsKey : Any] = [:]
+) -> Bool {
+    let deepLink = DeepLink(from: url)
+
+    // Handle the DeepLink property accordingly.
+}
+```
+
+Or alternatively, from inside the `SceneDelegate` by extracting the URL from the `ConnectionOptions`.
+
+```swift
+func scene(
+    _ scene: UIScene,
+    willConnectTo session: UISceneSession,
+    options connectionOptions: UIScene.ConnectionOptions
+) {
+    guard let url = connectionOptions.urlContexts.first?.url {
+        return
+    }
+    
+    let deepLink = DeepLink(from: url)
+    
+    // Handle the URL property accordingly.
+}
+``` 
 
 ## Example Project
 
