@@ -26,13 +26,14 @@ Or you can add the following dependency to your `Package.swift`:
  - Coordination of `NavigationStack`s
  - Coordination of modal `View`s like `.sheet`s & `.fullScreenCover`s
  - URL-based Deep Linking
+ - Validity checking for deep link URLs
 
 ## Usage
 
 This package exposes three basic protocols for coordinators - `TabViewCoordinating`, `StackCoordinating` & `ModalCoordinating`.
 For the `TabView` & `NavigationStack` coordinators there is a designated `View` - `CoordinatedTabView` & `CoordinatedStack`. 
 However, for the modal coordinator there is a designated `ViewModifier` - `.modalRoutes(_:)`.
-For deep linking an additional `DeepLinkHandling` protocol is exposed.
+For deep linking an additional `DeepLinkHandling` protocol is exposed. Checking the validity of deep link URLs can be done by conforming to the `DeppLinkValidityChecking` protocol.
 
 
 ## NavigationStack Coordinator
@@ -305,6 +306,57 @@ func scene(
     // Handle the URL property accordingly.
 }
 ``` 
+
+### Validity Checking of Deep Link URLs
+
+Since URL schemes offer a potential attack vector into your app, all deep link URL should be properly validated before performing an action. 
+
+In certain scenarios where all deep linkable routes an app offers can't be checked from within the first entry point of a deep link (e.g. where `.onOpenDeepLink` is used or within the `AppDelegate` or `SceneDelegate`), the `DeppLinkValidityChecking` protocol can be used.
+
+Using a `TabCoordinator` similar to the one from the [Example project](./Example), this could look the following: 
+
+```swift
+struct ContentView: View {
+    @StateObject private var coordinator = TabCoordinator()
+    
+    var body: some View {
+        CoordinatedTabView(for: coordinator)
+            .onOpenDeepLink { deepLink in
+                // The DeepLink property is checked for validity.
+                // This is done using a copy of the deep link, since the original deep link is used to handle the deep link.
+                guard TabCoordinator.canHandleDeepLink(deepLink.copy()) else {
+                    deepLinkingError = DeepLinkingError.invalidDeepLink(deepLink)
+                    return
+                }
+                // The DeepLink property is handled only if it is valid.
+                try? coordinator.handleDeepLink(deepLink)
+            }
+    }
+}
+```
+
+The `TabCoordinator` must conform to `DeepLinkValidityChecking` and provide the static `canHandleDeepLink` function. 
+
+**Note:** The implementation logic of `canHandleDeepLink` is heavily tied to your app's business logic and depends on which routes can be presented on which.
+
+```swift
+extension TabCoordinator: DeepLinkValidityChecking {
+    static func canHandleDeepLink(_ deepLink: DeepLink) -> Bool {
+        guard let firstRoute = deepLink.remainingRoutes.first else {
+            return false
+        }
+        
+        if firstRoute == "tab1" {
+            deepLink.remainingRoutes.removeFirst()
+            return HomeCoordinator.canHandleDeepLink(deepLink)
+        } else {
+            return firstRoute == "tab2" && deepLink.remainingRoutes.count == 1
+        }
+    }
+}
+```
+
+**Note:** If an app offers only a handful of deep linkable routes, adopting `DeppLinkValidityChecking` doesn't make much sense. In such cases the opened URL can be checked against all available deep linkable routes.
 
 ## Example Project
 

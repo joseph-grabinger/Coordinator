@@ -46,9 +46,7 @@ class TabCoordinator: TabViewCoordinating, DeepLinkHandling, DeepLinkValidityChe
     
     // - MARK: Internal Methods
     
-    func handleDeepLink(_ deepLink: DeepLink) throws {
-        print("TabCoordinator - remaining: \(deepLink.remainingRoutes)")
-        
+    func handleDeepLink(_ deepLink: DeepLink) throws {        
         guard let firstRoute = deepLink.remainingRoutes.first else { return }
         
         switch firstRoute {
