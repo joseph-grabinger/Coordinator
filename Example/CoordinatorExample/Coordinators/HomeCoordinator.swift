@@ -8,20 +8,48 @@
 import SwiftUI
 import Coordinator
 
-class HomeCoordinator: StackCoordinating, ModalCoordinating, DeepLinkHandling {
+class HomeCoordinator: StackCoordinating, ModalCoordinating, DeepLinkHandling, DeepLinkValidityChecking {
+    
+    // - MARK: Internal Properties
+
     var initialRoute: Screen { Screen.view1(coordinator: self) }
+
     var path = NavigationPath()
+
     weak var root: (any RootStackCoordinating)?
+
     @Published var sheet: Screen?
+
     @Published var fullScreenCover: Screen?
     
+    // - MARK: Static Methods
+
     static nonisolated func == (lhs: HomeCoordinator, rhs: HomeCoordinator) -> Bool {
         lhs.id == rhs.id
     }
     
-    func handleDeepLink(_ deepLink: DeepLink) throws {
-        print("HomeCoordinator - remaining: \(deepLink.remainingRoutes)")
+    static func canHandleDeepLink(_ deepLink: DeepLink) -> Bool {
+        guard let firstRoute = deepLink.remainingRoutes.first else {
+            return true
+        }
         
+        switch firstRoute {
+        case "view1", "view2":
+            deepLink.remainingRoutes.removeFirst()
+            return Self.canHandleDeepLink(deepLink)
+        case "sheet", "cover", "sheetFlow":
+            return deepLink.remainingRoutes.count == 1
+        case "newFlowRoot":
+            deepLink.remainingRoutes.removeFirst()
+            return NewFlowCoordinator.canHandleDeepLink(deepLink)
+        default:
+            return false
+        }
+    }
+    
+    // - MARK: Internal Methods
+
+    func handleDeepLink(_ deepLink: DeepLink) throws {
         guard let firstRoute = deepLink.remainingRoutes.first else { return }
         
         switch firstRoute {

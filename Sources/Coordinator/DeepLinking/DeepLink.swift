@@ -32,4 +32,12 @@ public class DeepLink {
     public convenience init(from url: URL) {
         self.init(url: url, remainingRoutes: url.remainingRoutes())
     }
+    
+    // - MARK: Public Methods
+    
+    /// Creates a copy of the current `DeepLink` instance.
+    /// - Returns: A new `DeepLink` instance with identical data.
+    public func copy() -> DeepLink {
+        return DeepLink(url: url, remainingRoutes: remainingRoutes)
+    }
 }
