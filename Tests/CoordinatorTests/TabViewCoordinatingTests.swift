@@ -53,8 +53,8 @@ final class MockTabViewCoordinator: TabViewCoordinating {
     
     /// Initializes a `MockTabViewCoordinator`.
     /// - Parameters:
-    ///   - selectedTab: The cooridnator's initial route.
-    ///   - tabs: The cooridnator's tabs.
+    ///   - selectedTab: The coordinator's initial route.
+    ///   - tabs: The coordinator's tabs.
     init(selectedTab: MockTabRoute = .route1, tabs: [MockTabRoute] = MockTabRoute.allCases) {
         self.selectedTab = selectedTab
         self.tabs = tabs
