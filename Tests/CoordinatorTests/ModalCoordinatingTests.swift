@@ -96,8 +96,8 @@ final class MockModalCoordinator: ModalCoordinating {
     
     /// Initializes a `MockModalCoordinator`.
     /// - Parameters:
-    ///   - sheet: The cooridnator's initial sheet.
-    ///   - fullScreenCover: The cooridnator's initial fullScreenCover.
+    ///   - sheet: The coordinator's initial sheet.
+    ///   - fullScreenCover: The coordinator's initial fullScreenCover.
     init(sheet: MockModalRoute? = nil, fullScreenCover: MockModalRoute? = nil) {
         self.sheet = sheet
         self.fullScreenCover = fullScreenCover
