@@ -11,7 +11,7 @@ import SwiftUI
 ///
 /// This protocol enables the presentation of modals like `.fullScreenCover`s & `.sheet`s.
 @MainActor
-public protocol ModalCoordinating: ObservableObject, Identifiable {
+public protocol ModalCoordinating: Coordinating {
     /// The type representing a modal route.
     associatedtype Route: Routable
     

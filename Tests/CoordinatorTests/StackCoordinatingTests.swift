@@ -50,7 +50,7 @@ import SwiftUI
 
         // WHEN: A child coordinator is pushed.
         let child = MockStackCoordinator(initialRoute: .route5)
-        sut.pushCoordinator(child)
+        sut.push(child)
         
         // THEN: The child's initial route is added to the root's path.
         #expect(root.path.count == 1, "Root's path is expected to contain one element")
@@ -65,7 +65,7 @@ import SwiftUI
 
         // WHEN: A child coordinator is pushed.
         let child = MockStackCoordinator(initialRoute: .route5)
-        sut.pushCoordinator(child)
+        sut.push(child)
         
         // THEN: The child's root is still nil.
         #expect(child.root == nil, "Child's root is expected to be nil")
