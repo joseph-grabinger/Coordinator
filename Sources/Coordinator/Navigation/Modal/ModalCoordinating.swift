@@ -46,7 +46,7 @@ public extension ModalCoordinating {
             sheet = route
         case .fullScreenCover:
             guard fullScreenCover == nil else {
-                Logger.navKit.warning("Cannot present \"\(route)\" as fullScreenCover: \"\(self)\" is already presenting \"\(self.sheet!)\".")
+                Logger.navKit.warning("Cannot present \"\(route)\" as fullScreenCover: \"\(self)\" is already presenting \"\(self.fullScreenCover!)\".")
                 return
             }
             fullScreenCover = route
