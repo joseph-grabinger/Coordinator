@@ -7,13 +7,27 @@
 
 import SwiftUI
 
-/// A protocol defining a navigation route that can produce a SwiftUI `View`.
-public protocol Routable: View, Hashable, Identifiable {}
+/// A protocol that represents a navigation route capable of producing a SwiftUI `View`.
+@MainActor
+public protocol Routable: Identifiable, Hashable, CustomStringConvertible {
 
-// - MARK: TabRoutable
+    /// The type of SwiftUI `View` to be displayed when this route is active.
+    associatedtype V: SwiftUI.View
 
-/// A protocol defining a navigation route for a `TabView` which can produce a SwiftUI `View`.
-public protocol TabRoutable: Routable {
-    /// The label to use for the `Tab`.
-    var label: Label<Text, Image> { get }
+    /// Unique identifier of route.
+    nonisolated var id: String { get }
+
+    /// The view associated with this route.
+    ///
+    /// This property is used to render the destination screen when the route is triggered.
+    @ViewBuilder var view: V { get }
+}
+
+// MARK: - CustomStringConvertible
+
+public extension Routable where ID: CustomStringConvertible {
+    nonisolated var description: String {
+        let typeName = String(describing: Self.self)
+        return "\(typeName)(id: \"\(id)\")"
+    }
 }

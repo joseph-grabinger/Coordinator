@@ -46,7 +46,8 @@ import SwiftUI
 // - MARK: MockTabViewCoordinator
 
 final class MockTabViewCoordinator: TabViewCoordinating {
-    
+
+    let id: String = "MockTabViewCoordinator"
     let tabs: [MockTabRoute]
 
     var selectedTab: MockTabRoute
@@ -67,16 +68,16 @@ final class MockTabViewCoordinator: TabViewCoordinating {
 
 // - MARK: MockTabRoute
 
-enum MockTabRoute: Int, TabRoutable, CaseIterable {
+enum MockTabRoute: String, TabRoutable, CaseIterable {
     case route1
     case route2
     case route3
     case route4
     case route5
     
-    nonisolated var id: Int { self.rawValue }
-    
-    var body: some View {
+    var id: String { self.rawValue }
+
+    var view: some View {
         EmptyView()
     }
     

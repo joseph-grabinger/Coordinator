@@ -29,11 +29,7 @@ class NewFlowCoordinator: StackCoordinating, DeepLinkHandling, DeepLinkValidityC
     }
     
     // - MARK: Static Methods
-
-    static nonisolated func == (lhs: NewFlowCoordinator, rhs: NewFlowCoordinator) -> Bool {
-        lhs.id == rhs.id
-    }
-    
+   
     static func canHandleDeepLink(_ deepLink: Coordinator.DeepLink) -> Bool {
         guard let firstRoute = deepLink.remainingRoutes.first else {
             return true

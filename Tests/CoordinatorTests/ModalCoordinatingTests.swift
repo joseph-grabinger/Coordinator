@@ -91,6 +91,8 @@ import SwiftUI
 // - MARK: MockModalCoordinator
 
 final class MockModalCoordinator: ModalCoordinating {
+
+    let id: String = "MockModalCoordinator"
     var sheet: MockModalRoute?
     var fullScreenCover: MockModalRoute?
     
@@ -106,13 +108,13 @@ final class MockModalCoordinator: ModalCoordinating {
 
 // - MARK: MockModalRoute
 
-enum MockModalRoute: Int, Routable {
+enum MockModalRoute: String, Routable {
     case route1
     case route2
     
-    nonisolated var id: Int { self.rawValue }
-    
-    var body: some View {
+    var id: String { self.rawValue }
+
+    var view: some View {
         EmptyView()
     }
 }
