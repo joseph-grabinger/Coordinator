@@ -8,13 +8,15 @@
 import SwiftUI
 import Coordinator
 
-class HomeCoordinator: StackCoordinating, ModalCoordinating, DeepLinkHandling {
+class HomeCoordinator: StackCoordinating, ModalCoordinating {
     
     // - MARK: Internal Properties
+    
+    let id = "HomeCoordinator"
 
     var initialRoute: Screen { Screen.view1(coordinator: self) }
 
-    var path = NavigationPath()
+    var presentedRoutes = [Screen]()
 
     weak var root: (any RootStackCoordinating)?
 
@@ -96,10 +98,10 @@ extension HomeCoordinator: DeepLinkHandling {
         case "view1":
             popToRoot()
         case "view2":
-            push(Screen.view2(coordinator: self))
+            push(route: Screen.view2(coordinator: self))
         case "newFlowRoot":
             let newFlowCoordinator = NewFlowCoordinator()
-            pushCoordinator(newFlowCoordinator)
+            push(coordinator: newFlowCoordinator)
             deepLink.remainingRoutes.removeFirst()
             try newFlowCoordinator.handleDeepLink(deepLink)
             return

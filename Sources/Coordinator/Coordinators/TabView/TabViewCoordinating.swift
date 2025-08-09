@@ -30,14 +30,6 @@ public protocol TabViewCoordinating: Coordinating {
     func select(_ tab: Route)
 }
 
-// MARK: - Hashable Conformance
-
-public extension TabViewCoordinating {
-    nonisolated func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-}
-
 // MARK: - Default Implementation
 
 public extension TabViewCoordinating {

@@ -15,7 +15,7 @@ struct NewFlowRootView: View {
             Text("Hello from new flow root")
             
             Button("Push") {
-                coordinator.push(NewScreen.view1(coordinator: coordinator))
+                coordinator.push(route: NewScreen.view1(coordinator: coordinator))
             }
             Button("Pop") {
                 coordinator.pop()

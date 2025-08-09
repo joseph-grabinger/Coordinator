@@ -46,6 +46,7 @@ import SwiftUI
 // - MARK: MockTabViewCoordinator
 
 final class MockTabViewCoordinator: TabViewCoordinating {
+    nonisolated let id = "MockTabViewCoordinator"
     
     let tabs: [MockTabRoute]
 
@@ -58,10 +59,6 @@ final class MockTabViewCoordinator: TabViewCoordinating {
     init(selectedTab: MockTabRoute = .route1, tabs: [MockTabRoute] = MockTabRoute.allCases) {
         self.selectedTab = selectedTab
         self.tabs = tabs
-    }
-    
-    static nonisolated func == (lhs: MockTabViewCoordinator, rhs: MockTabViewCoordinator) -> Bool {
-        lhs.id == rhs.id
     }
 }
 

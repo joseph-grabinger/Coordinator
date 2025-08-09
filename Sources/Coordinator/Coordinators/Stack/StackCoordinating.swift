@@ -29,14 +29,6 @@ public protocol StackCoordinating: Coordinating {
     var presentedRoutes: [Route] { get set }
 }
 
-// MARK: - Hashable Conformance
-
-public extension StackCoordinating {
-    nonisolated func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-}
-
 // MARK: - Default Implementations
 
 public extension StackCoordinating {
@@ -108,19 +100,5 @@ private extension StackCoordinating {
     /// - Parameter k: The number of items to remove (default is 1).
     func popLast(_ k: Int = 1) {
         presentedRoutes.removeLast(k)
-    }
-}
-
-// MARK: -
-
-open class StackCoordinator<R: Routable>: StackCoordinating {
-
-    public var initialRoute: R
-    public var presentedRoutes: [R]
-    public var root: (any RootStackCoordinating)?
-
-    public init(initialRoute: R, presentedRoutes: [R] = []) {
-        self.initialRoute = initialRoute
-        self.presentedRoutes = presentedRoutes
     }
 }

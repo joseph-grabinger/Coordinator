@@ -7,27 +7,29 @@
 
 import Foundation
 
+/// Base protocol that defines the shared behavior and identity requirements for all coordinators.
 @MainActor
 public protocol Coordinating: ObservableObject, Identifiable, Hashable, Equatable {
 
-//    nonisolated id: String { get }
+    /// The unique identifier of the coordinator.
+    nonisolated var id: String { get }
 
 }
 
 // MARK: - Hashable
 
-extension Coordinating {
+public extension Coordinating {
 
-    public nonisolated func hash(into hasher: inout Hasher) {
+    nonisolated func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
 }
 
 // MARK: - Equatable
 
-extension Coordinating {
+public extension Coordinating {
 
-    public nonisolated static func == (lhs: Self, rhs: Self) -> Bool {
+    nonisolated static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.id == rhs.id
     }
 }

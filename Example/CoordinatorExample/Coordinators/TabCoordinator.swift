@@ -12,6 +12,8 @@ class TabCoordinator: TabViewCoordinating, DeepLinkHandling, DeepLinkValidityChe
     
     // - MARK: Internal Properties
     
+    let id = "TabCoordinator"
+    
     @Published var selectedTab: Tab
     
     lazy var tabs: [Tab] = [ .tab1(homeCoordinator: homeCoordinator), .tab2(coordinator: self) ]
@@ -26,10 +28,6 @@ class TabCoordinator: TabViewCoordinating, DeepLinkHandling, DeepLinkValidityChe
     }
     
     // - MARK: Static Methods
-
-    static nonisolated func == (lhs: TabCoordinator, rhs: TabCoordinator) -> Bool {
-        lhs.id == rhs.id
-    }
     
     static func canHandleDeepLink(_ deepLink: DeepLink) -> Bool {
         guard let firstRoute = deepLink.remainingRoutes.first else {

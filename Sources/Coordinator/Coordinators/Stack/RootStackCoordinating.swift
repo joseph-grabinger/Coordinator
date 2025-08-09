@@ -82,6 +82,9 @@ public extension RootStackCoordinating {
 public final class RootStackCoordinator<Route: Routable>: RootStackCoordinating {
 
 	// MARK: - Public Properties
+    
+    /// The unique identifier of the coordinator.
+    public nonisolated let id: String
 
 	/// The navigation path representing the current state of navigation.
 	@Published public var path = NavigationPath()
@@ -94,6 +97,7 @@ public final class RootStackCoordinator<Route: Routable>: RootStackCoordinating 
 	/// Initializes a new `RootCoordinator` with a given `Coordinator`.
 	/// - Parameter coordinator: The initial `Coordinator` that this root coordinator manages.
 	public init<C: StackCoordinating>(coordinator: C) where C.Route == Route {
+        self.id = "RootStackCoordinator<\(C.self)>"
 		self.initialRoute = coordinator.initialRoute
         self.path = NavigationPath(coordinator.presentedRoutes)
 		coordinator.root = self
