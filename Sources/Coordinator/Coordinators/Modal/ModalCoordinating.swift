@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import OSLog
 
 /// A protocol defining the requirements for coordinators that manage the presentation of modals.
 ///
@@ -53,13 +54,13 @@ public extension ModalCoordinating {
         switch presentationStyle {
         case .sheet:
             guard sheet == nil else {
-                print("A sheet is already presented on \(self), cannot present route as sheet")
+                Logger.coordinator.warning("Cannot present \"\(route)\" as sheet: \"\(self)\" is already presenting \"\(self.sheet!)\".")
                 return
             }
             sheet = route
         case .fullScreenCover:
             guard fullScreenCover == nil else {
-                print("A fullScreenCover is already presented on \(self), cannot present route as fullScreenCover")
+                Logger.coordinator.warning("Cannot present \"\(route)\" as fullScreenCover: \"\(self)\" is already presenting \"\(self.fullScreenCover!)\".")
                 return
             }
             fullScreenCover = route

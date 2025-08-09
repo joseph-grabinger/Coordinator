@@ -8,7 +8,17 @@
 import SwiftUI
 
 /// A protocol defining a navigation route that can produce a SwiftUI `View`.
-public protocol Routable: View, Hashable, Identifiable {}
+public protocol Routable: View, Hashable, Identifiable, CustomStringConvertible {}
+
+// MARK: - CustomStringConvertible
+
+public extension Routable {
+
+    nonisolated var description: String {
+        let typeName = String(describing: Self.self)
+        return "\(typeName)(id: \"\(id)\")"
+    }
+}
 
 // - MARK: TabRoutable
 

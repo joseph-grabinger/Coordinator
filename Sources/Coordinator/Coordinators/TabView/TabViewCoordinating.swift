@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import OSLog
 
 /// A protocol that defines the coordination logic for a tab-based navigation system.
 ///
@@ -41,7 +42,7 @@ public extension TabViewCoordinating {
     /// - Parameter tab: The tab to select.
     func select(_ tab: Route) {
         guard tabs.contains(tab) else {
-            print("Can't select tab: \(tab) since it's not registered in the Coordinator's tabs.")
+            Logger.coordinator.warning("Cannot select tab from \"\(self)\": \"\(tab)\" is unregistered.")
             return
         }
         selectedTab = tab

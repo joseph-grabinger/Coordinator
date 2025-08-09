@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import OSLog
 
 public protocol RootStackCoordinating: StackCoordinating {
 
@@ -51,13 +52,8 @@ public extension RootStackCoordinating {
     }
     
     /// Pops the top-most view from the navigation stack.
-    /// - This removes the last added route from the navigation path.
     func pop() {
-        guard !path.isEmpty else {
-            print("Root path is empty, cannot pop route")
-            return
-        }
-        path.removeLast()
+        popLast(1)
     }
     
     /// Pops all views from the navigation stack except the root view.
@@ -70,7 +66,7 @@ public extension RootStackCoordinating {
     /// - Parameter k: The number of views to pop, defaulting to `1`.
     func popLast(_ k: Int = 1) {
         guard path.count >= k else {
-            print("Root path contains \(path.count) elements, cannot pop \(k) routes")
+            Logger.coordinator.warning("\(self) cannot pop \(k) routes: path contains only \(self.path.count).")
             return
         }
         path.removeLast(k)
@@ -97,7 +93,7 @@ public final class RootStackCoordinator<Route: Routable>: RootStackCoordinating 
 	/// Initializes a new `RootCoordinator` with a given `Coordinator`.
 	/// - Parameter coordinator: The initial `Coordinator` that this root coordinator manages.
 	public init<C: StackCoordinating>(coordinator: C) where C.Route == Route {
-        self.id = "RootStackCoordinator<\(C.self)>"
+        self.id = "RootStackCoordinator<\(coordinator)>"
 		self.initialRoute = coordinator.initialRoute
         self.path = NavigationPath(coordinator.presentedRoutes)
 		coordinator.root = self
