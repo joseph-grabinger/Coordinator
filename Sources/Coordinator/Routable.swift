@@ -24,6 +24,7 @@ public extension Routable {
 
 /// A protocol defining a navigation route for a `TabView` which can produce a SwiftUI `View`.
 public protocol TabRoutable: Routable {
+    
     /// The label to use for the `Tab`.
     var label: Label<Text, Image> { get }
 }
