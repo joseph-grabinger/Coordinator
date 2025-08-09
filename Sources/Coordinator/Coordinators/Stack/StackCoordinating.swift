@@ -87,6 +87,11 @@ public extension StackCoordinating {
         presentedRoutes = []
     }
 
+    /// Pops the navigation stack all the way to the root of the root coordinator.
+    ///
+    /// In a coordinator hierarchy, the "root of root" refers to the top-most coordinator that manages
+    /// the entire navigation stack. This method delegates to the root coordinator's `popToRoot()` method,
+    /// ensuring that navigation returns to the very beginning of the stack, regardless of the current depth.
     func popToRootRoot() {
         root?.popToRoot()
     }
