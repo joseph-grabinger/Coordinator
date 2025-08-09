@@ -39,9 +39,9 @@ public extension RootStackCoordinating {
         popLast(1)
     }
     
-    /// Pops all views from the navigation stack except the root view.
+    /// Pops all views from the `NavigationStack` - leaving only the initial route.
     ///
-    /// This resets the navigation state back to the initial route.
+    /// This effectively empties the `NavigationPath`.
     func popToRoot() {
         path = NavigationPath()
     }

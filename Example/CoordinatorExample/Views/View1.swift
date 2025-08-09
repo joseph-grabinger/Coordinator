@@ -37,8 +37,8 @@ struct NewFlowView1: View {
             Button("Pop") {
                 coordinator.pop()
             }
-            Button("Pop to Root") {
-                coordinator.popToRoot()
+            Button("Pop to initial Route") {
+                coordinator.popToInitialRoute()
 			}
         }
         .navigationTitle("View 1")

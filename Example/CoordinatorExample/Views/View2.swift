@@ -18,8 +18,8 @@ struct View2: View {
             Button("Pop") {
                 coordinator.pop()
             }
-            Button("Pop to Root") {
-                coordinator.popToRoot()
+            Button("Pop to initial Route") {
+                coordinator.popToInitialRoute()
             }
             Button("New Flow") {
                 coordinator.push(coordinator: NewFlowCoordinator())

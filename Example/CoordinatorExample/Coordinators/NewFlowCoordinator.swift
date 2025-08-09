@@ -52,7 +52,7 @@ class NewFlowCoordinator: StackCoordinating, DeepLinkHandling, DeepLinkValidityC
             push(route: NewScreen.view2)
             return
         case "newFlowRoot":
-            popToRoot()
+            popToInitialRoute()
         default:
             throw DeepLinkingError.invalidDeepLink(firstRoute)
         }

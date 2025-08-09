@@ -148,16 +148,16 @@ import SwiftUI
         #expect(sut.presentedRoutes == presentedRoutes, "The SUT's presentedRoutes is expected to equal the initial presentedRoutes")
     }
     
-    // - MARK: PopToRoot Tests
+    // - MARK: PopToInitialRoute Tests
     
-    @Test func testPopToRootSuccessNonEmptyPath() {
+    @Test func testPopToInitialRouteSuccessNonEmptyPath() {
         // GIVEN: An initialized coordinator (SUT) & root coordinator with an initial path.
         let presentedRoutes = [MockRoute.route1, MockRoute.route2]
         let sut = MockStackCoordinator(presentedRoutes: presentedRoutes)
         let root = RootStackCoordinator(coordinator: sut)
         
-        // WHEN: The SUT pop to root.
-        sut.popToRoot()
+        // WHEN: The SUT pop to initial route.
+        sut.popToInitialRoute()
         
         // THEN: The SUT's path is expected not to change.
         #expect(sut.presentedRoutes.isEmpty, "The SUT's presentedRoutes is expected to be empty")
@@ -166,13 +166,13 @@ import SwiftUI
         #expect(sut.presentedRoutes.count == root.path.count, "The SUT presentedRoutes and root path are expected to be equal")
     }
     
-    @Test func testPopToRootSuccessEmptyPath() {
+    @Test func testPopToInitialRouteSuccessEmptyPath() {
         // GIVEN: An initialized coordinator (SUT) & root coordinator without an initial path.
         let sut = MockStackCoordinator()
         let root = RootStackCoordinator(coordinator: sut)
         
-        // WHEN: The SUT pop to root.
-        sut.popToRoot()
+        // WHEN: The SUT pop to initial route.
+        sut.popToInitialRoute()
         
         // THEN: The SUT's path is expected not to change.
         #expect(sut.presentedRoutes.isEmpty, "The SUT's presentedRoutes is expected to be empty")
@@ -181,13 +181,13 @@ import SwiftUI
         #expect(sut.presentedRoutes.count == root.path.count, "The SUT presentedRoutes and root path are expected to be equal")
     }
     
-    @Test func testPopToRootError() {
+    @Test func testPopToInitialRouteError() {
         // GIVEN: An initialized coordinator (SUT) with an initial path.
         let presentedRoutes = [MockRoute.route1, MockRoute.route2]
         let sut = MockStackCoordinator(presentedRoutes: presentedRoutes)
         
         // WHEN: The SUT pop to root.
-        sut.popToRoot()
+        sut.popToInitialRoute()
         
         // THEN: The SUT's path is expected equal the initial path.
         #expect(sut.presentedRoutes == presentedRoutes, "The SUT's presentedRoutes is expected to equal the initial presentedRoutes")
