@@ -76,6 +76,12 @@ public extension StackCoordinating {
         presentedRoutes = []
     }
 
+    /// Pops all presented routes and the previous route from the navigation stack.
+    ///
+    /// This method removes all routes currently presented by this coordinator, as well as the route immediately preceding them in the root navigation path.
+    /// It is useful when you want to dismiss the current stack of routes and also remove the previous route, effectively stepping back two levels in the navigation hierarchy.
+    ///
+    /// - Note: This method performs a root path check to ensure there are enough items to pop. Use this method instead of `pop()` or `popToRoot()` when you need to remove both the current stack and the previous route.
     func popToPrevious() {
         guard let root,
               root.path.count > presentedRoutes.count
