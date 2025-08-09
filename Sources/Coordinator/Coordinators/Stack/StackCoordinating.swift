@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import OSLog
 
 /// A protocol defining the requirements for coordinators that manage a `NavigationStack`.
 ///
@@ -37,7 +38,7 @@ public extension StackCoordinating {
     /// - Parameter coordinator: The `Coordinator` to push.
     func push(coordinator: any StackCoordinating) {
         guard let root else {
-            print("Root is nil, cannot push coordinator")
+            Logger.coordinator.warning("Cannot push \"\(coordinator.description)\" from \"\(self)\": root is nil.")
             return
         }
         coordinator.root = root
@@ -48,7 +49,7 @@ public extension StackCoordinating {
     /// - Parameter route: The `Routable` instance to be pushed onto the stack.
     func push(route: Route) {
         guard let root else {
-            print("Root is nil, cannot push route")
+            Logger.coordinator.warning("Cannot push \"\(route)\" from \"\(self)\": root is nil.")
             return
         }
         root.push(route)
@@ -58,7 +59,7 @@ public extension StackCoordinating {
     /// Default implementation of `pop()`, removing the last item from the `NavigationPath`.
     func pop() {
         guard let root else {
-            print("Root is nil, cannot pop route")
+            Logger.coordinator.warning("Cannot pop from \"\(self)\": root is nil.")
             return
         }
         root.pop()
@@ -69,7 +70,7 @@ public extension StackCoordinating {
     /// Default implementation of `popToRoot()`, removing all items from the `NavigationPath`.
     func popToRoot() {
         guard let root else {
-            print("Root is nil, cannot pop to root")
+            Logger.coordinator.warning("Cannot pop to initial route from \"\(self)\": root is nil.")
             return
         }
         root.popLast(presentedRoutes.count)
@@ -83,10 +84,12 @@ public extension StackCoordinating {
     ///
     /// - Note: This method performs a root path check to ensure there are enough items to pop. Use this method instead of `pop()` or `popToRoot()` when you need to remove both the current stack and the previous route.
     func popToPrevious() {
-        guard let root,
-              root.path.count > presentedRoutes.count
-        else {
-            print("Root is nil, cannot pop to root")
+        guard let root else {
+            Logger.coordinator.warning("Cannot pop to previous coordinator from \"\(self)\": root is nil.")
+            return
+        }
+        guard root.path.count > presentedRoutes.count else {
+            Logger.coordinator.warning("Cannot pop to previous coordinator from \"\(self)\": routes inconsistent with root path.")
             return
         }
         root.popLast(presentedRoutes.count + 1)

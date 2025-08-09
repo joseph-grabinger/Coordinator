@@ -9,7 +9,7 @@ import Foundation
 
 /// Base protocol that defines the shared behavior and identity requirements for all coordinators.
 @MainActor
-public protocol Coordinating: ObservableObject, Identifiable, Hashable, Equatable {
+public protocol Coordinating: ObservableObject, Identifiable, Hashable, Equatable, CustomStringConvertible {
 
     /// The unique identifier of the coordinator.
     nonisolated var id: String { get }
@@ -31,5 +31,15 @@ public extension Coordinating {
 
     nonisolated static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.id == rhs.id
+    }
+}
+
+// MARK: - CustomStringConvertible
+
+public extension Coordinating {
+
+    nonisolated var description: String {
+        let typeName = String(describing: Self.self)
+        return "\(typeName)(id: \"\(id)\")"
     }
 }
