@@ -19,6 +19,6 @@ jobs:
       uses: actions/checkout@v4
     - uses: mxcl/xcodebuild@v3
       with:
-        swift: 6.0
+        xcode: ~16.4
         action: none
     - run: xcodebuild test -scheme Coordinator -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.1'
