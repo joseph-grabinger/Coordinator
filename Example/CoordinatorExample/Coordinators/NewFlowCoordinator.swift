@@ -11,10 +11,12 @@ import Coordinator
 class NewFlowCoordinator: StackCoordinating, DeepLinkHandling, DeepLinkValidityChecking {
 
     // - MARK: Internal Properties
+    
+    let id = "NewFlowCoordinator"
 
     var initialRoute: NewScreen { NewScreen.newFlowRoot(coordinator: self) }
     
-    var path = NavigationPath()
+    var presentedRoutes = [NewScreen]()
     
     weak var root: (any RootStackCoordinating)?
     
@@ -29,10 +31,6 @@ class NewFlowCoordinator: StackCoordinating, DeepLinkHandling, DeepLinkValidityC
     }
     
     // - MARK: Static Methods
-
-    static nonisolated func == (lhs: NewFlowCoordinator, rhs: NewFlowCoordinator) -> Bool {
-        lhs.id == rhs.id
-    }
     
     static func canHandleDeepLink(_ deepLink: Coordinator.DeepLink) -> Bool {
         guard let firstRoute = deepLink.remainingRoutes.first else {
@@ -49,9 +47,9 @@ class NewFlowCoordinator: StackCoordinating, DeepLinkHandling, DeepLinkValidityC
         
         switch firstRoute {
         case "view1":
-            push(NewScreen.view1(coordinator: self))
+            push(route: NewScreen.view1(coordinator: self))
         case "view2":
-            push(NewScreen.view2)
+            push(route: NewScreen.view2)
             return
         case "newFlowRoot":
             popToRoot()

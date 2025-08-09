@@ -8,77 +8,21 @@
 import SwiftUI
 import Coordinator
 
-class HomeCoordinator: StackCoordinating, ModalCoordinating, DeepLinkHandling, DeepLinkValidityChecking {
+class HomeCoordinator: StackCoordinating, ModalCoordinating {
     
     // - MARK: Internal Properties
+    
+    let id = "HomeCoordinator"
 
     var initialRoute: Screen { Screen.view1(coordinator: self) }
 
-    var path = NavigationPath()
+    var presentedRoutes = [Screen]()
 
     weak var root: (any RootStackCoordinating)?
 
     @Published var sheet: Screen?
 
     @Published var fullScreenCover: Screen?
-    
-    // - MARK: Static Methods
-
-    static nonisolated func == (lhs: HomeCoordinator, rhs: HomeCoordinator) -> Bool {
-        lhs.id == rhs.id
-    }
-    
-    static func canHandleDeepLink(_ deepLink: DeepLink) -> Bool {
-        guard let firstRoute = deepLink.remainingRoutes.first else {
-            return true
-        }
-        
-        switch firstRoute {
-        case "view1", "view2":
-            deepLink.remainingRoutes.removeFirst()
-            return Self.canHandleDeepLink(deepLink)
-        case "sheet", "cover", "sheetFlow":
-            return deepLink.remainingRoutes.count == 1
-        case "newFlowRoot":
-            deepLink.remainingRoutes.removeFirst()
-            return NewFlowCoordinator.canHandleDeepLink(deepLink)
-        default:
-            return false
-        }
-    }
-    
-    // - MARK: Internal Methods
-
-    func handleDeepLink(_ deepLink: DeepLink) throws {
-        guard let firstRoute = deepLink.remainingRoutes.first else { return }
-        
-        switch firstRoute {
-        case "view1":
-            popToRoot()
-        case "view2":
-            push(Screen.view2(coordinator: self))
-        case "newFlowRoot":
-            let newFlowCoordinator = NewFlowCoordinator()
-            pushCoordinator(newFlowCoordinator)
-            deepLink.remainingRoutes.removeFirst()
-            try newFlowCoordinator.handleDeepLink(deepLink)
-            return
-        case "sheet":
-            present(Screen.sheet, as: .sheet)
-            return
-        case "cover":
-            present(Screen.cover, as: .fullScreenCover)
-            return
-        case "sheetFlow":
-            present(Screen.sheetFlow, as: .sheet)
-            return
-        default:
-            throw DeepLinkingError.invalidDeepLink(firstRoute)
-        }
-        
-        deepLink.remainingRoutes.removeFirst()
-        try handleDeepLink(deepLink)
-    }
 }
 
 enum Screen: Routable {
@@ -117,4 +61,64 @@ enum Screen: Routable {
             CoordinatedStack(for: NewFlowCoordinator())
 		}
 	}
+}
+
+// MARK: - DeepLinkValidityChecking
+
+extension HomeCoordinator: DeepLinkValidityChecking {
+
+    static func canHandleDeepLink(_ deepLink: DeepLink) -> Bool {
+        guard let firstRoute = deepLink.remainingRoutes.first else {
+            return true
+        }
+
+        switch firstRoute {
+        case "view1", "view2":
+            deepLink.remainingRoutes.removeFirst()
+            return Self.canHandleDeepLink(deepLink)
+        case "sheet", "cover", "sheetFlow":
+            return deepLink.remainingRoutes.count == 1
+        case "newFlowRoot":
+            deepLink.remainingRoutes.removeFirst()
+            return NewFlowCoordinator.canHandleDeepLink(deepLink)
+        default:
+            return false
+        }
+    }
+}
+
+// MARK: - DeepLinkHandling
+
+extension HomeCoordinator: DeepLinkHandling {
+
+    func handleDeepLink(_ deepLink: DeepLink) throws {
+        guard let firstRoute = deepLink.remainingRoutes.first else { return }
+
+        switch firstRoute {
+        case "view1":
+            popToRoot()
+        case "view2":
+            push(route: Screen.view2(coordinator: self))
+        case "newFlowRoot":
+            let newFlowCoordinator = NewFlowCoordinator()
+            push(coordinator: newFlowCoordinator)
+            deepLink.remainingRoutes.removeFirst()
+            try newFlowCoordinator.handleDeepLink(deepLink)
+            return
+        case "sheet":
+            present(Screen.sheet, as: .sheet)
+            return
+        case "cover":
+            present(Screen.cover, as: .fullScreenCover)
+            return
+        case "sheetFlow":
+            present(Screen.sheetFlow, as: .sheet)
+            return
+        default:
+            throw DeepLinkingError.invalidDeepLink(firstRoute)
+        }
+
+        deepLink.remainingRoutes.removeFirst()
+        try handleDeepLink(deepLink)
+    }
 }

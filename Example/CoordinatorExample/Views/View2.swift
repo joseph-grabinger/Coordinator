@@ -22,7 +22,7 @@ struct View2: View {
                 coordinator.popToRoot()
             }
             Button("New Flow") {
-                coordinator.pushCoordinator(NewFlowCoordinator())
+                coordinator.push(coordinator: NewFlowCoordinator())
             }
             Button("Full Screen Cover") {
                 coordinator.present(Screen.cover, as: .fullScreenCover)

@@ -13,7 +13,7 @@ struct View1: View {
     var body: some View {
         List {
             Button("Push") {
-                coordinator.push(Screen.view2(coordinator: coordinator))
+                coordinator.push(route: Screen.view2(coordinator: coordinator))
             }
             Button("Sheet") {
                 coordinator.present(Screen.sheet, as: .sheet)
@@ -32,7 +32,7 @@ struct NewFlowView1: View {
     var body: some View {
         List {
             Button("Push") {
-                coordinator.push(NewScreen.view2)
+                coordinator.push(route: NewScreen.view2)
             }.disabled(true)
             Button("Pop") {
                 coordinator.pop()

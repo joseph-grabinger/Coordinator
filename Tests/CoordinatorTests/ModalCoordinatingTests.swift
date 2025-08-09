@@ -91,7 +91,10 @@ import SwiftUI
 // - MARK: MockModalCoordinator
 
 final class MockModalCoordinator: ModalCoordinating {
+    nonisolated let id = "MockModalCoordinator"
+    
     var sheet: MockModalRoute?
+    
     var fullScreenCover: MockModalRoute?
     
     /// Initializes a `MockModalCoordinator`.

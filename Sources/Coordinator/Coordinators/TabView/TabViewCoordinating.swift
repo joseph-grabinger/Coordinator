@@ -11,7 +11,7 @@ import SwiftUI
 ///
 /// Conforming types are responsible for managing a set of tabs and handling tab selection.
 @MainActor
-public protocol TabViewCoordinating: ObservableObject, Identifiable, Hashable {
+public protocol TabViewCoordinating: Coordinating {
     /// The type representing a tab route.
     associatedtype Route: TabRoutable
     
@@ -28,14 +28,6 @@ public protocol TabViewCoordinating: ObservableObject, Identifiable, Hashable {
     /// Selects the specified tab.
     /// - Parameter tab: The tab to be selected.
     func select(_ tab: Route)
-}
-
-// MARK: - Hashable Conformance
-
-public extension TabViewCoordinating {
-    nonisolated func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
 }
 
 // MARK: - Default Implementation
