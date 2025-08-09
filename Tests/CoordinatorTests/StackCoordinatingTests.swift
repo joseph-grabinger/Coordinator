@@ -15,7 +15,7 @@ import SwiftUI
 
     // - MARK: Initialization Tests
     
-    @Test func testInit() {
+    @Test func testInit() throws {
         // GIVEN: An initialized coordinator (SUT).
         let sut = MockStackCoordinator()
         
@@ -24,11 +24,11 @@ import SwiftUI
         
         // THEN: The SUT's root is set.
         #expect(sut.root != nil, "Root is expected to be non-nil")
-        #expect(sut.root is RootStackCoordinator<MockRoute>, "Root is expected to have type RootStackCoordinator")
-        #expect(sut.root?.initialRoute.hashValue == root.initialRoute.hashValue, "Initial routes are expected to match")
+        let sutRoot = try #require(sut.root as? RootStackCoordinator<MockRoute>, "Root is expected to have type RootStackCoordinator")
+        #expect(sutRoot.initialRoute == root.initialRoute, "Initial routes are expected to match")
     }
     
-    @Test func testInitPath() {
+    @Test func testInitPath() throws {
         // GIVEN: An initialized coordinator (SUT) with an initial path.
         let presentedRoutes = [MockRoute.route1, MockRoute.route2]
         let sut = MockStackCoordinator(presentedRoutes: presentedRoutes)
@@ -37,8 +37,9 @@ import SwiftUI
         let root = RootStackCoordinator(coordinator: sut)
         
         // THEN: The root coordinator's path matches the SUT's path.
+        let sutRoot = try #require(sut.root as? RootStackCoordinator<MockRoute>, "Root is expected to have type RootStackCoordinator")
         #expect(sut.presentedRoutes.count == root.path.count, "SUT and root presentedRoutes's are expected to be equal")
-        #expect(sut.root?.initialRoute.hashValue == root.initialRoute.hashValue, "Initial routes are expected to match")
+        #expect(sutRoot.initialRoute == root.initialRoute, "Initial routes are expected to match")
     }
     
     // - MARK: Push Coordinator Tests
