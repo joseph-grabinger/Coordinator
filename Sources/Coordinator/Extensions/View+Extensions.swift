@@ -15,8 +15,8 @@ public extension View {
     ///
     /// - Parameter coordinator: The coordinator for which to attach the modal route.
     /// - Returns: A view with modal routes attached.
-    func modalRoutes<C: ModalCoordinating>(for coordinator: C) -> some View {
-        self.modifier(ModalRoutesModifier(coordinator: coordinator))
+    func modalRoutes<C: ModalCoordinating>(for coordinator: C, onDismiss: (() -> Void)? = nil) -> some View {
+        self.modifier(ModalRoutesModifier(coordinator: coordinator, onDismiss: onDismiss))
     }
     
     /// Attaches both modal and navigation stack presentation handling to the view

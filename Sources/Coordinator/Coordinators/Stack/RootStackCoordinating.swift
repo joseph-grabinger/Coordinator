@@ -8,7 +8,9 @@
 import SwiftUI
 
 public protocol RootStackCoordinating: StackCoordinating {
-    
+
+    var path: NavigationPath { get set }
+
     /// Pushes a new `Route` onto the `NavigationStack`.
     ///
     /// > The `Route` type is not bound to any coordinator's associated type. Thus, `any Routable`can be pushed.
@@ -24,13 +26,21 @@ public extension RootStackCoordinating {
     // MARK: - Properties
     
     /// The `root` is always `nil` for root stack coordinators.
-    var root: (any RootStackCoordinating)? { get { nil } set { } }
-    
+    var root: (any RootStackCoordinating)? {
+        get { nil }
+        set { }
+    }
+
+    var presentedRoutes: [Route] {
+        get { [] }
+        set { }
+    }
+
     // MARK: - Methods
 
     /// Pushes a new `Coordinator` onto the navigation stack.
     /// - Parameter coordinator: The `StackCoordinating`-conforming instance to be added.
-    func pushCoordinator(_ coordinator: any StackCoordinating) {
+    func push(coordinator: any StackCoordinating) {
         push(coordinator.initialRoute)
     }
     
@@ -53,7 +63,7 @@ public extension RootStackCoordinating {
     /// Pops all views from the navigation stack except the root view.
     /// - This resets the navigation state back to the initial route.
     func popToRoot() {
-        path.removeLast(path.count)
+        path = NavigationPath()
     }
 
     /// Pops the last `k` views from the navigation stack.
@@ -72,6 +82,9 @@ public extension RootStackCoordinating {
 public final class RootStackCoordinator<Route: Routable>: RootStackCoordinating {
 
 	// MARK: - Public Properties
+    
+    /// The unique identifier of the coordinator.
+    public nonisolated let id: String
 
 	/// The navigation path representing the current state of navigation.
 	@Published public var path = NavigationPath()
@@ -84,14 +97,9 @@ public final class RootStackCoordinator<Route: Routable>: RootStackCoordinating 
 	/// Initializes a new `RootCoordinator` with a given `Coordinator`.
 	/// - Parameter coordinator: The initial `Coordinator` that this root coordinator manages.
 	public init<C: StackCoordinating>(coordinator: C) where C.Route == Route {
+        self.id = "RootStackCoordinator<\(C.self)>"
 		self.initialRoute = coordinator.initialRoute
-        self.path = coordinator.path
+        self.path = NavigationPath(coordinator.presentedRoutes)
 		coordinator.root = self
 	}
-    
-    // - MARK: Equatable Conformance
-    
-    public nonisolated static func == (lhs: RootStackCoordinator<Route>, rhs: RootStackCoordinator<Route>) -> Bool {
-        lhs.id == rhs.id
-    }
 }

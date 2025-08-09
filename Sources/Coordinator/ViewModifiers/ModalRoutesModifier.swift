@@ -15,16 +15,13 @@ import SwiftUI
 struct ModalRoutesModifier<C: ModalCoordinating>: ViewModifier {
     /// The coordinator responsible for managing modal presentations.
     @ObservedObject var coordinator: C
-    
+
+    /// The closure to execute when dismissing the sheet.
+    let onDismiss: (() -> Void)?
+
     func body(content: Content) -> some View {
         content
-            .sheet(
-                item: $coordinator.sheet,
-                onDismiss: { coordinator.dismiss(.sheet) }
-            ) { $0 }
-            .fullScreenCover(
-                item: $coordinator.fullScreenCover,
-                onDismiss: { coordinator.dismiss(.fullScreenCover) }
-            ) { $0 }
+            .sheet(item: $coordinator.sheet, onDismiss: onDismiss) { $0 }
+            .fullScreenCover(item: $coordinator.fullScreenCover, onDismiss: onDismiss) { $0 }
     }
 }
