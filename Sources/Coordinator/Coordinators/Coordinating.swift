@@ -9,11 +9,10 @@ import Foundation
 
 /// Base protocol that defines the shared behavior and identity requirements for all coordinators.
 @MainActor
-public protocol Coordinating: ObservableObject, Identifiable, Hashable, Equatable, CustomStringConvertible {
+public protocol Coordinating: ObservableObject, Identifiable, Hashable, CustomStringConvertible {
 
     /// The unique identifier of the coordinator.
     nonisolated var id: String { get }
-
 }
 
 // MARK: - Hashable

@@ -11,8 +11,8 @@ import OSLog
 /// A protocol defining the requirements for coordinators that manage the presentation of modals.
 ///
 /// This protocol enables the presentation of modals like `.fullScreenCover`s & `.sheet`s.
-@MainActor
 public protocol ModalCoordinating: Coordinating {
+    
     /// The type representing a modal route.
     associatedtype Route: Routable
     
@@ -23,29 +23,15 @@ public protocol ModalCoordinating: Coordinating {
     
     /// The route which is currently presented as a full screen cover, if any.
     var fullScreenCover: Route? { get set }
-    
-    // MARK: - Methods
-
-    /// Presents a new `Route` with the given `ModalPresentationStyle`.
-    /// - Parameters:
-    ///   - route: The `Route` to present modally.
-    ///   - presentationStyle: The `ModalPresentationStyle` to present the route with.
-    func present(
-        _ route: Route,
-        as presentationStyle: ModalPresentationStyle
-    )
-    
-    /// Dismisses the `View` currently presented using the given `PresentationStyle`.
-    func dismiss(_ presentationStyle: ModalPresentationStyle)
 }
 
-// MARK: - Default Implementations
+// MARK: - Navigation Methods
 
 public extension ModalCoordinating {
     
-    /// Default implementation of `present(_:)`, presenting a route modally with the given `ModalPresentationStyle`.
+    /// Presents a new `Route` with the given `ModalPresentationStyle`.
     /// - Parameters:
-    ///   - route: The `Routable` instance to present.
+    ///   - route: The `Route` to present modally.
     ///   - presentationStyle: The `ModalPresentationStyle` to present the route with.
     func present(
         _ route: Route,
@@ -67,8 +53,8 @@ public extension ModalCoordinating {
         }
     }
     
-    /// Default implementation of `dismiss(_:)`, dismissing the current route with the given `ModalPresentationStyle`.
-    /// - Parameter presentationStyle: The `View` with the `ModalPresentationStyle` to dismiss.
+    /// Dismisses the currently presented modal `Route` with the specified `ModalPresentationStyle`.
+    /// - Parameter presentationStyle: The presentation style to dismiss
     func dismiss(_ presentationStyle: ModalPresentationStyle) {
         switch presentationStyle {
         case .sheet:

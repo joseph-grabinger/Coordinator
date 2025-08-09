@@ -96,7 +96,7 @@ extension HomeCoordinator: DeepLinkHandling {
 
         switch firstRoute {
         case "view1":
-            popToRoot()
+            popToInitialRoute()
         case "view2":
             push(route: Screen.view2(coordinator: self))
         case "newFlowRoot":

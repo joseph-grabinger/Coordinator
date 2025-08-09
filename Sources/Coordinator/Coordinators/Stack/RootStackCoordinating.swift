@@ -8,34 +8,17 @@
 import SwiftUI
 import OSLog
 
-public protocol RootStackCoordinating: StackCoordinating {
+/// A protocol that defines an object responsible of managing the underlying `NavigationPath` in any stack-based navigation.
+@MainActor
+public protocol RootStackCoordinating: ObservableObject, CustomStringConvertible {
 
+    /// The SwiftUI `NavigationPath` representing current navigation state.
     var path: NavigationPath { get set }
-
-    /// Pushes a new `Route` onto the `NavigationStack`.
-    ///
-    /// > The `Route` type is not bound to any coordinator's associated type. Thus, `any Routable`can be pushed.
-    ///
-    /// - Parameter route: The `Route` to push.
-    func push<Route: Routable>(_ route: Route)
 }
 
-// MARK: - Default Implementations
+// MARK: - Navigation Methods
 
 public extension RootStackCoordinating {
-    
-    // MARK: - Properties
-    
-    /// The `root` is always `nil` for root stack coordinators.
-    var root: (any RootStackCoordinating)? {
-        get { nil }
-        set { }
-    }
-
-    var presentedRoutes: [Route] {
-        get { [] }
-        set { }
-    }
 
     // MARK: - Methods
 
@@ -51,13 +34,14 @@ public extension RootStackCoordinating {
         path.append(route)
     }
     
-    /// Pops the top-most view from the navigation stack.
+    /// Pops the top-most route from the navigation stack.
     func pop() {
         popLast(1)
     }
     
-    /// Pops all views from the navigation stack except the root view.
-    /// - This resets the navigation state back to the initial route.
+    /// Pops all views from the `NavigationStack` - leaving only the initial route.
+    ///
+    /// This effectively empties the `NavigationPath`.
     func popToRoot() {
         path = NavigationPath()
     }
@@ -73,14 +57,24 @@ public extension RootStackCoordinating {
     }
 }
 
+
+// MARK: - CustomStringConvertible
+
+public extension RootStackCoordinating {
+    
+    nonisolated var description: String {
+        let typeName = String(describing: Self.self)
+        let objectID = ObjectIdentifier(self)
+        return "\(typeName)(objectID: \"\(objectID)\")"
+    }
+}
+
 // MARK: - RootStackCoordinator
 
+/// A concrete implementation of `RootStackCoordinating` that manages the `NavigationPath` and initial route.
 public final class RootStackCoordinator<Route: Routable>: RootStackCoordinating {
 
 	// MARK: - Public Properties
-    
-    /// The unique identifier of the coordinator.
-    public nonisolated let id: String
 
 	/// The navigation path representing the current state of navigation.
 	@Published public var path = NavigationPath()
@@ -90,10 +84,9 @@ public final class RootStackCoordinator<Route: Routable>: RootStackCoordinating 
 
 	// MARK: - Initialization
 
-	/// Initializes a new `RootCoordinator` with a given `Coordinator`.
-	/// - Parameter coordinator: The initial `Coordinator` that this root coordinator manages.
+	/// Initializes a new `RootStackCoordinator` with the  given coordinator.
+	/// - Parameter coordinator: A initial stack-based coordinator.
 	public init<C: StackCoordinating>(coordinator: C) where C.Route == Route {
-        self.id = "RootStackCoordinator<\(coordinator)>"
 		self.initialRoute = coordinator.initialRoute
         self.path = NavigationPath(coordinator.presentedRoutes)
 		coordinator.root = self

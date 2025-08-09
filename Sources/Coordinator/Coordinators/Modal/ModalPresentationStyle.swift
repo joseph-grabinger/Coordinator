@@ -8,7 +8,7 @@
 /// An enumeration that defines the available presentation styles for modals.
 public enum ModalPresentationStyle {
     
-    /// Presents the `View` modally over the current context.
+    /// Presents a `View` modally as a sheet over the current context.
     case sheet
     
     /// Presents a full screen `View`, which covers as much of the screen as possible.

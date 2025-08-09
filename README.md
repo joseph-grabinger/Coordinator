@@ -89,7 +89,7 @@ struct ContentView: View {
 To programmatically navigate to a new route, the coordinator offers several methods for the presentation of routes:
  - `push(_:)` - pushes a new route onto the `NavigationStack`
  - `pop()` - pops a route of the `NavigationStack`
- - `popToRoot()` - pops to the initial route of the coordinator
+ - `popToInitialRoute()` - pops to the initial route of the coordinator
  - `pushCoordinator(_:)` - pushes a new coordinator onto the `NavigationStack`
 
  ## Modal Coordinator

@@ -13,33 +13,31 @@ import OSLog
 /// Conforming types are responsible for managing a set of tabs and handling tab selection.
 @MainActor
 public protocol TabViewCoordinating: Coordinating {
+
     /// The type representing a tab route.
     associatedtype Route: TabRoutable
     
     // MARK: - Properties
 
     /// The currently selected tab.
+    ///
+    /// This property reflects the active tab in the `TabView`, and updates when the user switches tabs.
     var selectedTab: Route { get set }
     
     /// The list of displayed tabs.
     var tabs: [Route] { get }
-    
-    // MARK: - Methods
-    
-    /// Selects the specified tab.
-    /// - Parameter tab: The tab to be selected.
-    func select(_ tab: Route)
 }
 
-// MARK: - Default Implementation
+// MARK: - Navigation Methods
 
 public extension TabViewCoordinating {
     
-    /// Default implementation of the `select(_:)` method, selecting the given `tab`.
+    /// Selects the specified tab.
     ///
-    /// Attempts to select a tab. If the tab is not part of the registered `tabs`,
-    /// a warning is printed and no selection is made.
-    /// - Parameter tab: The tab to select.
+    /// This method updates `selectedTab` if the provided tab is part of the `tabs` collection.
+    /// If the tab is not registered, a warning is logged and the selection is ignored.
+    ///
+    /// - Parameter tab: The tab `Route` to select.
     func select(_ tab: Route) {
         guard tabs.contains(tab) else {
             Logger.coordinator.warning("Cannot select tab from \"\(self)\": \"\(tab)\" is unregistered.")
