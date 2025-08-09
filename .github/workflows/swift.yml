@@ -20,6 +20,5 @@ jobs:
     - uses: mxcl/xcodebuild@v3
       with:
         xcode: ~16.4
-        swift: 6.0
         action: none
     - run: xcodebuild test -scheme Coordinator -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.1'
