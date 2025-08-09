@@ -13,7 +13,6 @@ public protocol Coordinating: ObservableObject, Identifiable, Hashable, CustomSt
 
     /// The unique identifier of the coordinator.
     nonisolated var id: String { get }
-
 }
 
 // MARK: - Hashable
