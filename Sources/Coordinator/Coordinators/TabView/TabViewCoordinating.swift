@@ -11,7 +11,6 @@ import OSLog
 /// A protocol that defines the coordination logic for a tab-based navigation system.
 ///
 /// Conforming types are responsible for managing a set of tabs and handling tab selection.
-@MainActor
 public protocol TabViewCoordinating: Coordinating {
 
     /// The type representing a tab route.

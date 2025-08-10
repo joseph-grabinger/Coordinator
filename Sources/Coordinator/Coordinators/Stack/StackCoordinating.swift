@@ -13,7 +13,6 @@ import OSLog
 /// This protocol enables hierarchical navigation using coordinators and routes.
 ///
 /// - Warning: Do not set the properties manually.
-@MainActor
 public protocol StackCoordinating: Coordinating {
     
     /// The type representing a route.
