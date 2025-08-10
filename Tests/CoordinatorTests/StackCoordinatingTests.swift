@@ -179,7 +179,24 @@ import SwiftUI
     
     // - MARK: PopToInitialRoute Tests
     
-    @Test func popToInitialRouteSuccess() {
+    @Test func popToInitialRouteSuccessOnRoot() {
+        // GIVEN: An initialized coordinator (SUT) & root coordinator.
+        let sut = MockStackCoordinator()
+        let root = NavigationPathManager(coordinator: sut)
+        
+        // AND: Routes are pushed.
+        sut.push(route: .route2)
+        sut.push(route: .route3)
+        #expect(root.path.count == 2)
+        
+        // WHEN: The SUT pop to initial route.
+        sut.popToInitialRoute()
+        
+        // THEN: The SUT's path is expected to be empty.
+        #expect(root.path.count == 0, "The root's path is expected to be empty")
+    }
+    
+    @Test func popToInitialRouteSuccessOnSubsequent() {
         // GIVEN: An initialized coordinator & root coordinator.
         let coordinator = MockStackCoordinator()
         let root = NavigationPathManager(coordinator: coordinator)
@@ -216,23 +233,6 @@ import SwiftUI
         #expect(root.path.isEmpty, "The root's path is expected to be empty")
     }
     
-    @Test func popToInitialRouteErrorOnRoot() {
-        // GIVEN: An initialized coordinator (SUT) & root coordinator.
-        let sut = MockStackCoordinator()
-        let root = NavigationPathManager(coordinator: sut)
-        
-        // AND: Routes are pushed.
-        sut.push(route: .route2)
-        sut.push(route: .route3)
-        #expect(root.path.count == 2)
-        
-        // WHEN: The SUT pop to initial route.
-        sut.popToInitialRoute()
-        
-        // THEN: The SUT's path is expected not to change.
-        #expect(root.path.count == 2, "The root's path is expected to remain unchanged")
-    }
-    
     @Test func popToInitialRouteErrorNilRoot() {
         // GIVEN: An initialized coordinator (SUT) whose root is nil.
         let sut = MockStackCoordinator()
@@ -243,8 +243,6 @@ import SwiftUI
         // THEN: It does not crash.
         #expect(true, "No exception was thrown")
     }
-    
-    
 }
 
 // - MARK: MockStackCoordinator
