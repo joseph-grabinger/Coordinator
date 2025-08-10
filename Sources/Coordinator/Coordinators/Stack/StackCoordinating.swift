@@ -62,21 +62,22 @@ public extension StackCoordinating {
     }
 
     /// Pops all of the current coordinator's routes from the `NavigationStack` and returns to the initial route of the coordinator.
-//    func popToInitialRoute() {
-//        guard let root else {
-//            Logger.coordinator.warning("Cannot pop to initial route from \"\(self)\": root is nil.")
-//            return
-//        }
-//        root.popRoute(count: presentedRoutes.count)
-//    }
+    func popToInitialRoute() {
+        guard let root else {
+            Logger.coordinator.warning("Cannot pop to initial route from \"\(self)\": root is nil.")
+            return
+        }
+        root.popToInitialRoute(of: self)
+    }
 
     /// Pops all routes from the `NavigationStack` and returns to the previous coordinator.
-//    func popToPrevious() {
-//        guard let root else {
-//            Logger.coordinator.warning("Cannot pop to previous coordinator from \"\(self)\": root is nil.")
-//            return
-//        }
-//    }
+    func popToPreviousCoordinator() {
+        guard let root else {
+            Logger.coordinator.warning("Cannot pop to previous coordinator from \"\(self)\": root is nil.")
+            return
+        }
+        root.popCoordinator(self)
+    }
 
     /// Pops all routes and returns to the root of the `NavigationStack`.
     func popToRoot() {
