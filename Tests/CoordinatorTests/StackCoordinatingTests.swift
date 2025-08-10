@@ -117,7 +117,7 @@ import SwiftUI
     }
     
     @Test func popRouteErrorNilRoot() {
-        // GIVEN: An initialized coordinator (SUT)whose root is nil.
+        // GIVEN: An initialized coordinator (SUT) whose root is nil.
         let sut = MockStackCoordinator()
         
         // WHEN: A route is popped.
@@ -224,12 +224,13 @@ import SwiftUI
         // AND: Routes are pushed.
         sut.push(route: .route2)
         sut.push(route: .route3)
+        #expect(root.path.count == 2)
         
         // WHEN: The SUT pop to initial route.
         sut.popToInitialRoute()
         
         // THEN: The SUT's path is expected not to change.
-        #expect(root.path.count == 2, "The root's path is expected to be empty")
+        #expect(root.path.count == 2, "The root's path is expected to remain unchanged")
     }
     
     @Test func popToInitialRouteErrorNilRoot() {

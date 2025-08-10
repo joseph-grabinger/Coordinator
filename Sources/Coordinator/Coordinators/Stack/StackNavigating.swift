@@ -27,7 +27,7 @@ public protocol StackNavigating: ObservableObject, CustomStringConvertible {
     
     /// Pops the current coordinator of the navigation stack.
     /// 
-    /// This effectively displays the lat route before the given coordinator.
+    /// This effectively displays the last route before the given coordinator.
     ///
     /// - Parameter coordinator: The `StackCoordinating`-conforming instance to pop.
     func popCoordinator(_ coordinator: any StackCoordinating)
