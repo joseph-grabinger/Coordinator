@@ -1,0 +1,14 @@
+## 2.0.0
+
+- Introduces common `Coordinating` protocol for all type of coordinators
+- Adds proper logging
+- Introduces `transitionIndices` to fix path inconsistencies in stack-based navigation
+- Fixes the `popToInitialRoute()` on the initial coordinator 
+
+## 1.0.0
+
+- Coordination of `TabView`s
+- Coordination of `NavigationStack`s
+- Coordination of modal `View`s like `.sheet`s & `.fullScreenCover`s
+- URL-based deep linking
+- Validity-checking for deep link URLs 

@@ -17,7 +17,7 @@ To integrate `Coordinator` with your Swift project, specify Coordinator as a dep
 Or you can add the following dependency to your `Package.swift`:
 
 ```swift
-.package(url: "https://github.com/joseph-grabinger/Coordinator.git", from: "1.0.0")
+.package(url: "https://github.com/joseph-grabinger/Coordinator.git", from: "2.0.0")
 ```
 
 ## Features
@@ -62,15 +62,11 @@ Next, a `StackCoordinating`-conforming coordinator class is created.
 
 ```swift
 class MyStackCoordinator: StackCoordinating {
+    let id = "MyStackCoordinator"
+
     let initialRoute = MyScreen.view1
 
-    @Published var path = NavigationPath()
-
-    var root: (any StackCoordinating)?
-    
-    static nonisolated func == (lhs: MyStackCoordinator, rhs: MyStackCoordinator) -> Bool {
-        lhs.id == rhs.id
-    }
+    weak var root: (any StackNavigating)?
 }
 ```
 
@@ -87,10 +83,11 @@ struct ContentView: View {
 ```
 
 To programmatically navigate to a new route, the coordinator offers several methods for the presentation of routes:
- - `push(_:)` - pushes a new route onto the `NavigationStack`
+ - `push(route:)` - pushes a new route onto the `NavigationStack`
+ - `push(coordinator:)` - pushes a new coordinator onto the `NavigationStack`
  - `pop()` - pops a route of the `NavigationStack`
  - `popToInitialRoute()` - pops to the initial route of the coordinator
- - `pushCoordinator(_:)` - pushes a new coordinator onto the `NavigationStack`
+ - `popToPreviousCoordinator()` - pops to the previous coordinator
 
  ## Modal Coordinator
  
@@ -118,6 +115,8 @@ Next, a `ModalCoordinating`-conforming coordinator class is created.
 
 ```swift
 class MyModalCoordinator: ModalCoordinating {
+    let id = "MyModalCoordinator"
+
     @Published var sheet: MyModal?
     @Published var fullScreenCover: MyModal?
 }
@@ -177,13 +176,11 @@ Next, a `TabViewCoordinating`-conforming coordinator class is created.
 
 ```swift
 class MyTabCoordinator: TabViewCoordinating {
+    let id = "MyTabCoordinator"
+
     @Published var selectedTab = MyTab.tab1
     
     let tabs: [MyTab] = MyTab.allCases
-
-    static nonisolated func == (lhs: MyTabCoordinator, rhs: MyTabCoordinator) -> Bool {
-        lhs.id == rhs.id
-    }
 }
 ```
 
