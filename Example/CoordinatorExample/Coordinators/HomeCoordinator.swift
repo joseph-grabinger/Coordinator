@@ -16,9 +16,7 @@ class HomeCoordinator: StackCoordinating, ModalCoordinating {
 
     var initialRoute: Screen { Screen.view1(coordinator: self) }
 
-    var presentedRoutes = [Screen]()
-
-    weak var root: (any RootStackCoordinating)?
+    weak var root: (any StackNavigating)?
 
     @Published var sheet: Screen?
 

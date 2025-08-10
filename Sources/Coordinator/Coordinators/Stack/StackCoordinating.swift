@@ -13,7 +13,6 @@ import OSLog
 /// This protocol enables hierarchical navigation using coordinators and routes.
 ///
 /// - Warning: Do not set the properties manually.
-@MainActor
 public protocol StackCoordinating: Coordinating {
     
     /// The type representing a route.
@@ -26,11 +25,7 @@ public protocol StackCoordinating: Coordinating {
 
     /// A weak reference to the root coordinator, if available.
     /// - Important: This reference must be weak to avoid retain cycles.
-    var root: (any RootStackCoordinating)? { get set }
-
-    /// The navigation path representing the current state of navigation.
-    /// - Warning: Do not mutate this directly. Use navigation methods instead.
-    var presentedRoutes: [Route] { get set }
+    var root: (any StackNavigating)? { get set }
 }
 
 // MARK: - Navigation Methods
@@ -44,8 +39,7 @@ public extension StackCoordinating {
             Logger.coordinator.warning("Cannot push \"\(coordinator.description)\" from \"\(self)\": root is nil.")
             return
         }
-        coordinator.root = root
-        root.push(coordinator: coordinator)
+        root.pushCoordinator(coordinator)
     }
 
     /// Pushes a new route onto the `NavigationStack`.
@@ -55,8 +49,7 @@ public extension StackCoordinating {
             Logger.coordinator.warning("Cannot push \"\(route)\" from \"\(self)\": root is nil.")
             return
         }
-        root.push(route)
-        presentedRoutes.append(route)
+        root.pushRoute(route)
     }
 
     /// Pops the top-most route from the `NavigationStack`.
@@ -65,9 +58,7 @@ public extension StackCoordinating {
             Logger.coordinator.warning("Cannot pop from \"\(self)\": root is nil.")
             return
         }
-        root.pop()
-        guard presentedRoutes.count >= 1 else { return }
-        presentedRoutes.removeLast()
+        root.popRoute()
     }
 
     /// Pops all of the current coordinator's routes from the `NavigationStack` and returns to the initial route of the coordinator.
@@ -76,22 +67,16 @@ public extension StackCoordinating {
             Logger.coordinator.warning("Cannot pop to initial route from \"\(self)\": root is nil.")
             return
         }
-        root.popLast(presentedRoutes.count)
-        presentedRoutes = []
+        root.popToInitialRoute(of: self)
     }
 
     /// Pops all routes from the `NavigationStack` and returns to the previous coordinator.
-    func popToPrevious() {
+    func popToPreviousCoordinator() {
         guard let root else {
             Logger.coordinator.warning("Cannot pop to previous coordinator from \"\(self)\": root is nil.")
             return
         }
-        guard root.path.count > presentedRoutes.count else {
-            Logger.coordinator.warning("Cannot pop to previous coordinator from \"\(self)\": routes inconsistent with root path.")
-            return
-        }
-        root.popLast(presentedRoutes.count + 1)
-        presentedRoutes = []
+        root.popCoordinator(self)
     }
 
     /// Pops all routes and returns to the root of the `NavigationStack`.
