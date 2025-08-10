@@ -15,10 +15,8 @@ class NewFlowCoordinator: StackCoordinating, DeepLinkHandling, DeepLinkValidityC
     let id = "NewFlowCoordinator"
 
     var initialRoute: NewScreen { NewScreen.newFlowRoot(coordinator: self) }
-    
-    var presentedRoutes = [NewScreen]()
-    
-    weak var root: (any RootStackCoordinating)?
+        
+    weak var root: (any StackNavigating)?
     
     // - MARK: Initialization
 
