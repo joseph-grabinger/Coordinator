@@ -7,14 +7,13 @@
 
 import SwiftUI
 
-/// A SwiftUI view that serves as the root coordinator, managing navigation within the app.
-/// - Note: This `View` integrates with a `StackCoordinating`-conforming coordinator to handle navigation.
+/// A SwiftUI view that creates a `NavigationStack` driven by a `StackCoordinating`-conforming coordinator.
 public struct CoordinatedStack<Coordinator: StackCoordinating>: View {
 
     // MARK: - Private Properties
     
-    /// The root coordinator responsible for managing the `NavigationPath` that's bound to the `NavigationStack`.
-    @StateObject private var rootCoordinator: RootStackCoordinator<Coordinator.Route>
+    /// The object responsible for managing the `NavigationPath` that's bound to the `NavigationStack`.
+    @StateObject private var pathManager: NavigationPathManager<Coordinator.Route>
     
     // MARK: - Initialization
 
@@ -22,14 +21,14 @@ public struct CoordinatedStack<Coordinator: StackCoordinating>: View {
     /// - Parameters:
     ///   - coordinator: The coordinator responsible for managing navigation.
     public init(for coordinator: Coordinator) {
-		_rootCoordinator = StateObject(wrappedValue: RootStackCoordinator(coordinator: coordinator))
+		_pathManager = StateObject(wrappedValue: NavigationPathManager(coordinator: coordinator))
     }
     
     // MARK: - Body
 
     public var body: some View {
-        NavigationStack(path: $rootCoordinator.path) {
-			rootCoordinator.initialRoute
+        NavigationStack(path: $pathManager.path) {
+			pathManager.initialRoute
                 .navigationDestination(for: Coordinator.Route.self) { $0 }
         }
     }

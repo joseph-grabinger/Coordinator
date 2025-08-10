@@ -1,5 +1,5 @@
 //
-//  RootStackCoordinating.swift
+//  NavigationPathManager.swift
 //  Coordinator
 //
 //  Created by Joseph Grabinger on 25.03.25.
@@ -8,13 +8,13 @@
 import SwiftUI
 import OSLog
 
-/// A concrete implementation of `RootStackCoordinating` that manages the `NavigationPath` and initial route.
-public final class RootStackCoordinator<R: Routable>: StackNavigating {
+/// A concrete implementation of `StackNavigating` that manages the `NavigationPath` in a `NavigationStack`.
+public final class NavigationPathManager<R: Routable>: StackNavigating {
     
-    // MARK: - Public Properties
+    // MARK: - Internal Properties
     
     /// The navigation path representing the current state of navigation.
-    @Published public var path = NavigationPath() {
+    @Published var path = NavigationPath() {
         didSet {
             guard path.count < oldValue.count else { return }
             transitionIndices = transitionIndices.filter { _, index in
@@ -30,11 +30,11 @@ public final class RootStackCoordinator<R: Routable>: StackNavigating {
     private(set) var transitionIndices = [String: Int]()
     
     /// The initial route that this coordinator starts with.
-    public let initialRoute: R
+    let initialRoute: R
     
     // MARK: - Initialization
     
-    /// Initializes a new `RootStackCoordinator` with the  given coordinator.
+    /// Initializes a new `NavigationPathManager` with the  given coordinator.
     /// - Parameter coordinator: A initial stack-based coordinator.
     public init<C: StackCoordinating>(coordinator: C) where C.Route == R {
         self.initialRoute = coordinator.initialRoute
@@ -44,7 +44,7 @@ public final class RootStackCoordinator<R: Routable>: StackNavigating {
 
 // MARK: StackNavigating
 
-public extension RootStackCoordinator {
+public extension NavigationPathManager {
     
     func pushCoordinator(_ coordinator: any StackCoordinating) {
         coordinator.root = self
