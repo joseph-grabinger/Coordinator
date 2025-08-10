@@ -69,7 +69,7 @@ public extension NavigationPathManager {
             Logger.coordinator.warning("\(self) cannot pop coordinator \(coordinator.description): no transition index found.")
             return
         }
-        let routesToPop = path.count - transitionIndex - 1
+        let routesToPop = path.count - transitionIndex
         popRoute(count: routesToPop)
     }
     
@@ -78,7 +78,7 @@ public extension NavigationPathManager {
             Logger.coordinator.warning("\(self) cannot pop to initial route of \(coordinator.description): no transition index found.")
             return
         }
-        let routesToPop = path.count - transitionIndex
+        let routesToPop = path.count - transitionIndex - 1
         popRoute(count: routesToPop)
     }
     
