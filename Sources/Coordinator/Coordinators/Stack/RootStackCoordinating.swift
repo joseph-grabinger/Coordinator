@@ -25,7 +25,6 @@ public final class RootStackCoordinator<R: Routable>: StackNavigating {
 	/// - Parameter coordinator: A initial stack-based coordinator.
 	public init<C: StackCoordinating>(coordinator: C) where C.Route == R {
 		self.initialRoute = coordinator.initialRoute
-        self.path = NavigationPath(coordinator.presentedRoutes)
 		coordinator.root = self
 	}
     

@@ -26,10 +26,6 @@ public protocol StackCoordinating: Coordinating {
     /// A weak reference to the root coordinator, if available.
     /// - Important: This reference must be weak to avoid retain cycles.
     var root: (any StackNavigating)? { get set }
-
-    /// The navigation path representing the current state of navigation.
-    /// - Warning: Do not mutate this directly. Use navigation methods instead.
-    var presentedRoutes: [Route] { get set }
 }
 
 // MARK: - Navigation Methods
@@ -54,7 +50,6 @@ public extension StackCoordinating {
             return
         }
         root.pushRoute(route)
-        presentedRoutes.append(route)
     }
 
     /// Pops the top-most route from the `NavigationStack`.
@@ -64,29 +59,24 @@ public extension StackCoordinating {
             return
         }
         root.popRoute()
-        guard presentedRoutes.count >= 1 else { return }
-        presentedRoutes.removeLast()
     }
 
     /// Pops all of the current coordinator's routes from the `NavigationStack` and returns to the initial route of the coordinator.
-    func popToInitialRoute() {
-        guard let root else {
-            Logger.coordinator.warning("Cannot pop to initial route from \"\(self)\": root is nil.")
-            return
-        }
-        root.popRoute(count: presentedRoutes.count)
-        presentedRoutes = []
-    }
+//    func popToInitialRoute() {
+//        guard let root else {
+//            Logger.coordinator.warning("Cannot pop to initial route from \"\(self)\": root is nil.")
+//            return
+//        }
+//        root.popRoute(count: presentedRoutes.count)
+//    }
 
     /// Pops all routes from the `NavigationStack` and returns to the previous coordinator.
-    func popToPrevious() {
-        guard let root else {
-            Logger.coordinator.warning("Cannot pop to previous coordinator from \"\(self)\": root is nil.")
-            return
-        }
-        root.popRoute(count: presentedRoutes.count + 1)
-        presentedRoutes = []
-    }
+//    func popToPrevious() {
+//        guard let root else {
+//            Logger.coordinator.warning("Cannot pop to previous coordinator from \"\(self)\": root is nil.")
+//            return
+//        }
+//    }
 
     /// Pops all routes and returns to the root of the `NavigationStack`.
     func popToRoot() {
