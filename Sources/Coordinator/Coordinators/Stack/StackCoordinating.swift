@@ -25,7 +25,7 @@ public protocol StackCoordinating: Coordinating {
 
     /// A weak reference to the root coordinator, if available.
     /// - Important: This reference must be weak to avoid retain cycles.
-    var root: (any RootStackCoordinating)? { get set }
+    var root: (any StackNavigating)? { get set }
 
     /// The navigation path representing the current state of navigation.
     /// - Warning: Do not mutate this directly. Use navigation methods instead.
@@ -43,8 +43,7 @@ public extension StackCoordinating {
             Logger.coordinator.warning("Cannot push \"\(coordinator.description)\" from \"\(self)\": root is nil.")
             return
         }
-        coordinator.root = root
-        root.push(coordinator: coordinator)
+        root.pushCoordinator(coordinator)
     }
 
     /// Pushes a new route onto the `NavigationStack`.
@@ -54,7 +53,7 @@ public extension StackCoordinating {
             Logger.coordinator.warning("Cannot push \"\(route)\" from \"\(self)\": root is nil.")
             return
         }
-        root.push(route)
+        root.pushRoute(route)
         presentedRoutes.append(route)
     }
 
@@ -64,7 +63,7 @@ public extension StackCoordinating {
             Logger.coordinator.warning("Cannot pop from \"\(self)\": root is nil.")
             return
         }
-        root.pop()
+        root.popRoute()
         guard presentedRoutes.count >= 1 else { return }
         presentedRoutes.removeLast()
     }
@@ -75,7 +74,7 @@ public extension StackCoordinating {
             Logger.coordinator.warning("Cannot pop to initial route from \"\(self)\": root is nil.")
             return
         }
-        root.popLast(presentedRoutes.count)
+        root.popRoute(count: presentedRoutes.count)
         presentedRoutes = []
     }
 
@@ -85,11 +84,7 @@ public extension StackCoordinating {
             Logger.coordinator.warning("Cannot pop to previous coordinator from \"\(self)\": root is nil.")
             return
         }
-        guard root.path.count > presentedRoutes.count else {
-            Logger.coordinator.warning("Cannot pop to previous coordinator from \"\(self)\": routes inconsistent with root path.")
-            return
-        }
-        root.popLast(presentedRoutes.count + 1)
+        root.popRoute(count: presentedRoutes.count + 1)
         presentedRoutes = []
     }
 

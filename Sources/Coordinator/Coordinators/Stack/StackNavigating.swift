@@ -5,9 +5,11 @@
 //  Created by Joseph Grabinger on 10.08.25.
 //
 
+import Foundation
+
 /// A protocol that defines methods for stack-based navigation.
 @MainActor
-public protocol StackNavigating {
+public protocol StackNavigating: ObservableObject, CustomStringConvertible {
     
     // MARK: Methods
     
@@ -36,5 +38,16 @@ public extension StackNavigating {
     /// Pops the top-most route of the navigation stack.
     func popRoute() {
         self.popRoute(count: 1)
+    }
+}
+
+// MARK: CustomStringConvertible
+
+public extension StackNavigating {
+
+    nonisolated var description: String {
+        let typeName = String(describing: Self.self)
+        let objectID = ObjectIdentifier(self)
+        return "\(typeName)(objectID: \"\(objectID)\")"
     }
 }
