@@ -18,7 +18,7 @@ public final class NavigationPathManager<R: Routable>: StackNavigating {
         didSet {
             guard path.count < oldValue.count else { return }
             transitionIndices = transitionIndices.filter { _, index in
-                return index <= path.count - 1 || index == 0
+                return index <= path.count - 1 || index == initialCoordinatorIndex
             }
         }
     }
@@ -32,13 +32,18 @@ public final class NavigationPathManager<R: Routable>: StackNavigating {
     /// The initial route that this coordinator starts with.
     let initialRoute: R
     
+    // MARK: - Private Properties
+    
+    /// A constant for the transition index of the initial coordinator.
+    private let initialCoordinatorIndex = -1
+    
     // MARK: - Initialization
     
     /// Initializes a new `NavigationPathManager` with the  given coordinator.
     /// - Parameter coordinator: A initial stack-based coordinator.
     public init<C: StackCoordinating>(coordinator: C) where C.Route == R {
         self.initialRoute = coordinator.initialRoute
-        transitionIndices[coordinator.id] = 0
+        transitionIndices[coordinator.id] = initialCoordinatorIndex
         coordinator.root = self
     }
 }
@@ -70,7 +75,7 @@ public extension NavigationPathManager {
             Logger.coordinator.warning("\(self) cannot pop coordinator \(coordinator.description): no transition index found.")
             return
         }
-        guard transitionIndex != 0 else {
+        guard transitionIndex != initialCoordinatorIndex else {
             Logger.coordinator.warning("\(self) cannot pop coordinator \(coordinator.description): as it's the initial coordinator.")
             return
         }
@@ -83,7 +88,7 @@ public extension NavigationPathManager {
             Logger.coordinator.warning("\(self) cannot pop to initial route of \(coordinator.description): no transition index found.")
             return
         }
-        if transitionIndex == 0 {
+        if transitionIndex == initialCoordinatorIndex {
             popToRoot()
         } else {
             let routesToPop = path.count - transitionIndex - 1
@@ -94,7 +99,7 @@ public extension NavigationPathManager {
     func popToRoot() {
         path = NavigationPath()
         transitionIndices = transitionIndices.filter { _, index in
-            return index == 0
+            return index == initialCoordinatorIndex
         }
     }
 }
