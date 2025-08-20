@@ -1,3 +1,7 @@
+## 2.0.1
+
+- Fixes the initial stack coordinator's index in the `transitionIndices` dictionary
+
 ## 2.0.0
 
 - Introduces common `Coordinating` protocol for all type of coordinators

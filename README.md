@@ -17,7 +17,7 @@ To integrate `Coordinator` with your Swift project, specify Coordinator as a dep
 Or you can add the following dependency to your `Package.swift`:
 
 ```swift
-.package(url: "https://github.com/joseph-grabinger/Coordinator.git", from: "2.0.0")
+.package(url: "https://github.com/joseph-grabinger/Coordinator.git", from: "2.0.1")
 ```
 
 ## Features
