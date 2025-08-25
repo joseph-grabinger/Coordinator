@@ -12,5 +12,6 @@ public enum ModalPresentationStyle {
     case sheet
     
     /// Presents a full screen `View`, which covers as much of the screen as possible.
+    @available(macOS, unavailable)
     case fullScreenCover
 }
