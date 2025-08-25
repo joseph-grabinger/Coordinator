@@ -20,4 +20,5 @@ jobs:
     - uses: mxcl/xcodebuild@v3
       with:
         xcode: ~16.4
+        platform: iOS
         action: test
