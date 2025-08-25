@@ -39,6 +39,7 @@ import SwiftUI
         #expect(sut.sheet == oldSheet)
     }
     
+    @available(macOS, unavailable)
     @Test func testPresentFullScreenCoverSuccess() {
         // GIVEN: An initialized coordinator (SUT).
         let sut = MockModalCoordinator()
@@ -51,6 +52,7 @@ import SwiftUI
         #expect(sut.fullScreenCover == newFullScreenCover)
     }
     
+    @available(macOS, unavailable)
     @Test func testPresentFullScreenCoverError() {
         // GIVEN: An initialized coordinator (SUT) with a presented fullScreenCover.
         let oldFullScreenCover = MockModalRoute.route1
@@ -76,12 +78,15 @@ import SwiftUI
         #expect(sut.sheet == nil)
     }
     
+    @available(macOS, unavailable)
     @Test func testDismissFullScreenCover() {
         // GIVEN: An initialized coordinator (SUT) with a presented fullScreenCover.
         let sut = MockModalCoordinator(fullScreenCover: .route1)
         
         // WHEN: The fullScreenCover is dismissed.
+#if !os(macOS)
         sut.dismiss(.fullScreenCover)
+#endif
         
         // THEN: The fullScreenCover is expected to be nil.
         #expect(sut.fullScreenCover == nil)

@@ -22,6 +22,8 @@ struct ModalRoutesModifier<C: ModalCoordinating>: ViewModifier {
     func body(content: Content) -> some View {
         content
             .sheet(item: $coordinator.sheet, onDismiss: onDismiss) { $0 }
+        #if !os(macOS)
             .fullScreenCover(item: $coordinator.fullScreenCover, onDismiss: onDismiss) { $0 }
+        #endif
     }
 }

@@ -1,3 +1,7 @@
+## 2.0.2
+
+- Fixes macOS build error by marking `.fullScreenCover`s as unavailable
+
 ## 2.0.1
 
 - Fixes the initial stack coordinator's index in the `transitionIndices` dictionary

@@ -21,8 +21,10 @@ public protocol ModalCoordinating: Coordinating {
     /// The route which is currently presented as a sheet, if any.
     var sheet: Route? { get set }
     
+#if !os(macOS)
     /// The route which is currently presented as a full screen cover, if any.
     var fullScreenCover: Route? { get set }
+#endif
 }
 
 // MARK: - Navigation Methods
@@ -44,12 +46,14 @@ public extension ModalCoordinating {
                 return
             }
             sheet = route
+#if !os(macOS)
         case .fullScreenCover:
             guard fullScreenCover == nil else {
                 Logger.coordinator.warning("Cannot present \"\(route)\" as fullScreenCover: \"\(self)\" is already presenting \"\(self.fullScreenCover!)\".")
                 return
             }
             fullScreenCover = route
+#endif
         }
     }
     
@@ -59,8 +63,10 @@ public extension ModalCoordinating {
         switch presentationStyle {
         case .sheet:
             sheet = nil
+#if !os(macOS)
         case .fullScreenCover:
             fullScreenCover = nil
+#endif
         }
     }
 }
