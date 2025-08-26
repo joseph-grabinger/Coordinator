@@ -1,3 +1,7 @@
+## 2.1.0
+
+- Adds support for tvOS, watchOS & macCatalyst
+
 ## 2.0.2
 
 - Fixes macOS build error by marking `.fullScreenCover`s as unavailable
