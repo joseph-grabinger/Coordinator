@@ -11,14 +11,20 @@ on:
 
 jobs:
   build:
-
     runs-on: macos-latest
-
+    strategy:
+      matrix:
+        platform:
+          - macOS
+          - watchOS
+          - tvOS
+          - iOS
+          - mac-catalyst
     steps:
-    - name: Checkout the code
-      uses: actions/checkout@v4
-    - uses: mxcl/xcodebuild@v3
-      with:
-        xcode: ~16.4
-        platform: iOS
-        action: test
+      - name: Checkout the code
+        uses: actions/checkout@v4
+      - uses: mxcl/xcodebuild@v3
+        with:
+          xcode: ~16.4
+          platform: ${{ matrix.platform }}
+          action: test
