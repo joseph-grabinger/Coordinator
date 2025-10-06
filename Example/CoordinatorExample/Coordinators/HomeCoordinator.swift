@@ -9,6 +9,8 @@ import SwiftUI
 import Coordinator
 
 class HomeCoordinator: StackCoordinating, ModalCoordinating {
+    var shouldPop: (() -> Bool)?
+    
     
     // - MARK: Internal Properties
     

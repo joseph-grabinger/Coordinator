@@ -26,6 +26,10 @@ public protocol StackCoordinating: Coordinating {
     /// A weak reference to the root coordinator, if available.
     /// - Important: This reference must be weak to avoid retain cycles.
     var root: (any StackNavigating)? { get set }
+
+    /// A closure when a coordinator will be popped of the stack.
+    /// - Note: This can be used to intercept swipe-back gestures.
+    var shouldPop: (() -> Bool)? { get }
 }
 
 // MARK: - Navigation Methods

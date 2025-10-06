@@ -17,7 +17,9 @@ class NewFlowCoordinator: StackCoordinating, DeepLinkHandling, DeepLinkValidityC
     var initialRoute: NewScreen { NewScreen.newFlowRoot(coordinator: self) }
         
     weak var root: (any StackNavigating)?
-    
+
+    var shouldPop: (() -> Bool)? = { false }
+
     // - MARK: Initialization
 
     init() {
